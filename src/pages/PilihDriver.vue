@@ -263,7 +263,6 @@ export default {
       }
     },
     getPesanan () {
-      // this.$axios.get('http://localhost:5050/pesanan/get-pesanan', createToken())
       this.$axios.get(`http://192.168.43.172:5050/pesanan/${this.$route.params.guid}`, createToken())
         .then((res) => {
           console.log(res)
