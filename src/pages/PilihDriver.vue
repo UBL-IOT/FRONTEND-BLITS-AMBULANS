@@ -24,7 +24,8 @@
           <template v-slot:top>
             <div class="col">
               <div class="col-2 q-table__title">
-                Pemesanan Kendaraan
+                Pemesanan Kendaraan <br>
+                Id Pemesanan: {{this.guid}}
               </div>
               <p class="text-caption">
                 Pilihkan driver yang sedang bertugas dengan status aktif.
@@ -68,23 +69,16 @@
           </template>
           <template v-slot:body="props">
             <q-tr :props="props">
-              <q-td class="text-uppercase" key="kode_pesanan" :props="props">{{ props.row.kode_pesanan }}</q-td>
-              <q-td class="text-uppercase" key="username" :props="props">{{ props.row.data_user.username }}</q-td>
-              <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">{{ props.row.data_user.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a></q-td>
-              <q-td class="text-weight-bold text-blue-7" key="titik_jemput" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">{{ props.row.titik_jemput.substring(0,10)+"..." }}</a></q-td>
-              <q-td class="text-weight-bold text-blue-7" key="tujuan" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">{{ props.row.tujuan.substring(0,10)+"..." }}</a></q-td>
-              <q-td key="tanggal" :props="props">{{ props.row.tanggal }}</q-td>
+              <q-td class="text-uppercase" key="instansi" :props="props">{{ props.row.data_driver.instansi }}</q-td>
+              <q-td class="text-uppercase" key="nama_driver" :props="props">{{ props.row.data_driver.nama_driver }}</q-td>
+              <q-td class="text-uppercase" key="no_plat" :props="props">{{ props.row.data_driver.no_plat }}</q-td>
               <!-- <q-td key="tanggal" :props="props">{{this.$parseDate(props.row.tanggal).fullDate}}</q-td> -->
               <q-td key="status" :props="props"><q-badge :color="(props.row.status == '0') ? 'orange-7' :(props.row.status == '1') ? 'blue-7' : 'green-7'">{{`${ (props.row.status == '0') ? 'MENUNGGU' :(props.row.status == '1') ? 'PROSES' : 'SELESAI' }`}}</q-badge></q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">
-                <q-btn
-                  color="blue-7"
-                  flat
-                  @click="Drivers (props.row.guid)"
-                  dense>
+                <q-btn color="blue-7" @click="Onclick" dense>
                   <q-icon left size="xs" name="supervised_user_circle" />
-                  <div>DRIVER</div>
+                  <div>Pilih</div>
                 </q-btn>
               </div>
             </q-td>
@@ -107,6 +101,59 @@
             </q-td>
           </template>
         </q-table>
+
+        <!-- <q-dialog v-model="drivers">
+          <q-card class="my-card" flat bordered style="width: 90%; max-width: 80vw;">
+            <q-item>
+              <q-item-section avatar>
+                <q-avatar>
+                  <q-icon name="supervised_user_circle" size="40px" color="blue-7" />
+                </q-avatar>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label>Data Driver</q-item-label>
+                <q-item-label caption>
+                  Pilih driver yang akan menjemput
+                </q-item-label>
+              </q-item-section>
+
+              <q-item-section class="col-1">
+                <q-btn flat dense icon="close" class="float-right" color="grey-8" v-close-popup></q-btn>
+              </q-item-section>
+            </q-item>
+
+            <q-separator />
+
+            <q-card-section>
+              <q-table
+                grid
+                :rows="rowx"
+                :columns="columnx"
+                row-key="name"
+                :filter="filter"
+                hide-header
+              >
+                <template v-slot:top>
+                  <div class="col">
+                    <div class="col-2 q-table__title text-subtitle2">
+                      KODE PESANAN : BLITS-001
+                    </div>
+                  </div>
+                </template>
+
+                <template v-slot:top-right>
+                  <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+                    <template v-slot:append>
+                      <q-icon name="search" />
+                    </template>
+                  </q-input>
+                </template>
+              </q-table>
+            </q-card-section>
+
+          </q-card>
+        </q-dialog> -->
       </q-card>
     </div>
 
@@ -116,6 +163,7 @@
 <script>
 import { exportFile } from 'quasar'
 import createToken from 'src/boot/create_token'
+
 // const columnx = [
 //   { name: 'nama_driver', required: true, label: 'NAMA DRIVER', align: 'left', field: 'nama_driver', sortable: true },
 //   { name: 'no_plat', label: 'NO. PLAT', field: 'no_plat', sortable: true },
@@ -141,14 +189,17 @@ function wrapCsvValue (val, formatFn) {
 }
 
 const columns = [
-  { name: 'kode_pesanan', align: 'left', label: 'KODE', field: 'kode_pesanan', sortable: true },
-  { name: 'username', align: 'left', label: 'NAMA PEMESAN', field: 'username', sortable: true },
-  { name: 'no_telpon', align: 'left', label: 'NO. HANDPHONE', field: 'no_telpon', sortable: true },
-  { name: 'titik_jemput', align: 'left', label: 'TITIK JEMPUT', field: 'titik_jemput', sortable: true },
-  { name: 'tujuan', required: true, label: 'TUJUAN', align: 'left', field: row => row.tujuan, sortable: true },
-  { name: 'tanggal', align: 'left', label: 'TGL. PEMESANAN', field: 'tanggal', sortable: true },
-  { name: 'status', align: 'left', label: 'STATUS', field: 'status', sortable: true },
-  { name: 'aksi', align: 'center', label: 'DRIVER', field: 'aksi', sortable: true }
+  { name: 'instansi', align: 'left', label: 'NAMA INSTANSI', field: 'instansi', sortable: true },
+  { name: 'nama_driver', align: 'left', label: 'NAMA DRIVER', field: 'nama_driver', sortable: true },
+  { name: 'no_plat', align: 'left', label: 'NO PLAT', field: 'no_plat', sortable: true },
+  // { name: 'kode_pesanan', align: 'left', label: 'KODE', field: 'kode_pesanan', sortable: true },
+  // { name: 'username', align: 'left', label: 'NAMA PEMESAN', field: 'username', sortable: true },
+  // { name: 'no_telpon', align: 'left', label: 'NO. HANDPHONE', field: 'no_telpon', sortable: true },
+  // { name: 'titik_jemput', align: 'left', label: 'TITIK JEMPUT', field: 'titik_jemput', sortable: true },
+  // { name: 'tujuan', required: true, label: 'TUJUAN', align: 'left', field: row => row.tujuan, sortable: true },
+  // { name: 'tanggal', align: 'left', label: 'TGL. PEMESANAN', field: 'tanggal', sortable: true },
+  // { name: 'status', align: 'left', label: 'STATUS', field: 'status', sortable: true },
+  { name: 'aksi', align: 'center', label: 'Pilih Driver', field: 'aksi', sortable: true }
   // { name: 'pilih_driver', align: 'center', label: 'Pilih Driver', field: 'pilih_driver', sortable: true }
 ]
 
@@ -165,7 +216,8 @@ export default {
       data,
       phonex: '',
       phoneData: '',
-      drivers: '',
+      driver: '',
+      // drivers: false,
       optionPilih_driver: [],
       filter: '',
       customer: {},
@@ -178,6 +230,7 @@ export default {
   },
   created () {
     this.getPesanan()
+    // this.onPilihDriver()
   },
   methods: {
     exportTable () {
@@ -211,19 +264,19 @@ export default {
     },
     getPesanan () {
       // this.$axios.get('http://localhost:5050/pesanan/get-pesanan', createToken())
-      this.$axios.get('http://192.168.43.172:5050/pesanan/get-pesanan', createToken())
+      this.$axios.get(`http://192.168.43.172:5050/pesanan/${this.$route.params.guid}`, createToken())
         .then((res) => {
           console.log(res)
           this.data = res.data.data
           res.data.data.forEach((phonex) => {
             phonex.phones = phonex.data_user.no_telpon
             this.phoneData = phonex.phones.replace('0', '62')
+            this.guid = phonex.guid
             console.log(this.phoneData)
           })
         })
     },
-    Drivers (guid) {
-      this.$router.push('/pilihDriver/' + guid)
+    Onclick () {
     }
   }
 }
