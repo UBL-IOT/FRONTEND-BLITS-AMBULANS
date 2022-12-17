@@ -2,13 +2,11 @@
 <template>
   <q-page>
     <q-card class="q-pa-md q-ma-md">
-        <q-breadcrumbs>
-          <q-breadcrumbs-el label="Home" icon="home" />
-          <q-breadcrumbs-el class="text-grey-7" label="Profile" icon="health_and_safety" />
-          <!-- <q-breadcrumbs-el label="Breadcrumbs" /> -->
-        </q-breadcrumbs>
+      <q-breadcrumbs>
+        <q-breadcrumbs-el label="Home" icon="home" />
+        <q-breadcrumbs-el class="text-grey-7" label="Profile" icon="health_and_safety" />
+      </q-breadcrumbs>
     </q-card>
-    <!-- <div class="row q-col-gutter-sm q-ma-xs"> -->
       <div class="q-ma-md q-mt-lg" style="height: fit-content;">
         <q-card>
           <div>
@@ -64,73 +62,29 @@
 
             <q-separator />
 
-            <q-form @submit="onsubmit">
-
+            <q-form
+              @submit="Onsubmit (guid)">
               <q-card-section horizontal>
                 <q-card-section class="q-gutter-md fit">
                   <q-input dense outlined v-model="username" label="Username"/>
                   <q-input dense outlined v-model="no_telpon" label="No. Telepon"/>
                 </q-card-section>
-
                 <q-separator vertical />
-
                 <q-card-section class="q-gutter-md fit">
                   <q-input dense outlined v-model="email" label="Email"/>
                   <q-input dense outlined v-model="alamat" label="Alamat"/>
                 </q-card-section>
               </q-card-section>
-
               <q-separator />
-
               <q-card-actions>
-                <q-btn flat color="primary">
+                <q-btn type="submit" flat color="primary">
                   Simpan
                 </q-btn>
               </q-card-actions>
-
             </q-form>
-
           </q-card>
         </q-dialog>
-      <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <q-card>
-          <q-card-section>
-            <q-form
-            @submit="onSubmit"
-              class="q-gutter-md"
-            >
-              <q-input
-                filled
-                v-model="username"
-                label="Username"
-              />
-
-              <q-input
-                filled
-                v-model="email"
-                label="Email"
-              />
-
-              <q-input
-                filled
-                v-model="no_telpon"
-                label="No. Telpon"
-              />
-
-              <q-input
-                filled
-                v-model="alamat"
-                label="Alamat"
-              />
-
-              <div>
-                <q-btn label="Update" type="submit" color="green-10"/>
-              </div>
-            </q-form>
-          </q-card-section>
-        </q-card>
-      </div> -->
-    </div>
+      </div>
   </q-page>
 </template>
 
@@ -140,19 +94,16 @@ export default {
   data () {
     return {
       dataUser: this.$q.localStorage.getItem('dataUser'),
-      // user: {
       username: null,
       email: null,
       no_telpon: null,
       alamat: null,
       profile: false
-      // }
     }
   },
   methods: {
-    onSubmit () {
-      // this.$axios.put(`http://localhost:5050/users/user-update/${this.dataUser.user.guid}`, {
-      this.$axios.put(`http://192.168.43.172:5050/users/user-update/${this.dataUser.user.guid}`, {
+    Onsubmit (guid) {
+      this.$axios.put('http://192.168.43.172:5050/users/user-update/' + guid, {
         username: this.username,
         email: this.email,
         no_telpon: this.no_telpon,
@@ -171,21 +122,20 @@ export default {
         })
     },
     getUser () {
-      // this.$axios.get(`http://localhost:5050/users/get-user/${this.$route.params.guid}`, createToken())
-      // this.$axios.get('http://localhost:5050/users/get-all', {
-      this.$axios.get('http://192.168.43.172:5050/users/get-all', {
+      this.$axios.get('http://192.168.43.172:5050/users/get-role-admin', {
         username: this.username,
         email: this.email,
         no_telpon: this.no_telpon,
         alamat: this.alamat
       }, createToken())
         .then((res) => {
+          console.log(res)
           this.data = res.data.data
           this.username = this.data[0].username
           this.email = this.data[0].email
           this.no_telpon = this.data[0].no_telpon
           this.alamat = this.data[0].alamat
-          console.log(this.data)
+          // console.log(this.data)
         })
     }
   },

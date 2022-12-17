@@ -2,11 +2,10 @@
 <template>
   <q-page>
     <q-card class="q-pa-md q-ma-md">
-        <q-breadcrumbs>
-          <q-breadcrumbs-el label="Home" icon="home" />
-          <q-breadcrumbs-el class="text-grey-7" label="Pengemudi" icon="supervised_user_circle" />
-          <!-- <q-breadcrumbs-el label="Breadcrumbs" /> -->
-        </q-breadcrumbs>
+      <q-breadcrumbs>
+        <q-breadcrumbs-el label="Home" icon="home" />
+        <q-breadcrumbs-el class="text-grey-7" label="Pengemudi" icon="supervised_user_circle" />
+      </q-breadcrumbs>
     </q-card>
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
@@ -42,19 +41,18 @@
             </template>
           </q-input>
         </template>
-        <template v-slot:body-cell-status="props">
+        <template v-slot:body-cell-status_driver="props">
           <q-td :props="props">
-            <q-btn
-              :color="(props.row.status === 'Aktif')?'green'
-              :(props.row.status == 'Tidak Aktif'?'red':'red')
+            <q-badge
+              :color="(props.row.status_driver == '0')?'green'
+              :(props.row.status_driver == '1'?'red':'red')
               "
               text-color="white"
               dense
               class="text-weight-bolder"
               square
-              style="width: 95px"
-            >{{props.row.status}}
-            </q-btn>
+            >{{`${ (props.row.status_driver == '0') ? 'AKTIF' :(props.row.status_driver == '1') ? 'TIDAK AKTIF' : 'SELESAI' }`}}
+            </q-badge>
           </q-td>
         </template>
       </q-table>
@@ -141,14 +139,14 @@ const columns = [
   {
     name: 'instansi',
     align: 'left',
-    label: 'Nama Instansi',
+    label: 'NAMA INSTANSI',
     field: 'instansi',
     sortable: true
   },
   {
     name: 'no_plat',
     required: true,
-    label: 'No Plat',
+    label: 'NO PLAT',
     align: 'left',
     field: row => row.no_plat,
     sortable: true
@@ -156,22 +154,22 @@ const columns = [
   {
     name: 'nama_driver',
     align: 'left',
-    label: 'Nama Pengemudi',
+    label: 'NAMA PENGEMUDI',
     field: 'nama_driver',
     sortable: true
   },
   {
     name: 'alamat',
     align: 'left',
-    label: 'Alamat',
+    label: 'ALAMAT',
     field: 'alamat',
     sortable: true
   },
   {
-    name: 'status',
+    name: 'status_driver',
     align: 'center',
-    label: 'Status',
-    field: 'status',
+    label: 'STATUS',
+    field: 'status_driver',
     sortable: true
   }
 ]
@@ -205,7 +203,6 @@ export default {
   },
   methods: {
     getDriver () {
-      // this.$axios.get('http://localhost:5050/drivers/get-driver', createToken())
       this.$axios.get('http://192.168.43.172:5050/drivers/get-driver', createToken())
         .then((res) => {
           console.log(res)
@@ -213,7 +210,6 @@ export default {
         })
     },
     onsubmit () {
-      // this.$axios.post('http://localhost:5050/drivers/input', {
       this.$axios.post('http://192.168.43.172:5050/drivers/input', {
         instansi: this.instansi,
         no_plat: this.no_plat,
@@ -221,7 +217,7 @@ export default {
         alamat: this.alamat,
         status: this.status
       }, createToken()).then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res.data.status === true) {
           this.$router.push('/Drivers')
           this.$q.notify({

@@ -117,12 +117,14 @@
         email: null,
         password: null,
         slide: 1,
-        autoplay: true
+        autoplay: true,
+        isPwd: true,
+        visible: false,
       }
     },
     methods: {
       async loginNotify() {
-        await this.$axios.post('http://192.168.43.220:5050/users/login', {
+        await this.$axios.post('http://192.168.43.172:5050/users/login', {
           email: this.email,
           password: this.password
         })

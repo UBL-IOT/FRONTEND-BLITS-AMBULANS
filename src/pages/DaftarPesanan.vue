@@ -4,14 +4,14 @@
     <q-card class="q-pa-md q-ma-md">
         <q-breadcrumbs>
           <q-breadcrumbs-el label="Home" icon="home" />
-          <q-breadcrumbs-el label="Pemesanan" icon="perm_phone_msg" />
-          <!-- <q-breadcrumbs-el class="text-grey-7" label="Pilih Pengemudi" icon="verified" /> -->
+          <!-- <q-breadcrumbs-el label="Pemesanan" icon="perm_phone_msg" /> -->
+          <q-breadcrumbs-el class="text-grey-7" label="Daftar Pesanan" icon="playlist_add_check_circle" />
         </q-breadcrumbs>
     </q-card>
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
         <q-table
-          title="Data pemesanan"
+          title="Daftar pesanan"
           :rows="data"
           class="text-grey-7"
           :hide-header="mode === 'grid'"
@@ -24,10 +24,10 @@
           <template v-slot:top>
             <div class="col">
               <div class="col-2 q-table__title">
-                Pemesanan
+                Daftar Pemesanan
               </div>
               <p class="text-caption">
-                Daftar pemesanan pelanggan pada saat ini
+                Daftar pemesanan yang sedang berjalan
               </p>
             </div>
 
@@ -68,32 +68,24 @@
           </template>
           <template v-slot:body="props">
             <q-tr :props="props">
+              <q-td class="text-uppercase" key="nama_driver" :props="props">{{ props.row.nama_driver }}</q-td>
+              <q-td class="text-uppercase" key="no_plat" :props="props">{{ props.row.no_plat }}</q-td>
+              <q-td class="text-uppercase" key="username" :props="props">{{ props.row.username }}</q-td>
               <q-td class="text-uppercase" key="kode_pesanan" :props="props">{{ props.row.kode_pesanan }}</q-td>
-              <q-td class="text-uppercase" key="username" :props="props">{{ props.row.data_user.username }}</q-td>
-              <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">{{ props.row.data_user.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a></q-td>
+              <!-- <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">{{ props.row.data_user.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a></q-td> -->
               <q-td class="text-weight-bold text-blue-7" key="titik_jemput" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">{{ props.row.titik_jemput.substring(0,10)+"..." }}</a></q-td>
               <q-td class="text-weight-bold text-blue-7" key="tujuan" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">{{ props.row.tujuan.substring(0,10)+"..." }}</a></q-td>
               <q-td key="tanggal" :props="props">{{ props.row.tanggal }}</q-td>
               <!-- <q-td key="tanggal" :props="props">{{this.$parseDate(props.row.tanggal).fullDate}}</q-td> -->
-              <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan == '0') ? 'orange-7' :(props.row.status_pesanan == '1') ? 'blue-7' : 'green-7'">{{`${ (props.row.status_pesanan == '0') ? 'MENUNGGU' :(props.row.status_pesanan == '1') ? 'PROSES' : 'SELESAI' }`}}</q-badge></q-td>
+              <q-td key="status" :props="props"><q-badge :color="(props.row.status == '0') ? 'orange-7' :(props.row.status == '1') ? 'blue-7' : 'green-7'">{{`${ (props.row.status == '0') ? 'MENUNGGU' :(props.row.status == '1') ? 'PROSES' : 'SELESAI' }`}}</q-badge></q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">
                 <q-btn
                   color="blue-7"
-                  flat
-                  @click="Drivers (props.row.guid)"
+                  @click="Cancel"
                   dense>
-                  <q-icon left size="xs" name="supervised_user_circle" />
-                  <div>DRIVER</div>
+                  <div class="text-uppercase">batal</div>
                 </q-btn>
-                <!-- <q-btn
-                  color="blue-7"
-                  flat
-                  @click="Drivers"
-                  dense>
-                  <q-icon left size="xs" name="supervised_user_circle" />
-                  <div>DRIVER</div>
-                </q-btn> -->
               </div>
             </q-td>
             </q-tr>
@@ -121,13 +113,15 @@ function wrapCsvValue (val, formatFn) {
 }
 
 const columns = [
-  { name: 'kode_pesanan', align: 'left', label: 'KODE', field: 'kode_pesanan', sortable: true },
+  { name: 'nama_driver', align: 'left', label: 'NAMA DRIVER', field: 'nama_driver', sortable: true },
+  { name: 'no_plat', align: 'left', label: 'NO PLAT', field: 'no_plat', sortable: true },
   { name: 'username', align: 'left', label: 'NAMA PEMESAN', field: 'username', sortable: true },
-  { name: 'no_telpon', align: 'left', label: 'NO. HANDPHONE', field: 'no_telpon', sortable: true },
+  { name: 'kode_pesanan', align: 'left', label: 'KODE', field: 'kode_pesanan', sortable: true },
+  // { name: 'no_telpon', align: 'left', label: 'NO. HANDPHONE', field: 'no_telpon', sortable: true },
   { name: 'titik_jemput', align: 'left', label: 'TITIK JEMPUT', field: 'titik_jemput', sortable: true },
   { name: 'tujuan', required: true, label: 'TUJUAN', align: 'left', field: row => row.tujuan, sortable: true },
   { name: 'tanggal', align: 'left', label: 'TGL. PEMESANAN', field: 'tanggal', sortable: true },
-  { name: 'status_pesanan', align: 'left', label: 'STATUS', field: 'status_pesanan', sortable: true },
+  { name: 'status', align: 'left', label: 'STATUS', field: 'status', sortable: true },
   { name: 'aksi', align: 'center', label: 'DRIVER', field: 'aksi', sortable: true }
 ]
 
@@ -140,6 +134,7 @@ export default {
       dataUser: this.$q.localStorage.getItem('dataUser'),
       columns,
       data,
+      status: 0,
       phonex: '',
       phoneData: '',
       drivers: '',
@@ -188,27 +183,32 @@ export default {
       }
     },
     getPesanan () {
-      this.$axios.get('http://192.168.43.172:5050/pesanan/get-pesanan', createToken())
+      // this.$axios.get(`http://192.168.43.172:5050/pesanan/${this.$route.params.guid}`, createToken())
+      this.$axios.get('http://192.168.43.172:5050/drivers/get-driver', createToken())
         .then((res) => {
           console.log(res)
-          res.data.data.forEach((phonex) => {
-            phonex.phones = phonex.data_user.no_telpon
-            this.phoneData = phonex.phones.replace('0', '62')
-            phonex.statuss = phonex.status_pesanan
-            console.log(phonex.statuss)
-            if (phonex.statuss === 0) {
-              this.data = res.data.data
-              console.log(this.data)
-            }
-          })
+          this.data = res.data.data
+          // res.data.data.forEach((phonex) => {
+          //   phonex.statuss = phonex.status
+          //   if (phonex.statuss === 1) {
+          //     this.data = res.data.data
+          //     console.log(this.data)
+          //   }
+          //   phonex.phones = phonex.data_user.no_telpon
+          //   this.phoneData = phonex.phones.replace('0', '62')
+          //   // console.log(this.phoneData)
+          // })
         })
     },
-    Drivers (guid) {
-      this.$router.push('/pilihDriver/' + guid)
+    Cancel () {
+      this.$axios.put(`http://192.168.43.172:5050/pesanan/update-pesanan/${this.$route.params.guid}`, {
+        status: this.status
+      }, createToken())
+        .then((res) => {
+          console.log(res)
+          this.$router.push({ name: 'order' })
+        })
     }
-    // Drivers () {
-    //   this.$router.push({ name: 'pilihDriver' })
-    // }
   }
 }
 </script>

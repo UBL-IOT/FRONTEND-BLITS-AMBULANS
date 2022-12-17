@@ -49,7 +49,7 @@
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
-      width="250"
+      :width="250"
       elevated
     >
       <div class="full-height">
@@ -98,14 +98,14 @@
                     <q-icon name="verified" />
                   </q-item-section>
                   <q-item-section>
-                    Pilih Pengemudi
+                    Pemesanan
                   </q-item-section>
                 </q-item>
 
                 <q-item
                   active-class="tab-active"
                   class="q-ma-sm navigation-item"
-                  :to="{ name: 'list' }"
+                  :to="{ name: '/DaftarPesanan' }"
                   exact
                   clickable
                   v-ripple

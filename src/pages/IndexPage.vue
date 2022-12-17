@@ -1,11 +1,10 @@
 <template>
   <q-page>
     <q-card class="q-pa-md q-ma-md">
-        <q-breadcrumbs>
-          <q-breadcrumbs-el label="Home" icon="home" />
-          <q-breadcrumbs-el class="text-grey-7" label="Dashboard" icon="widgets" />
-          <!-- <q-breadcrumbs-el label="Breadcrumbs" /> -->
-        </q-breadcrumbs>
+      <q-breadcrumbs>
+        <q-breadcrumbs-el label="Home" icon="home" />
+        <q-breadcrumbs-el class="text-grey-7" label="Dashboard" icon="widgets" />
+      </q-breadcrumbs>
     </q-card>
     <div class="row q-col-gutter-md q-ma-xs">
       <div class="col-12 col-md-9">
@@ -28,7 +27,6 @@
                 :key="i"
                 :lat-lng="[Number(d.location_latitude), Number(d.location_longitude)]"
               >
-              <!-- <l-popup>HELLO</l-popup> -->
               <l-popup>
                 <q-card flat>
                     <q-item>
@@ -115,67 +113,6 @@
     </div>
   </q-page>
 </template>
-<!-- <script>
-import 'leaflet/dist/leaflet.css'
-import L from 'leaflet'
-// import "../public/Tween.js";
-// import "../public/leaflet.curve.js";
-
-export default {
-  name: 'LeafletMap',
-  data () {
-    return {
-      map: null
-    }
-  },
-  mounted () {
-    this.map = L.map('mapContainer').setView([46.05, 11.05], 5)
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map)
-    const customPane = this.map.createPane('customPane')
-    const canvasRenderer = L.canvas({ pane: 'customPane' })
-    customPane.style.zIndex = 399 // put just behind the standard overlay pane which is at 400
-    L.marker([50, 14]).addTo(this.map)
-
-    L.marker([53, 20]).addTo(this.map)
-    L.marker([49.5, 19.5]).addTo(this.map)
-    L.marker([49, 25]).addTo(this.map)
-    L.marker([-10, 25]).addTo(this.map)
-    L.marker([10, -25]).addTo(this.map)
-    L.marker([0, 0]).addTo(this.map)
-    // var pathOne = L.curve(['M', [50, 14], 'Q', [53, 20], [49, 25]], {
-    //   renderer: canvasRenderer
-    // })
-      .addTo(this.map)
-    L.curve(['M', [50, 14], 'Q', [52, 20], [49, 25]], {
-      renderer: canvasRenderer
-    }).addTo(this.map)
-    L.curve(['M', [50, 14], 'Q', [51, 20], [49, 25]], {
-      renderer: canvasRenderer
-    }).addTo(this.map)
-    L.curve(['M', [50, 14], 'Q', [50, 20], [49, 25]], {
-      renderer: canvasRenderer
-    }).addTo(this.map)
-    L.curve(['M', [50, 14], 'Q', [47, 20], [49, 25]], {
-      renderer: canvasRenderer
-    }).addTo(this.map)
-  },
-  onBeforeUnmount () {
-    if (this.map) {
-      this.map.remove()
-    }
-  }
-}
-</script> -->
-
-<style scoped>
-#mapContainer {
-  width: 100vw;
-  height: 100vh;
-}
-</style>
 
 <script>
 import { LMap, LIcon, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
@@ -242,12 +179,12 @@ export default {
     },
     log (a) {
     }
-    // changeIcon () {
-    //   this.iconWidth += 2
-    //   if (this.iconWidth > this.iconHeight) {
-    //     this.iconWidth = Math.floor(this.iconHeight / 2)
-    //   }
-    // }
   }
 }
 </script>
+<style scoped>
+#mapContainer {
+  width: 100vw;
+  height: 100vh;
+}
+</style>

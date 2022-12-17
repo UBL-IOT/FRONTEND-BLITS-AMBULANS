@@ -2,11 +2,10 @@
 <template>
   <q-page>
     <q-card class="q-pa-md q-ma-md">
-        <q-breadcrumbs>
-          <q-breadcrumbs-el label="Home" icon="home" />
-          <q-breadcrumbs-el class="text-grey-7" label="Ambulans" icon="local_shipping" />
-          <!-- <q-breadcrumbs-el label="Breadcrumbs" /> -->
-        </q-breadcrumbs>
+      <q-breadcrumbs>
+        <q-breadcrumbs-el label="Home" icon="home" />
+        <q-breadcrumbs-el class="text-grey-7" label="Ambulans" icon="local_shipping" />
+      </q-breadcrumbs>
     </q-card>
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
@@ -123,14 +122,14 @@ const columns = [
   {
     name: 'plat_id',
     align: 'left',
-    label: 'No Plat',
+    label: 'NO PLAT',
     field: 'plat_id',
     sortable: true
   },
   {
     name: 'name',
     required: true,
-    label: 'Nama Instansi',
+    label: 'NAMA INSTANSI',
     align: 'left',
     field: row => row.name,
     sortable: true
@@ -138,14 +137,14 @@ const columns = [
   {
     name: 'device_id',
     align: 'left',
-    label: 'Imei GPS',
+    label: 'IMEI GPS',
     field: 'device_id',
     sortable: true
   },
   {
     name: 'device_phone_number',
     align: 'left',
-    label: 'No GPS',
+    label: 'NO GPS',
     field: 'device_phone_number',
     sortable: true
   }
