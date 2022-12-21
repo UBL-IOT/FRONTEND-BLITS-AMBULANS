@@ -12,6 +12,9 @@
         />
         <q-space/>
         <div class="row q-gutter-sm">
+          <q-btn dense flat text-color="blue-7" class="q-mt-md">
+            {{dataUser.user.username}}
+          </q-btn>
           <q-btn dense flat text-color="blue-7" icon="notifications" class="q-mt-md">
             <q-tooltip>
               Information Update
@@ -35,7 +38,7 @@
               </q-card>
             </q-menu>
           </q-btn>
-          <q-btn :to="{ name: 'login' }" dense flat text-color="blue-7" icon="highlight_off" class="q-mr-md q-mt-md">
+          <q-btn @click="Logout" clickable v-ripple exact dense flat text-color="blue-7" icon="highlight_off" class="q-mr-md q-mt-md">
             <q-tooltip>
               Sign Out
             </q-tooltip>
@@ -63,7 +66,6 @@
               <div class="text-caption text-blue-7">Administrator <q-badge color="green" rounded text-color="white" /></div>
             </q-toolbar-title>
           </q-toolbar>
-          <!-- <div class="text-center">{{dataUser.user.username}}</div> -->
           <q-scroll-area style="height:100%;">
             <q-list padding class="text-grey-7 text-weight-bold">
               <q-item
@@ -83,6 +85,7 @@
               </q-item>
 
               <q-expansion-item
+                class="q-pl-sm"
                 icon="perm_phone_msg"
                 label="Pemesanan"
               >
@@ -98,14 +101,14 @@
                     <q-icon name="verified" />
                   </q-item-section>
                   <q-item-section>
-                    Pemesanan
+                    Pesanan Masuk
                   </q-item-section>
                 </q-item>
 
                 <q-item
                   active-class="tab-active"
                   class="q-ma-sm navigation-item"
-                  :to="{ name: '/DaftarPesanan' }"
+                  :to="('/daftarPesanan/:guid')"
                   exact
                   clickable
                   v-ripple
@@ -204,26 +207,16 @@ export default ({
   data () {
     return {
       leftDrawerOpen: false,
-      username: null
-      // dataUser: this.$q.localStorage.getItem('dataUser')
+      username: null,
+      dataUser: this.$q.localStorage.getItem('dataUser')
+    }
+  },
+  methods: {
+    Logout () {
+      this.$q.localStorage.clear()
+      this.$router.push({ name: 'login' })
     }
   }
-  // methods: {
-  //   getUser () {
-  //     this.$axios.get('http://localhost:5050/users/get-all', {
-  //       username: this.username,
-  //       email: this.email,
-  //       no_telpon: this.no_telpon
-  //     }, createToken())
-  //       .then((res) => {
-  //         this.data = res.data.data
-  //         this.username = this.data[0].username
-  //         this.email = this.data[0].email
-  //         this.no_telpon = this.data[0].no_telpon
-  //         console.log(this.data)
-  //       })
-  //   }
-  // }
 })
 </script>
 <style>

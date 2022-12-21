@@ -112,7 +112,7 @@ function wrapCsvValue (val, formatFn) {
 }
 
 const columns = [
-  { name: 'instansi', align: 'left', label: 'NAMA INSTANSI', field: 'instansi', sortable: true },
+  // { name: 'instansi', align: 'left', label: 'NAMA INSTANSI', field: 'instansi', sortable: true },
   { name: 'nama_driver', align: 'left', label: 'NAMA DRIVER', field: 'nama_driver', sortable: true },
   { name: 'no_plat', align: 'left', label: 'NO PLAT', field: 'no_plat', sortable: true },
   { name: 'status_driver', align: 'center', label: 'STATUS DRIVER', field: 'status_driver', sortable: true },
@@ -130,7 +130,7 @@ export default {
       data,
       phonex: '',
       statusx: '',
-      statuss_pesanan: 1,
+      status_pesanan: 1,
       status_driver: 1,
       guid: '',
       pilih: '',
@@ -148,9 +148,53 @@ export default {
   },
   created () {
     this.getPesanan()
-    this.PilihDriver()
+    this.getDriver()
   },
   methods: {
+    getPesanan () {
+      this.$axios.get(`http://localhost:5050/pesanan/${this.$route.params.guid}`, createToken())
+      // this.$axios.get(`http://192.168.18.6:5050/pesanan/${this.$route.params.guid}`, createToken())
+        .then((res) => {
+          res.data.data.forEach((phonex) => {
+            this.guid = phonex.guid
+          })
+        })
+    },
+    getDriver () {
+      this.$axios.get('http://localhost:5050/drivers/get-driver', createToken())
+      // this.$axios.get('http://192.168.18.6:5050/drivers/get-driver', createToken())
+        .then((res) => {
+          // console.log(res)
+          res.data.data.forEach((statusx) => {
+            if (statusx.status_driver === 0) {
+              this.data.push(statusx)
+            }
+            this.getPesanan()
+          })
+        })
+    },
+    Pilih (guid) {
+      this.$axios.put('http://localhost:5050/drivers/' + guid, {
+      // this.$axios.put('http://192.168.18.6:5050/drivers/' + guid, {
+        status_driver: this.status_driver,
+        status_pesanan: this.status_pesanan,
+        id_pesanan: this.guid
+      }, createToken())
+        .then((res) => {
+          console.log(res)
+          // this.getDriver()
+          this.$router.push({ name: 'daftarPesanan' })
+        })
+    },
+    // select (guid) {
+    //   this.$axios.put('http://192.168.43.172:5050/drivers/' + guid, {
+    //     status_pesanan: this.this.status_pesanan
+    //   }, createToken())
+    //     .then((res) => {
+    //       console.log(res)
+    //       // this.$router.push({ name: 'daftarPesanan' })
+    //     })
+    // },
     exportTable () {
       // naive encoding to csv format
       const content = [this.columns.map(col => wrapCsvValue(col.label))]
@@ -179,57 +223,7 @@ export default {
           icon: 'warning'
         })
       }
-    },
-    getPesanan () {
-      this.$axios.get(`http://192.168.43.172:5050/pesanan/${this.$route.params.guid}`, createToken())
-        .then((res) => {
-          // console.log(res)
-          // this.data = res.data.data
-          res.data.data.forEach((phonex) => {
-            this.guid = phonex.guid
-            // phonex.phones = phonex.data_user.no_telpon
-            // this.phoneData = phonex.phones.replace('0', '62')
-            // console.log(this.phoneData)
-          })
-        })
-    },
-    PilihDriver () {
-      this.$axios.get('http://192.168.43.172:5050/drivers/get-driver', createToken())
-        .then((res) => {
-          console.log(res)
-          res.data.data.forEach((statusx) => {
-            // console.log(statusx.status_driver)
-            // statusx = statusx.status_driver
-            if (statusx.status_driver === 0) {
-              // this.data = res.data.data
-              // this.data = statusx
-              this.data.push(statusx)
-              // console.log(statusx)
-              // console.log(this.data)
-            }
-          })
-        })
-    },
-    Pilih (guid) {
-      this.$axios.put('http://192.168.43.172:5050/drivers/' + guid, {
-        statuss_pesanan: this.statuss_pesanan,
-        status_driver: this.status_driver
-      }, createToken())
-        .then((res) => {
-          console.log(res)
-          // this.$router.push({ name: 'daftarPesanan' })
-        })
     }
-    // Pilih (guid) {
-    //   // this.$axios.get(`http://192.168.43.172:5050/drivers/getbyguiddriver/${this.$route.params.guid}`, {
-    //   // this.$axios.get('http://192.168.43.172:5050/drivers/getbyguiddriver/' + guid, {
-    //   //   status: this.status
-    //   // }, createToken())
-    // // .then((res) => {
-    //   // console.log(res)
-    //   this.$router.push({ name: 'daftarPesanan' })
-    // // })
-    // }
   }
 }
 </script>

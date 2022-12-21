@@ -78,10 +78,10 @@
             <q-card-section class="text-white bg-white">
               <div class="row">
                 <div class="col-8">
-                  <div class="text-h4 text-red-7 text-weight-bold">140</div>
-                  <div class="text-subtitle2 text-blue-7">Pengemudi</div>
+                  <div class="text-h4 text-red-7 text-weight-bold">{{this.jumlah}}</div>
+                  <div class="text-subtitle2 text-blue-7">Ambulans</div>
                   <div class="text-caption text-grey">
-                    Jumlah pengemudi ambulans terdaftar.
+                    Jumlah ambulans yang terdaftar.
                   </div>
                 </div>
                 <div class="col-2">
@@ -109,12 +109,31 @@
             </q-card-section>
           </q-card>
         </div>
+        <div class="col-12 col-md-3">
+          <q-card>
+            <q-card-section class="text-white bg-white">
+              <div class="row">
+                <div class="col-8">
+                  <div class="text-h4 text-red-7 text-weight-bold">{{this.pengemudi}}</div>
+                  <div class="text-subtitle2 text-blue-7">Pengemudi</div>
+                  <div class="text-caption text-grey">
+                    Jumlah pengemudi terdaftar.
+                  </div>
+                </div>
+                <div class="col-2">
+                  <q-img src="drivers.jpg" width="60px" />
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
       </div>
     </div>
   </q-page>
 </template>
 
 <script>
+import createToken from 'src/boot/create_token'
 import { LMap, LIcon, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -142,11 +161,14 @@ export default {
       maps: [],
       zoom: 2,
       km: 0,
+      pengemudi: null,
+      jumlah: null,
       guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432'
     }
   },
   async created () {
     await this.getKendaraan()
+    this.getDriver()
     this.map.loaded = true
   },
   methods: {
@@ -159,8 +181,10 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200) {
+            this.jumlah = res.data.data.length
+            // console.log(this.jumlah)
             res.data.data.forEach((marker) => {
               marker.location_latitude = marker.location.coordinates[1]
               marker.location_longitude = marker.location.coordinates[0]
@@ -175,6 +199,14 @@ export default {
               this.maps.push(marker)
             })
           }
+        })
+    },
+    getDriver () {
+      this.$axios.get('http://localhost:5050/drivers/get-driver', createToken())
+      // this.$axios.get('http://192.168.43.172:5050/drivers/get-driver', createToken())
+        .then((res) => {
+          this.pengemudi = res.data.data.length
+          console.log(this.pengemudi)
         })
     },
     log (a) {

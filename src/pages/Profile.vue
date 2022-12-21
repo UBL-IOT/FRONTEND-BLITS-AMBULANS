@@ -63,7 +63,7 @@
             <q-separator />
 
             <q-form
-              @submit="Onsubmit (guid)">
+              @submit="Profile (guid)">
               <q-card-section horizontal>
                 <q-card-section class="q-gutter-md fit">
                   <q-input dense outlined v-model="username" label="Username"/>
@@ -102,8 +102,9 @@ export default {
     }
   },
   methods: {
-    Onsubmit (guid) {
-      this.$axios.put('http://192.168.43.172:5050/users/user-update/' + guid, {
+    Profile (guid) {
+      this.$axios.put(`http://localhost:5050/users/user-update/${this.dataUser.user.guid}`, {
+      // this.$axios.put(`http://192.168.16.8:5050/users/user-update/${this.dataUser.user.guid}`, {
         username: this.username,
         email: this.email,
         no_telpon: this.no_telpon,
@@ -122,7 +123,7 @@ export default {
         })
     },
     getUser () {
-      this.$axios.get('http://192.168.43.172:5050/users/get-role-admin', {
+      this.$axios.get('http://localhost:5050/users/get-role-admin', {
         username: this.username,
         email: this.email,
         no_telpon: this.no_telpon,
@@ -135,7 +136,6 @@ export default {
           this.email = this.data[0].email
           this.no_telpon = this.data[0].no_telpon
           this.alamat = this.data[0].alamat
-          // console.log(this.data)
         })
     }
   },

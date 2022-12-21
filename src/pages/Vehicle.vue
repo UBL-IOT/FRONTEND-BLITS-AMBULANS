@@ -155,6 +155,7 @@ const data = []
 export default {
   data () {
     return {
+      loading: false,
       plat_id: '',
       name: '',
       device_id: '',
@@ -176,6 +177,7 @@ export default {
   },
   methods: {
     getKendaraan () {
+      this.loading = true
       this.$axios.post('https://api-kopamas-carter.pptik.id:5121/api.v1/vehicles/po-get', {
         guid_po: this.guid_po
       }, {
@@ -184,9 +186,11 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.data.status === true) {
+            this.$q.loading.hide()
             this.data = res.data.data
+            console.log(this.data.length)
           } else {
             this.$.notify({
               color: 'negative',
