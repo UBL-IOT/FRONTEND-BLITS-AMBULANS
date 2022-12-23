@@ -91,7 +91,8 @@ export default {
     return {
       map: {
         loaded: false,
-        tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        // tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         attribution: 'contributors <a href="">BLITS ambulans</a>',
         center: L.latLng([-5.398909, 105.070861]),
         zoom: 10,

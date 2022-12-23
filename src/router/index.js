@@ -1,6 +1,7 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
+import { LocalStorage, Notify } from 'quasar'
 
 /*
  * If not building with SSR mode, you can
@@ -26,7 +27,23 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
   })
 
-  // Router.beforeEach(to : , from: )
+  Router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.authAdmin)) {
+      if (LocalStorage.getItem('dataUser') === null || localStorage.getItem('dataUser') === 'undefined') {
+        next({
+          name: 'login'
+        })
+        Notify.create({
+          color: 'negative',
+          message: 'Maaf anda belum login'
+        })
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
+  })
 
   return Router
 })

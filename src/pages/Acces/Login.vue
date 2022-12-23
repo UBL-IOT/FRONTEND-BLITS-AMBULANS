@@ -24,45 +24,45 @@
               </q-carousel>
             </div>
             <div class="row col-12 col-md-7 flex-center flex">
-                <div class="col-9 text-center q-mt-lg q-mb-lg">
-                  <q-img src="icons/main_icon/icon.png" width="60px" />
-                  <div class="text-h6 q-mt-sm text-blue-7 text-weight-bold">BLITS AMBULANS</div>
-                  <div class="text-caption text-grey-7">Bandar Lampung Intellegent Transportation System</div>
-                  <div class="text-subtitle2 q-mt-lg text-left" style="font-size: 20px;">Sign In</div>
-                  <q-form class="q-gutter-md q-mt-md">
-                    <q-input dense v-model="email" label="Email" lazy-rules>
-                      <template v-slot:prepend>
-                        <q-icon size="20px" name="alternate_email" />
-                      </template>
-                    </q-input>
+              <div class="col-9 text-center q-mt-lg q-mb-lg">
+                <q-img src="icons/main_icon/icon.png" width="60px" />
+                <div class="text-h6 q-mt-sm text-blue-7 text-weight-bold">BLITS AMBULANS</div>
+                <div class="text-caption text-grey-7">Bandar Lampung Intellegent Transportation System</div>
+                <div class="text-subtitle2 q-mt-lg text-left" style="font-size: 20px;">Sign In</div>
+                <q-form class="q-gutter-md q-mt-md">
+                  <q-input dense v-model="email" label="Email" lazy-rules>
+                    <template v-slot:prepend>
+                      <q-icon size="20px" name="alternate_email" />
+                    </template>
+                  </q-input>
 
-                    <q-input dense label="Password" v-model="password" :type="isPwd ? 'password' : 'text'">
-                      <template v-slot:prepend>
-                        <q-icon size="20px" name="gpp_good" />
-                      </template>
-                      <template v-slot:append>
-                        <q-icon
-                          :name="isPwd ? 'visibility_off' : 'visibility'"
-                          class="cursor-pointer"
-                          @click="isPwd = !isPwd"
-                        />
-                      </template>
-                    </q-input>
-
-                    <div class="text-subtitle2 q-mt-lg text-right">
-                      <q-btn
-                        class="q-mt-md"
-                        label="Sign In"
-                        type="button"
-                        style="width: 150px; align-content: right;"
-                        color='blue-7'
-                        @click="loginNotify"
+                  <q-input dense label="Password" v-model="password" :type="isPwd ? 'password' : 'text'">
+                    <template v-slot:prepend>
+                      <q-icon size="20px" name="gpp_good" />
+                    </template>
+                    <template v-slot:append>
+                      <q-icon
+                        :name="isPwd ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="isPwd = !isPwd"
                       />
-                    </div>
-                  </q-form>
-                </div>
-                <div class="col-9">
-                </div>
+                    </template>
+                  </q-input>
+
+                  <div class="text-subtitle2 q-mt-lg text-right">
+                    <q-btn
+                      class="q-mt-md"
+                      label="Sign In"
+                      type="button"
+                      style="width: 150px; align-content: right;"
+                      color='blue-7'
+                      @click="loginNotify"
+                    />
+                  </div>
+                </q-form>
+              </div>
+              <div class="col-9">
+              </div>
             </div>
           </div>
         </q-card>
@@ -78,6 +78,7 @@
       return {
         email: null,
         password: null,
+        role: null,
         slide: 1,
         autoplay: true,
         isPwd: true,
@@ -91,15 +92,49 @@
           password: this.password
         })
         .then((res)=>{
-          // console.log(res);
-          if (res.data.status === true) {
+          console.log(res)
+          // if (res.data.code === 401) {
+          //   this.$q.notify({
+          //     color: 'negative',
+          //     message: 'Email yang anda masukkan salah',
+          //   })
+          //   // if (res.data.code === 501) {
+          //   //   this.$q.notify({
+          //   //     color: 'negative',
+          //   //     message: res.data.message
+          //   //   })
+          //   // }
+          //   if (res.data.data.user.role === '1') {
+          //     this.$q.localStorage.set('dataUser', res.data.data)
+          //     this.$router.push({name: 'dashboard'})
+          //     this.$q.notify({
+          //     color: 'green',
+          //     message: 'Selamat anda berhasil login'
+          //   })
+          //   }
+          // }
+          // else {
+          //   this.$q.notify({
+          //     color: 'teal-10',
+          //     message: 'Email dan password yang anda masukkan salah',
+          //     icon: 'ion-checkmark'
+          //   })
+          // }
+          if (res.data.data.user.role === '1') {
             this.$q.localStorage.set('dataUser', res.data.data)
             this.$router.push({name : 'dashboard'})
             this.$q.notify({
               color: 'green',
-              message: 'selamat anda berhasil login'
+              message: 'Selamat anda berhasil login'
             })
-          } else {
+          // } else {
+          //   this.$q.notify({
+          //     color: 'red',
+          //     message: 'Maaf email atau password yang anda masukkan salah'
+          //   })
+          // }
+          }
+          else {
             if (res.data.code === 401) {
               this.$q.notify({
                 color: 'red',

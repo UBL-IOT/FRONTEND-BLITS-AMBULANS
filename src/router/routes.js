@@ -3,6 +3,9 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    meta: {
+      authAdmin: true
+    },
     children: [
       { path: '', name: 'dashboard', component: () => import('pages/IndexPage.vue') },
       { path: 'Map', name: 'map', component: () => import('pages/Map.vue') },

@@ -7,7 +7,7 @@
       </q-breadcrumbs>
     </q-card>
     <div class="row q-col-gutter-md q-ma-xs">
-      <div class="col-12 col-md-9">
+      <div class="col-12 col-md-9 q-pr-md">
         <q-card>
           <div style="height: fit-content; width: 100%;">
             <l-map
@@ -96,7 +96,7 @@
             <q-card-section class="text-white bg-white">
               <div class="row">
                 <div class="col-8">
-                  <div class="text-h4 text-red-7 text-weight-bold">200</div>
+                  <div class="text-h4 text-red-7 text-weight-bold">{{this.pesanan}}</div>
                   <div class="text-subtitle2 text-blue-7">Pemesan</div>
                   <div class="text-caption text-grey">
                     Jumlah pemesan ambulans terdaftar.
@@ -149,7 +149,8 @@ export default {
     return {
       map: {
         loaded: false,
-        tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        // tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         attribution: 'contributors <a href="">BLITS ambulans</a>',
         center: L.latLng([-5.398909, 105.070861]),
         zoom: 10,
@@ -162,13 +163,15 @@ export default {
       zoom: 2,
       km: 0,
       pengemudi: null,
+      pesanan: null,
       jumlah: null,
       guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432'
     }
   },
   async created () {
     await this.getKendaraan()
-    this.getDriver()
+    await this.getDriver()
+    await this.getPesanan()
     this.map.loaded = true
   },
   methods: {
@@ -206,7 +209,15 @@ export default {
       // this.$axios.get('http://192.168.43.172:5050/drivers/get-driver', createToken())
         .then((res) => {
           this.pengemudi = res.data.data.length
-          console.log(this.pengemudi)
+          // console.log(this.pengemudi)
+        })
+    },
+    getPesanan () {
+      this.$axios.get('http://localhost:5050/pesanan/get-pesanan', createToken())
+      // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
+        .then((res) => {
+          this.pesanan = res.data.data.length
+          // console.log(this.pesanan)
         })
     },
     log (a) {

@@ -75,7 +75,7 @@
               <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">{{ props.row.data_user.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a></q-td>
               <q-td class="text-weight-bold text-blue-7" key="titik_jemput" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">{{ props.row.titik_jemput.substring(0,10)+"..." }}</a></q-td>
               <q-td class="text-weight-bold text-blue-7" key="tujuan" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">{{ props.row.tujuan.substring(0,10)+"..." }}</a></q-td>
-              <q-td key="tanggal" :props="props">{{ props.row.tanggal }}</q-td>
+              <q-td key="tanggal" :props="props">{{ new Date (props.row.tanggal).toLocaleDateString('id', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}</q-td>
               <!-- <q-td key="tanggal" :props="props">{{this.$parseDate(props.row.tanggal).fullDate}}</q-td> -->
               <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan == '0') ? 'orange-7' :(props.row.status_pesanan == '1') ? 'blue-7' : 'green-7'">{{`${ (props.row.status_pesanan == '0') ? 'MENUNGGU' :(props.row.status_pesanan == '1') ? 'PROSES' : 'SELESAI' }`}}</q-badge></q-td>
               <q-td key="aksi" :props="props">
@@ -156,14 +156,22 @@ export default {
   },
   methods: {
     getPesanan () {
+      this.$q.loading.show()
       this.$axios.get('http://localhost:5050/pesanan/get-pesanan', createToken())
       // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
+        .finally(() => this.$q.loading.hide())
         .then((res) => {
+          console.log(res)
+          // this.data = res.data.data
           // console.log(res)
           res.data.data.forEach(pesanan => {
+            pesanan.driver = pesanan.data_driver.status_driver
             pesanan.status = pesanan.status_pesanan
+            console.log(pesanan.driver)
             if (pesanan.status === 1) {
               this.data.push(pesanan)
+              // this.data = res.data.data
+              // console.log(this.data)
             }
           })
         })

@@ -223,9 +223,10 @@ export default {
   },
   methods: {
     getDriver () {
-      this.loading = true
+      this.$q.loading.show()
       this.$axios.get('http://localhost:5050/drivers/get-driver', createToken())
       // this.$axios.get('http://192.168.18.6:5050/drivers/get-driver', createToken())
+        .finally(() => this.$q.loading.hide())
         .then((res) => {
           // console.log(res)
           this.data = res.data.data

@@ -177,7 +177,7 @@ export default {
   },
   methods: {
     getKendaraan () {
-      this.loading = true
+      this.$q.loading.show()
       this.$axios.post('https://api-kopamas-carter.pptik.id:5121/api.v1/vehicles/po-get', {
         guid_po: this.guid_po
       }, {
@@ -185,6 +185,7 @@ export default {
           'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJndWlkIjoiNzNhZjk3YjQtNTllZC00MGFmLWJlZTQtOTM4MzhmMzlhNGYzIiwiaWF0IjoxNjY5MTA3MDIyLCJleHAiOjE4MjY3ODcwMjJ9.4x6F8nQyDiMaiARRMOpIV2YkbPrS4iKEEf3Qtm0SjDY'
         }
       })
+        .finally(() => this.$q.loading.hide())
         .then((res) => {
           // console.log(res)
           if (res.data.status === true) {

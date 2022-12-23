@@ -133,6 +133,7 @@ export default {
       status_pesanan: 1,
       status_driver: 1,
       guid: '',
+      guidd: '',
       pilih: '',
       phoneData: '',
       driver: '',
@@ -152,8 +153,10 @@ export default {
   },
   methods: {
     getPesanan () {
+      this.$q.loading.show()
       this.$axios.get(`http://localhost:5050/pesanan/${this.$route.params.guid}`, createToken())
       // this.$axios.get(`http://192.168.18.6:5050/pesanan/${this.$route.params.guid}`, createToken())
+        .finally(() => this.$q.loading.hide())
         .then((res) => {
           res.data.data.forEach((phonex) => {
             this.guid = phonex.guid
@@ -166,22 +169,28 @@ export default {
         .then((res) => {
           // console.log(res)
           res.data.data.forEach((statusx) => {
+            statusx.guidd = statusx.guid
+            // this.guidd = statusx.guidd
+            console.log(this.guidd)
             if (statusx.status_driver === 0) {
               this.data.push(statusx)
             }
-            this.getPesanan()
+            // this.getPesanan()
           })
         })
     },
     Pilih (guid) {
+      // console.log(namaDriver)
       this.$axios.put('http://localhost:5050/drivers/' + guid, {
       // this.$axios.put('http://192.168.18.6:5050/drivers/' + guid, {
         status_driver: this.status_driver,
         status_pesanan: this.status_pesanan,
-        id_pesanan: this.guid
+        id_pesanan: this.guid,
+        guid_driver: guid
+        // guid:
       }, createToken())
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           // this.getDriver()
           this.$router.push({ name: 'daftarPesanan' })
         })
