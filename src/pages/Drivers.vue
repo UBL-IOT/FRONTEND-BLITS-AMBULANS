@@ -19,7 +19,58 @@
         :filter="filter"
         :pagination="pagination"
       >
-        <template v-slot:top-right="props">
+        <template v-slot:top>
+          <div class="col">
+            <div class="col-2 q-table__title">
+              Data Drivers
+            </div>
+            <p class="text-caption">
+              Daftar semua drivers ambulans pada saat ini
+            </p>
+          </div>
+
+          <q-space />
+
+          <q-btn @click="new_driver=true" flat icon="library_add" text-color="blue-7">
+            <q-tooltip>
+              Tambah Data
+            </q-tooltip>
+          </q-btn>
+
+          <q-btn
+            flat
+            icon-right="document_scanner"
+            text-color="blue-7"
+            @click="exportTable"
+          >
+            <q-tooltip>
+              Export Data
+            </q-tooltip>
+          </q-btn>
+
+          <q-btn
+            flat
+            color="primary"
+            icon="search"
+            @click="visibles = !visibles"
+            size="md"
+            class="q-mr-sm"
+          />
+          <q-slide-transition>
+            <div v-show="visibles">
+              <q-input
+                outlined
+                debounce="300"
+                placeholder="Pencarian"
+                style="width: 200px"
+                color="primary"
+                v-model="filter"
+                dense
+              />
+            </div>
+          </q-slide-transition>
+        </template>
+        <!-- <template v-slot:top-right="props">
           <q-btn @click="new_driver=true" flat icon="library_add" text-color="blue-7">
             <q-tooltip>
               Tambah Data
@@ -40,7 +91,7 @@
               <q-icon name="search"/>
             </template>
           </q-input>
-        </template>
+        </template> -->
         <template v-slot:body-cell-status_driver="props">
           <q-td :props="props">
             <q-badge
@@ -188,6 +239,7 @@ const data = []
 export default {
   data () {
     return {
+      visibles: false,
       loading: false,
       instansi: null,
       listPlat: [],
@@ -293,7 +345,7 @@ export default {
         )
         .join('\r\n')
 
-      const status = exportFile('change-request.csv', content, 'text/csv')
+      const status = exportFile('daftar-drivers.csv', content, 'text/csv')
 
       if (status !== true) {
         this.$q.notify({

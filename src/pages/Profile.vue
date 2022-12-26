@@ -111,7 +111,6 @@ export default {
         alamat: this.alamat
       }, createToken())
         .then((res) => {
-          console.log(res)
           if (res.data.status) {
             this.$q.dialog({
               title: 'Peringatan',
@@ -130,7 +129,6 @@ export default {
         alamat: this.alamat
       }, createToken())
         .then((res) => {
-          console.log(res)
           this.data = res.data.data
           this.username = this.data[0].username
           this.email = this.data[0].email

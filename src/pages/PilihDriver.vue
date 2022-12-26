@@ -2,11 +2,11 @@
 <template>
   <q-page>
     <q-card class="q-pa-md q-ma-md">
-        <q-breadcrumbs>
-          <q-breadcrumbs-el label="Home" icon="home" />
-          <q-breadcrumbs-el label="Pemesanan" icon="perm_phone_msg" />
-          <q-breadcrumbs-el class="text-grey-7" label="Pilih Pengemudi" icon="verified" />
-        </q-breadcrumbs>
+      <q-breadcrumbs>
+        <q-breadcrumbs-el label="Home" icon="home" />
+        <q-breadcrumbs-el label="Pemesanan" icon="perm_phone_msg" />
+        <q-breadcrumbs-el class="text-grey-7" label="Pilih Pengemudi" icon="verified" />
+      </q-breadcrumbs>
     </q-card>
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
@@ -59,7 +59,7 @@
                   outlined
                   debounce="300"
                   placeholder="Pencarian"
-                  style="width: 300px"
+                  style="width: 200px"
                   color="primary"
                   v-model="filter"
                   dense
@@ -69,16 +69,19 @@
           </template>
           <template v-slot:body="props">
             <q-tr :props="props">
-              <!-- <q-td class="text-uppercase" key="instansi" :props="props">{{ props.row.data_driver.instansi }}</q-td>
-              <q-td class="text-uppercase" key="nama_driver" :props="props">{{ props.row.data_driver.nama_driver }}</q-td>
-              <q-td class="text-uppercase" key="no_plat" :props="props">{{ props.row.data_driver.no_plat }}</q-td> -->
-              <q-td class="text-uppercase" key="instansi" :props="props">{{ props.row.instansi }}</q-td>
-              <q-td class="text-uppercase" key="nama_driver" :props="props">{{ props.row.nama_driver }}</q-td>
-              <q-td class="text-uppercase" key="no_plat" :props="props">{{ props.row.no_plat }}</q-td>
+              <q-td class="text-uppercase" key="instansi" :props="props">
+                {{ props.row.instansi }}
+              </q-td>
+              <q-td class="text-uppercase" key="nama_driver" :props="props">
+                {{ props.row.nama_driver }}
+              </q-td>
+              <q-td class="text-uppercase" key="no_plat" :props="props">
+                {{ props.row.no_plat }}
+              </q-td>
               <!-- <q-td class="text-uppercase" key="status_driver" :props="props">{{ props.row.status_driver }}</q-td> -->
-              <q-td key="status_driver" :props="props"><q-badge :color="(props.row.status_driver == '0') ? 'orange-7' :(props.row.status_driver == '1') ? 'blue-7' : 'green-7'">{{`${ (props.row.status_driver == '0') ? 'AKTIF' :(props.row.status_driver == '1') ? 'TIDAK AKTIF' : 'SELESAI' }`}}</q-badge></q-td>
-              <!-- <q-td key="status" :props="props"><q-badge :color="(props.row.status == '0') ? 'orange-7' :(props.row.status == '1') ? 'blue-7' : 'green-7'">{{`${ (props.row.status == '0') ? 'MENUNGGU' :(props.row.status == '1') ? 'PROSES' : 'SELESAI' }`}}</q-badge></q-td> -->
-              <!-- <q-td key="tanggal" :props="props">{{this.$parseDate(props.row.tanggal).fullDate}}</q-td> -->
+              <q-td key="status_driver" :props="props"><q-badge :color="(props.row.status_driver == '0') ? 'orange-7' :(props.row.status_driver == '1') ? 'blue-7' : 'green-7'">
+                {{`${ (props.row.status_driver == '0') ? 'AKTIF' :(props.row.status_driver == '1') ? 'TIDAK AKTIF' : 'SELESAI' }`}}
+              </q-badge></q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">
                 <q-btn color="blue-7" @click="Pilih(props.row.guid)" dense>
@@ -158,8 +161,11 @@ export default {
       // this.$axios.get(`http://192.168.18.6:5050/pesanan/${this.$route.params.guid}`, createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
+          // console.log(res)
           res.data.data.forEach((phonex) => {
             this.guid = phonex.guid
+            // this.status_pesanan = phonex.status_pesanan
+            // console.log(this.status_pesanan)
           })
         })
     },
@@ -169,18 +175,14 @@ export default {
         .then((res) => {
           // console.log(res)
           res.data.data.forEach((statusx) => {
-            statusx.guidd = statusx.guid
-            // this.guidd = statusx.guidd
-            console.log(this.guidd)
             if (statusx.status_driver === 0) {
               this.data.push(statusx)
+              // this.data = res.data.data
             }
-            // this.getPesanan()
           })
         })
     },
     Pilih (guid) {
-      // console.log(namaDriver)
       this.$axios.put('http://localhost:5050/drivers/' + guid, {
       // this.$axios.put('http://192.168.18.6:5050/drivers/' + guid, {
         status_driver: this.status_driver,
@@ -195,15 +197,6 @@ export default {
           this.$router.push({ name: 'daftarPesanan' })
         })
     },
-    // select (guid) {
-    //   this.$axios.put('http://192.168.43.172:5050/drivers/' + guid, {
-    //     status_pesanan: this.this.status_pesanan
-    //   }, createToken())
-    //     .then((res) => {
-    //       console.log(res)
-    //       // this.$router.push({ name: 'daftarPesanan' })
-    //     })
-    // },
     exportTable () {
       // naive encoding to csv format
       const content = [this.columns.map(col => wrapCsvValue(col.label))]
@@ -223,7 +216,7 @@ export default {
         )
         .join('\r\n')
 
-      const status = exportFile('change-request.csv', content, 'text/csv')
+      const status = exportFile('pilih-pengemudi.csv', content, 'text/csv')
 
       if (status !== true) {
         this.$q.notify({

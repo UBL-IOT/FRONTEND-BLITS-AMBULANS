@@ -20,88 +20,54 @@
         :filter="filter"
         :pagination="pagination"
       >
-        <template v-slot:top-right="props">
-          <!-- <q-btn @click="new_customer=true" outline color="primary bg-green text-white" label="Tambah Kendaraan" class="q-mr-xs"/> -->
-          <q-btn
-              flat
-              icon-right="document_scanner"
-              text-color="blue-7"
-              @click="exportTable"
-            >
-              <q-tooltip>
-                Export Data
-              </q-tooltip>
-          </q-btn>
+      <template v-slot:top>
+        <div class="col">
+          <div class="col-2 q-table__title">
+            Data Ambulans
+          </div>
+          <p class="text-caption">
+            Daftar ambulance yang beroperasi pada saat ini
+          </p>
+        </div>
 
-            <q-input outlined dense debounce="300" v-model="props.filter" placeholder="Pencarian">
-            <template v-slot:append>
-              <q-icon name="search"/>
-            </template>
-          </q-input>
-        </template>
-        <!-- <template v-slot:body-cell-status="props">
-          <q-td :props="props">
-            <q-chip
-              :color="(props.row.status == 'Selesai')?'green'
-              :(props.row.status == 'Tidak Aktif'?'red':'grey')
-              "
-              text-color="white"
+        <q-space />
+
+        <q-btn
+          flat
+          icon-right="document_scanner"
+          text-color="blue-7"
+          @click="exportTable"
+        >
+          <q-tooltip>
+            Export Data
+          </q-tooltip>
+        </q-btn>
+
+        <q-btn
+          flat
+          color="primary"
+          icon="search"
+          @click="visibles = !visibles"
+          size="md"
+          class="q-mr-sm"
+        />
+        <q-slide-transition>
+          <div v-show="visibles">
+            <q-input
+              outlined
+              debounce="300"
+              placeholder="Pencarian"
+              style="width: 200px"
+              color="primary"
+              v-model="filter"
               dense
-              class="text-weight-bolder"
-              square
-              style="width: 85px"
-            >{{props.row.status}}
-            </q-chip>
-          </q-td>
-        </template> -->
+            />
+          </div>
+        </q-slide-transition>
+      </template>
       </q-table>
     </q-card>
     </div>
-    <q-dialog v-model="new_customer">
-      <q-card style="width: 600px; max-width: 60vw;">
-        <q-card-section>
-          <div class="text-h6">
-            Tambah Baru Data Kendaraan
-            <q-btn round flat dense icon="close" class="float-right" color="grey-8" v-close-popup></q-btn>
-          </div>
-        </q-card-section>
-        <q-separator inset></q-separator>
-        <q-card-section class="q-pt-none">
-          <q-form class="q-gutter-md">
-            <q-list>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">No Plat</q-item-label>
-                  <q-input dense outlined v-model="plat_id" label="No Plat" :rules="[val => !!val || 'Field is required']"/>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Nama Instansi</q-item-label>
-                  <q-input dense outlined v-model="nama_po" label="Nama Instansi"/>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Imei GPS</q-item-label>
-                  <q-input dense outlined v-model="imei_gps" label="Imei GPS"/>
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">No GPS</q-item-label>
-                  <q-input dense outlined v-model="no_gps" label="No GPS"/>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-form>
-        </q-card-section>
-
-        <q-card-actions align="right" class="text-teal">
-          <q-btn label="Simpan" type="submit" color="green" v-close-popup/>
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
@@ -155,6 +121,7 @@ const data = []
 export default {
   data () {
     return {
+      visibles: false,
       loading: false,
       plat_id: '',
       name: '',
@@ -191,7 +158,6 @@ export default {
           if (res.data.status === true) {
             this.$q.loading.hide()
             this.data = res.data.data
-            console.log(this.data.length)
           } else {
             this.$.notify({
               color: 'negative',
@@ -231,7 +197,7 @@ export default {
         )
         .join('\r\n')
 
-      const status = exportFile('change-request.csv', content, 'text/csv')
+      const status = exportFile('daftar-ambulans.csv', content, 'text/csv')
 
       if (status !== true) {
         this.$q.notify({

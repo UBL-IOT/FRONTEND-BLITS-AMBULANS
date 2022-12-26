@@ -58,7 +58,7 @@
                   outlined
                   debounce="300"
                   placeholder="Pencarian"
-                  style="width: 300px"
+                  style="width: 200px"
                   color="primary"
                   v-model="filter"
                   dense
@@ -161,13 +161,10 @@ export default {
       // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          console.log(res)
-          // this.data = res.data.data
-          // console.log(res)
           res.data.data.forEach(pesanan => {
             pesanan.driver = pesanan.data_driver.status_driver
             pesanan.status = pesanan.status_pesanan
-            console.log(pesanan.driver)
+            // console.log(pesanan.driver)
             if (pesanan.status === 1) {
               this.data.push(pesanan)
               // this.data = res.data.data
@@ -207,7 +204,7 @@ export default {
         )
         .join('\r\n')
 
-      const status = exportFile('change-request.csv', content, 'text/csv')
+      const status = exportFile('daftar-pesanan.csv', content, 'text/csv')
 
       if (status !== true) {
         this.$q.notify({

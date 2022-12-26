@@ -88,63 +88,30 @@
     methods: {
       async loginNotify() {
         await this.$axios.post('http://localhost:5050/users/login', {
+          // email: 'admin@gmail.com',
+          // password: 1234
           email: this.email,
           password: this.password
         })
-        .then((res)=>{
-          console.log(res)
-          // if (res.data.code === 401) {
-          //   this.$q.notify({
-          //     color: 'negative',
-          //     message: 'Email yang anda masukkan salah',
-          //   })
-          //   // if (res.data.code === 501) {
-          //   //   this.$q.notify({
-          //   //     color: 'negative',
-          //   //     message: res.data.message
-          //   //   })
-          //   // }
-          //   if (res.data.data.user.role === '1') {
-          //     this.$q.localStorage.set('dataUser', res.data.data)
-          //     this.$router.push({name: 'dashboard'})
-          //     this.$q.notify({
-          //     color: 'green',
-          //     message: 'Selamat anda berhasil login'
-          //   })
-          //   }
-          // }
-          // else {
-          //   this.$q.notify({
-          //     color: 'teal-10',
-          //     message: 'Email dan password yang anda masukkan salah',
-          //     icon: 'ion-checkmark'
-          //   })
-          // }
-          if (res.data.data.user.role === '1') {
+        .then((res) => {
+          if (res.data.status) {
             this.$q.localStorage.set('dataUser', res.data.data)
-            this.$router.push({name : 'dashboard'})
-            this.$q.notify({
-              color: 'green',
-              message: 'Selamat anda berhasil login'
-            })
-          // } else {
-          //   this.$q.notify({
-          //     color: 'red',
-          //     message: 'Maaf email atau password yang anda masukkan salah'
-          //   })
-          // }
-          }
-          else {
-            if (res.data.code === 401) {
+            if (res.data.data.user.role === '1') {
+              this.$router.push({name: 'dashboard'})
               this.$q.notify({
-                color: 'red',
-                message: 'Email yang anda masukkan salah'
+                color: 'positive',
+                message: 'Selamat anda berhasil login'
+              })
+            } else {
+              this.$q.notify({
+                color: 'negative',
+                message: 'Maaf anda tidak dapat login'
               })
             }
-          } if (res.data.code === 501) {
+          } else {
             this.$q.notify({
-              color: 'red',
-              message: 'Password yang anda masukkan salah'
+              color: 'negative',
+              message: 'Email atau password salah'
             })
           }
         })

@@ -2,10 +2,10 @@
 <template>
   <q-page>
     <q-card class="q-pa-md q-ma-md">
-        <q-breadcrumbs>
-          <q-breadcrumbs-el label="Home" icon="home" />
-          <q-breadcrumbs-el label="Pemesanan" icon="perm_phone_msg" />
-        </q-breadcrumbs>
+      <q-breadcrumbs>
+        <q-breadcrumbs-el label="Home" icon="home" />
+        <q-breadcrumbs-el label="Pemesanan" icon="perm_phone_msg" />
+      </q-breadcrumbs>
     </q-card>
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
@@ -57,7 +57,7 @@
                   outlined
                   debounce="300"
                   placeholder="Pencarian"
-                  style="width: 300px"
+                  style="width: 200px"
                   color="primary"
                   v-model="filter"
                   dense
@@ -82,13 +82,12 @@
               <q-td class="text-weight-bold text-blue-7" key="tujuan" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">
                 {{ props.row.tujuan.substring(0,10)+"..." }}
               </a></q-td>
-              <!-- <q-td key="tanggal" :props="props">{{ props.row.tanggal }}</q-td> -->
-              <q-td key="tanggal" :props="props">{{ new Date (props.row.tanggal).toLocaleDateString('id', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}</q-td>
-              <!-- <q-td key="tanggal" :props="props">{{this.$parseDate(props.row.tanggal).fullDate}}</q-td> -->
-              <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan === 0) ? 'orange-7' :(props.row.status_pesanan === 1) ? 'blue-7' : 'green-7'">{{`${ (props.row.status_pesanan === 0) ? 'MENUNGGU' :(props.row.status_pesanan === 1) ? 'PROSES' : 'SELESAI' }`}}</q-badge></q-td>
-              <!-- <q-td class="text-uppercase" key="status_pesanan" :props="props">
-                {{ props.row.status_pesanan }}
-              </q-td> -->
+              <q-td key="tanggal" :props="props">
+                {{ new Date (props.row.tanggal).toLocaleDateString('id', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}
+              </q-td>
+              <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan === 0) ? 'orange-7' :(props.row.status_pesanan === 1) ? 'blue-7' : 'green-7'">
+                {{`${ (props.row.status_pesanan === 0) ? 'MENUNGGU' :(props.row.status_pesanan === 1) ? 'PROSES' : 'SELESAI' }`}}
+              </q-badge></q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">
                 <q-btn
@@ -181,7 +180,7 @@ export default {
               // this.data = res.data.data
               this.data.push(phonex)
               this.pesanan = res.data.data.length
-              console.log(this.data)
+              // console.log(this.data)
               // this.getPesanan()
             }
             // this.getPesanan()
@@ -210,7 +209,7 @@ export default {
         )
         .join('\r\n')
 
-      const status = exportFile('change-request.csv', content, 'text/csv')
+      const status = exportFile('pesanan-masuk.csv', content, 'text/csv')
 
       if (status !== true) {
         this.$q.notify({
