@@ -15,7 +15,7 @@
               :center="map.center"
               :max-zoom="map.maxZoom"
               :min-zoom="map.minZoom"
-              style="height: 500px; width: 100%"
+              style="height: 435px; width: 100%"
               v-if="map.loaded"
             >
               <l-tile-layer
@@ -149,10 +149,9 @@ export default {
     return {
       map: {
         loaded: false,
-        // tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         attribution: 'contributors <a href="">BLITS ambulans</a>',
-        center: L.latLng([-5.398909, 105.070861]),
+        center: L.latLng([-5.422083333333333, 105.25802]),
         zoom: 10,
         minZoom: 7,
         maxZoom: 18,
@@ -184,10 +183,9 @@ export default {
         }
       })
         .then((res) => {
-          // console.log(res)
+          console.log(res)
           if (res.status === 200) {
             this.jumlah = res.data.data.length
-            // console.log(this.jumlah)
             res.data.data.forEach((marker) => {
               marker.location_latitude = marker.location.coordinates[1]
               marker.location_longitude = marker.location.coordinates[0]
@@ -209,7 +207,6 @@ export default {
       // this.$axios.get('http://192.168.43.172:5050/drivers/get-driver', createToken())
         .then((res) => {
           this.pengemudi = res.data.data.length
-          // console.log(this.pengemudi)
         })
     },
     getPesanan () {
@@ -217,7 +214,6 @@ export default {
       // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
         .then((res) => {
           this.pesanan = res.data.data.length
-          // console.log(this.pesanan)
         })
     },
     log (a) {
@@ -225,9 +221,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-#mapContainer {
-  width: 100vw;
-  height: 100vh;
-}
-</style>

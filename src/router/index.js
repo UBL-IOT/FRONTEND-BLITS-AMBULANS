@@ -35,7 +35,7 @@ export default route(function (/* { store, ssrContext } */) {
         })
         Notify.create({
           color: 'negative',
-          message: 'Maaf anda belum login'
+          message: 'Maaf anda belum pernah login'
         })
       } else {
         next()

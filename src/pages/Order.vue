@@ -4,7 +4,7 @@
     <q-card class="q-pa-md q-ma-md">
       <q-breadcrumbs>
         <q-breadcrumbs-el label="Home" icon="home" />
-        <q-breadcrumbs-el label="Pemesanan" icon="perm_phone_msg" />
+        <q-breadcrumbs-el class="text-grey-7" label="Pesanan masuk" icon="perm_phone_msg" />
       </q-breadcrumbs>
     </q-card>
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
@@ -168,20 +168,14 @@ export default {
       // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
+          console.log(res)
           res.data.data.forEach((phonex) => {
             phonex.phones = phonex.data_user.no_telpon
             this.phoneData = phonex.phones.replace('0', '62')
             phonex.statuss = phonex.status_pesanan
             if (phonex.statuss === 0) {
-              // console.log(phonex)
-              // this.data = res.data.phonex
-              // phonex = this.data
-              // this.data = phonex.statuss === 0
-              // this.data = res.data.data
               this.data.push(phonex)
               this.pesanan = res.data.data.length
-              // console.log(this.data)
-              // this.getPesanan()
             }
             // this.getPesanan()
           })

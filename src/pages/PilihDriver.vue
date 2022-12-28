@@ -4,8 +4,8 @@
     <q-card class="q-pa-md q-ma-md">
       <q-breadcrumbs>
         <q-breadcrumbs-el label="Home" icon="home" />
-        <q-breadcrumbs-el label="Pemesanan" icon="perm_phone_msg" />
-        <q-breadcrumbs-el class="text-grey-7" label="Pilih Pengemudi" icon="verified" />
+        <q-breadcrumbs-el label="Pesanan masuk" icon="perm_phone_msg" />
+        <q-breadcrumbs-el class="text-grey-7" label="Pilih pengemudi" icon="verified" />
       </q-breadcrumbs>
     </q-card>
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
@@ -78,9 +78,8 @@
               <q-td class="text-uppercase" key="no_plat" :props="props">
                 {{ props.row.no_plat }}
               </q-td>
-              <!-- <q-td class="text-uppercase" key="status_driver" :props="props">{{ props.row.status_driver }}</q-td> -->
-              <q-td key="status_driver" :props="props"><q-badge :color="(props.row.status_driver == '0') ? 'orange-7' :(props.row.status_driver == '1') ? 'blue-7' : 'green-7'">
-                {{`${ (props.row.status_driver == '0') ? 'AKTIF' :(props.row.status_driver == '1') ? 'TIDAK AKTIF' : 'SELESAI' }`}}
+              <q-td key="status_driver" :props="props"><q-badge :color="(props.row.status_driver === 0) ? 'orange-7' :(props.row.status_driver === 1) ? 'blue-7' : 'green-7'">
+                {{`${ (props.row.status_driver === 0) ? 'AKTIF' :(props.row.status_driver === 1) ? 'TIDAK AKTIF' : 'SELESAI' }`}}
               </q-badge></q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">

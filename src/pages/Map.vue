@@ -16,7 +16,9 @@
               :center="map.center"
               :max-zoom="map.maxZoom"
               :min-zoom="map.minZoom"
-              style="height: 500px; width: 100%"
+              :bounds="map.bounds"
+              :max-bounds="map.maxBounds"
+              style="height: 445px; width: 100%"
               v-if="map.loaded"
             >
               <l-tile-layer
@@ -28,45 +30,45 @@
                 :key="i"
                 :lat-lng="[Number(d.location_latitude), Number(d.location_longitude)]"
               >
-              <l-popup>
-                <q-card flat>
-                    <q-item>
-                      <q-item-section avatar>
-                        <q-avatar>
-                          <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-                        </q-avatar>
-                      </q-item-section>
+                <l-popup>
+                  <q-card flat>
+                      <q-item>
+                        <q-item-section avatar>
+                          <q-avatar>
+                            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                          </q-avatar>
+                        </q-item-section>
 
-                      <q-item-section>
-                        <q-item-label>{{ d.names }}</q-item-label>
-                        <q-item-label caption class="text-weight-bold">
-                          {{ d.plats }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
+                        <q-item-section>
+                          <q-item-label>{{ d.names }}</q-item-label>
+                          <q-item-label caption class="text-weight-bold">
+                            {{ d.plats }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
 
-                    <q-separator />
+                      <q-separator />
 
-                    <q-card-section horizontal>
-                      <q-card-section class="fit">
-                        <q-icon name="phone" size="20px" color="blue-7" /> . {{ d.phones }}
-                        <q-icon name="alt_route" size="20px" color="blue-7" /> . {{ d.trayeks }}
+                      <q-card-section horizontal>
+                        <q-card-section class="fit">
+                          <q-icon name="phone" size="20px" color="blue-7" /> . {{ d.phones }}
+                          <q-icon name="alt_route" size="20px" color="blue-7" /> . {{ d.trayeks }}
+                        </q-card-section>
+
+                        <q-separator vertical />
+
+                        <q-card-section class="fit">
+                          <q-icon name="local_shipping" size="20px" color="blue-7" /> . {{ d.types }}
+                          <q-icon name="turn_sharp_right" size="20px" color="blue-7" /> . {{ d.kilometerss }} Km
+                        </q-card-section>
                       </q-card-section>
-
-                      <q-separator vertical />
-
-                      <q-card-section class="fit">
-                        <q-icon name="local_shipping" size="20px" color="blue-7" /> . {{ d.types }}
-                        <q-icon name="turn_sharp_right" size="20px" color="blue-7" /> . {{ d.kilometerss }} Km
-                      </q-card-section>
-                    </q-card-section>
-                  </q-card>
-              </l-popup>
-              <l-icon
-                :icon-size="[32, 32]"
-                :icon-anchor="[16, 32]"
-                :popup-anchor="[0, -32]"
-                :icon-url="d.icons"
+                    </q-card>
+                </l-popup>
+                <l-icon
+                  :icon-size="[32, 32]"
+                  :icon-anchor="[16, 32]"
+                  :popup-anchor="[0, -32]"
+                  :icon-url="d.icons"
                 />
               </l-marker>
             </l-map>
@@ -79,6 +81,7 @@
 import { LMap, LIcon, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+// import { latLngBounds } from 'leaflet'
 export default {
   components: {
     LMap,
@@ -91,10 +94,18 @@ export default {
     return {
       map: {
         loaded: false,
-        // tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         attribution: 'contributors <a href="">BLITS ambulans</a>',
-        center: L.latLng([-5.398909, 105.070861]),
+        // center: L.latLng([-5.398909, 105.070861]),
+        center: L.latLng([-5.422083333333333, 105.25802]),
+        // center: L.latLng([0, 0]),
+        bounds: L.latLngBounds([
+          [-5.422083333333333, 105.25802]
+        ]),
+        maxBounds: L.latLngBounds([
+          [40.70081290280357, -74.26963806152345],
+          [40.82991732677597, -74.08716201782228]
+        ]),
         zoom: 10,
         minZoom: 7,
         maxZoom: 18,

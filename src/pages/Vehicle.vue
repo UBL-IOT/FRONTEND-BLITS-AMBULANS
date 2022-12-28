@@ -154,7 +154,6 @@ export default {
       })
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          // console.log(res)
           if (res.data.status === true) {
             this.$q.loading.hide()
             this.data = res.data.data
@@ -174,7 +173,6 @@ export default {
         device_phone_number: this.device_phone_number
       }
         .then((res) => {
-          console.log(res)
         })
       )
     },

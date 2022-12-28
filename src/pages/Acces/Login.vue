@@ -30,7 +30,7 @@
                 <div class="text-caption text-grey-7">Bandar Lampung Intellegent Transportation System</div>
                 <div class="text-subtitle2 q-mt-lg text-left" style="font-size: 20px;">Sign In</div>
                 <q-form class="q-gutter-md q-mt-md">
-                  <q-input dense v-model="email" label="Email" lazy-rules>
+                  <q-input type="email" dense v-model="email" label="Email" lazy-rules>
                     <template v-slot:prepend>
                       <q-icon size="20px" name="alternate_email" />
                     </template>

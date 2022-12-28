@@ -12,7 +12,7 @@
         />
         <q-space/>
         <div class="row q-gutter-sm">
-          <q-btn dense flat text-color="blue-7" class="q-mt-md">
+          <q-btn flat color="primary" text-color="blue-7" class="q-mt-md">
             {{dataUser.user.username}}
           </q-btn>
           <q-btn dense flat text-color="blue-7" icon="notifications" class="q-mt-md">
@@ -172,7 +172,7 @@
               <q-item
                 active-class="tab-active"
                 :to="{ name: 'profil' }"
-                class="q-ma-sm navigation-item7"
+                class="q-ma-sm navigation-item"
                 clickable
                 v-ripple
               >
@@ -198,7 +198,6 @@
 
 <script>
 import Messages from './Messages'
-// import createToken from 'src/boot/create_token'
 export default ({
   name: 'MainLayout',
   components: {
