@@ -67,7 +67,7 @@
             </q-slide-transition>
           </template>
           <template v-slot:body="props">
-            <q-tr :props="props">
+            <q-tr :props="props" v-if="props.row.status_pesanan === 1">
               <q-td class="text-uppercase" key="nama_driver" :props="props">{{ props.row.data_driver.nama_driver }}</q-td>
               <q-td class="text-uppercase" key="no_plat" :props="props">{{ props.row.data_driver.no_plat }}</q-td>
               <q-td class="text-uppercase" key="username" :props="props">{{ props.row.data_user.username }}</q-td>
@@ -164,12 +164,7 @@ export default {
           res.data.data.forEach(pesanan => {
             pesanan.driver = pesanan.data_driver.status_driver
             pesanan.status = pesanan.status_pesanan
-            // console.log(pesanan.driver)
-            if (pesanan.status === 1) {
-              this.data.push(pesanan)
-              // this.data = res.data.data
-              // console.log(this.data)
-            }
+            this.data = res.data.data
           })
         })
     },

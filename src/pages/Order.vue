@@ -66,8 +66,8 @@
             </q-slide-transition>
           </template>
           <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td class="text-uppercase" key="kode_pesanan" :props="props">
+            <q-tr :props="props" v-if="props.row.status_pesanan === 0">
+              <q-td class="text-uppercase" key="kode_pesanan">
                 {{ props.row.kode_pesanan }}
               </q-td>
               <q-td class="text-uppercase" key="username" :props="props">
@@ -75,7 +75,8 @@
               </q-td>
               <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">
                 {{ props.row.data_user.no_telpon }}
-                <q-tooltip>CHAT WHATSAPP</q-tooltip></a></q-td>
+                <q-tooltip>CHAT WHATSAPP</q-tooltip></a>
+              </q-td>
               <q-td class="text-weight-bold text-blue-7" key="titik_jemput" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">
                 {{ props.row.titik_jemput.substring(0,10)+"..." }}
               </a></q-td>
@@ -148,6 +149,7 @@ export default {
       phoneData: '',
       drivers: '',
       guid: '',
+      i: [],
       optionPilih_driver: [],
       filter: '',
       customer: {},
@@ -168,16 +170,11 @@ export default {
       // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          console.log(res)
+          this.data = res.data.data
           res.data.data.forEach((phonex) => {
             phonex.phones = phonex.data_user.no_telpon
             this.phoneData = phonex.phones.replace('0', '62')
             phonex.statuss = phonex.status_pesanan
-            if (phonex.statuss === 0) {
-              this.data.push(phonex)
-              this.pesanan = res.data.data.length
-            }
-            // this.getPesanan()
           })
         })
     },

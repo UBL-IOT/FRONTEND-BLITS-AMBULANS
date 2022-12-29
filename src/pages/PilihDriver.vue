@@ -11,13 +11,10 @@
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
         <q-table
-          title="Data pemesanan"
           :rows="data"
           class="text-grey-7"
-          :hide-header="mode === 'grid'"
           :columns="columns"
           row-key="name"
-          :grid="mode=='grid'"
           :filter="filter"
           :pagination="pagination"
         >
@@ -27,7 +24,7 @@
                 Pemilihan Pengemudi
               </div>
               <p class="text-caption">
-                Id Pemesanan: <span class="text-blue"> {{this.guid}} </span><br>
+                Id Pemesanan: <span class="text-blue"> {{Pesanan}} </span><br>
                 Pilihkan driver yang sedang bertugas dengan status aktif.
               </p>
             </div>
@@ -68,22 +65,24 @@
             </q-slide-transition>
           </template>
           <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td class="text-uppercase" key="instansi" :props="props">
+            <q-tr class="text-uppercase" :props="props" v-if="props.row.status_driver === 0">
+              <q-td key="instansi" :props="props">
                 {{ props.row.instansi }}
               </q-td>
-              <q-td class="text-uppercase" key="nama_driver" :props="props">
+              <q-td key="nama_driver" :props="props">
                 {{ props.row.nama_driver }}
               </q-td>
-              <q-td class="text-uppercase" key="no_plat" :props="props">
+              <q-td key="no_plat" :props="props">
                 {{ props.row.no_plat }}
               </q-td>
-              <q-td key="status_driver" :props="props"><q-badge :color="(props.row.status_driver === 0) ? 'orange-7' :(props.row.status_driver === 1) ? 'blue-7' : 'green-7'">
-                {{`${ (props.row.status_driver === 0) ? 'AKTIF' :(props.row.status_driver === 1) ? 'TIDAK AKTIF' : 'SELESAI' }`}}
-              </q-badge></q-td>
+              <q-td key="status_driver" :props="props">
+                <q-badge :color="(props.row.status_driver === 0) ? 'green-7' :(props.row.status_driver === 1) ? 'orange-7' : 'green-7'">
+                {{ props.row.status_driver === 0 ? 'AKTIF' :(props.row.status_driver === 1) ? 'TIDAK AKTIF' : 'SELESAI' }}
+                </q-badge>
+              </q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">
-                <q-btn color="blue-7" @click="Pilih(props.row.guid)" dense>
+                <q-btn @click="Pilih(props.row.guid, Pesanan)" color="blue-7" dense>
                   <q-icon left size="xs" name="supervised_user_circle" />
                   <div>Pilih</div>
                 </q-btn>
@@ -114,7 +113,6 @@ function wrapCsvValue (val, formatFn) {
 }
 
 const columns = [
-  // { name: 'instansi', align: 'left', label: 'NAMA INSTANSI', field: 'instansi', sortable: true },
   { name: 'nama_driver', align: 'left', label: 'NAMA DRIVER', field: 'nama_driver', sortable: true },
   { name: 'no_plat', align: 'left', label: 'NO PLAT', field: 'no_plat', sortable: true },
   { name: 'status_driver', align: 'center', label: 'STATUS DRIVER', field: 'status_driver', sortable: true },
@@ -130,69 +128,56 @@ export default {
       dataUser: this.$q.localStorage.getItem('dataUser'),
       columns,
       data,
-      phonex: '',
-      statusx: '',
+      Pesanan: '',
       status_pesanan: 1,
       status_driver: 1,
       guid: '',
-      guidd: '',
       pilih: '',
-      phoneData: '',
       driver: '',
-      optionPilih_driver: [],
       filter: '',
-      customer: {},
-      new_customer: false,
-      mode: 'list',
       pagination: {
         rowsPerPage: 10
       }
     }
   },
   created () {
-    this.getPesanan()
+    this.getIdpesanan()
     this.getDriver()
   },
   methods: {
-    getPesanan () {
+    getIdpesanan () {
       this.$q.loading.show()
       this.$axios.get(`http://localhost:5050/pesanan/${this.$route.params.guid}`, createToken())
       // this.$axios.get(`http://192.168.18.6:5050/pesanan/${this.$route.params.guid}`, createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          // console.log(res)
+          console.log(res)
           res.data.data.forEach((phonex) => {
-            this.guid = phonex.guid
-            // this.status_pesanan = phonex.status_pesanan
-            // console.log(this.status_pesanan)
+            this.Pesanan = phonex.guid
           })
         })
     },
     getDriver () {
+      this.$q.loading.show()
       this.$axios.get('http://localhost:5050/drivers/get-driver', createToken())
       // this.$axios.get('http://192.168.18.6:5050/drivers/get-driver', createToken())
+        .finally(() => this.$q.loading.hide())
         .then((res) => {
-          // console.log(res)
-          res.data.data.forEach((statusx) => {
-            if (statusx.status_driver === 0) {
-              this.data.push(statusx)
-              // this.data = res.data.data
-            }
-          })
+          this.data = res.data.data
         })
     },
-    Pilih (guid) {
+    Pilih (guid, Pesanan) {
+      console.log(guid, Pesanan)
+      // this.$axios.put('http://localhost:5050/drivers/' + guid, {
       this.$axios.put('http://localhost:5050/drivers/' + guid, {
       // this.$axios.put('http://192.168.18.6:5050/drivers/' + guid, {
-        status_driver: this.status_driver,
         status_pesanan: this.status_pesanan,
-        id_pesanan: this.guid,
+        status_driver: this.status_driver,
+        Pesanan: this.Pesanan,
         guid_driver: guid
-        // guid:
       }, createToken())
         .then((res) => {
-          // console.log(res)
-          // this.getDriver()
+          console.log(res)
           this.$router.push({ name: 'daftarPesanan' })
         })
     },

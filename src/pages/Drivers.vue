@@ -70,39 +70,17 @@
             </div>
           </q-slide-transition>
         </template>
-        <!-- <template v-slot:top-right="props">
-          <q-btn @click="new_driver=true" flat icon="library_add" text-color="blue-7">
-            <q-tooltip>
-              Tambah Data
-            </q-tooltip>
-          </q-btn>
-          <q-btn
-            flat
-            icon-right="document_scanner"
-            text-color="blue-7"
-            @click="exportTable"
-          >
-            <q-tooltip>
-              Export Data
-            </q-tooltip>
-          </q-btn>
-          <q-input outlined dense debounce="300" v-model="props.filter" placeholder="Pencarian">
-            <template v-slot:append>
-              <q-icon name="search"/>
-            </template>
-          </q-input>
-        </template> -->
         <template v-slot:body-cell-status_driver="props">
           <q-td :props="props">
             <q-badge
-              :color="(props.row.status_driver == '0')?'green'
-              :(props.row.status_driver == '1'?'orange':'red')
+              :color="(props.row.status_driver === 0) ?'green'
+              :(props.row.status_driver === 1 ?'orange':'red')
               "
               text-color="white"
               dense
-              class="text-weight-bolder"
+              class="text-weight-bold"
               square
-            >{{`${ (props.row.status_driver === 0) ? 'AKTIF' :(props.row.status_driver === 1) ? 'SEDANG MENGANTAR' :(props.row.status_driver === 2) ? 'SELESAI'  : 'TIDAK AKTIF' }`}}
+            >{{ props.row.status_driver === 0 ? 'AKTIF' :(props.row.status_driver === 1) ? 'SEDANG MENGANTAR' :(props.row.status_driver === 2) ? 'SELESAI'  : 'TIDAK AKTIF' }}
             </q-badge>
           </q-td>
         </template>
@@ -137,8 +115,7 @@
 
           <q-card-section horizontal>
             <q-card-section class="q-gutter-md fit">
-              <!-- <q-input dense outlined v-model="instansi" label="Nama Instansi"/> -->
-              <q-input dense outlined v-model="nama_driver" label="Nama Driver"/>
+              <q-input class="text-capitalize" dense outlined v-model="nama_driver" label="Nama Driver"/>
               <q-select
                 dense outlined
                 key="value"
@@ -170,7 +147,7 @@
                   </q-item>
                 </template>
               </q-select>
-              <q-input dense outlined v-model="alamat" label="Alamat"/>
+              <q-input class="text-capitalize" dense outlined v-model="alamat" label="Alamat"/>
             </q-card-section>
           </q-card-section>
 
@@ -280,9 +257,7 @@ export default {
       // this.$axios.get('http://192.168.18.6:5050/drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          // console.log(res)
           this.data = res.data.data
-          this.$q.loading.hide()
         })
     },
     getKendaraan () {
@@ -298,8 +273,6 @@ export default {
         })
     },
     InputDriver () {
-      // this.$axios.post('http://localhost:5050/drivers/input', {
-      // console.log(this.no_plat)
       const params = {
         no_plat: this.no_plat.plat_id,
         nama_driver: this.nama_driver,
@@ -310,7 +283,6 @@ export default {
       // this.$axios.post('http://192.168.18.6:5050/drivers/input', {
         ...params
       }, createToken()).then((res) => {
-        console.log(res)
         if (res.data.status === true) {
           this.$router.push('/Drivers')
           this.$q.notify({
