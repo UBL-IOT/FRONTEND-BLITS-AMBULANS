@@ -96,9 +96,7 @@ export default {
         loaded: false,
         tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         attribution: 'contributors <a href="">BLITS ambulans</a>',
-        // center: L.latLng([-5.398909, 105.070861]),
         center: L.latLng([-5.422083333333333, 105.25802]),
-        // center: L.latLng([0, 0]),
         bounds: L.latLngBounds([
           [-5.422083333333333, 105.25802]
         ]),
@@ -132,7 +130,6 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
           if (res.status === 200) {
             res.data.data.forEach((marker) => {
               marker.location_latitude = marker.location.coordinates[1]

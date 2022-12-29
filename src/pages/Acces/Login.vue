@@ -87,7 +87,7 @@
     },
     methods: {
       async loginNotify() {
-        await this.$axios.post('http://localhost:5050/users/login', {
+        await this.$axios.post('users/login', {
           // email: 'admin@gmail.com',
           // password: 1234
           email: this.email,

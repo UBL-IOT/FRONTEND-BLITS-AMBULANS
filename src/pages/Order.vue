@@ -166,8 +166,7 @@ export default {
   methods: {
     getPesanan () {
       this.$q.loading.show()
-      this.$axios.get('http://localhost:5050/pesanan/get-pesanan', createToken())
-      // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
+      this.$axios.get('pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           this.data = res.data.data

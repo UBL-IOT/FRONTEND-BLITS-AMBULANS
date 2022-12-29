@@ -183,7 +183,6 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
           if (res.status === 200) {
             this.jumlah = res.data.data.length
             res.data.data.forEach((marker) => {
@@ -203,15 +202,13 @@ export default {
         })
     },
     getDriver () {
-      this.$axios.get('http://localhost:5050/drivers/get-driver', createToken())
-      // this.$axios.get('http://192.168.43.172:5050/drivers/get-driver', createToken())
+      this.$axios.get('drivers/get-driver', createToken())
         .then((res) => {
           this.pengemudi = res.data.data.length
         })
     },
     getPesanan () {
-      this.$axios.get('http://localhost:5050/pesanan/get-pesanan', createToken())
-      // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
+      this.$axios.get('pesanan/get-pesanan', createToken())
         .then((res) => {
           this.pesanan = res.data.data.length
         })

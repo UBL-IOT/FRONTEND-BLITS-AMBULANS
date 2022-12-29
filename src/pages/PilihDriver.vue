@@ -24,7 +24,7 @@
                 Pemilihan Pengemudi
               </div>
               <p class="text-caption">
-                Id Pemesanan: <span class="text-blue"> {{Pesanan}} </span><br>
+                Id Pemesanan: <span class="text-blue"> {{this.$route.params.guid}} </span><br>
                 Pilihkan driver yang sedang bertugas dengan status aktif.
               </p>
             </div>
@@ -82,7 +82,7 @@
               </q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">
-                <q-btn @click="Pilih(props.row.guid, Pesanan)" color="blue-7" dense>
+                <q-btn @click="Pilih(props.row.guid, this.$route.params.guid)" color="blue-7" dense>
                   <q-icon left size="xs" name="supervised_user_circle" />
                   <div>Pilih</div>
                 </q-btn>
@@ -141,43 +141,24 @@ export default {
     }
   },
   created () {
-    this.getIdpesanan()
     this.getDriver()
   },
   methods: {
-    getIdpesanan () {
-      this.$q.loading.show()
-      this.$axios.get(`http://localhost:5050/pesanan/${this.$route.params.guid}`, createToken())
-      // this.$axios.get(`http://192.168.18.6:5050/pesanan/${this.$route.params.guid}`, createToken())
-        .finally(() => this.$q.loading.hide())
-        .then((res) => {
-          console.log(res)
-          res.data.data.forEach((phonex) => {
-            this.Pesanan = phonex.guid
-          })
-        })
-    },
     getDriver () {
       this.$q.loading.show()
-      this.$axios.get('http://localhost:5050/drivers/get-driver', createToken())
-      // this.$axios.get('http://192.168.18.6:5050/drivers/get-driver', createToken())
+      this.$axios.get('drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           this.data = res.data.data
         })
     },
     Pilih (guid, Pesanan) {
-      console.log(guid, Pesanan)
-      // this.$axios.put('http://localhost:5050/drivers/' + guid, {
-      this.$axios.put('http://localhost:5050/drivers/' + guid, {
-      // this.$axios.put('http://192.168.18.6:5050/drivers/' + guid, {
-        status_pesanan: this.status_pesanan,
-        status_driver: this.status_driver,
-        Pesanan: this.Pesanan,
+      this.$axios.put(`pesanan/update-pesanan/${Pesanan}`, {
+        status_pesanan: 1,
+        status_driver: 1,
         guid_driver: guid
       }, createToken())
         .then((res) => {
-          console.log(res)
           this.$router.push({ name: 'daftarPesanan' })
         })
     },

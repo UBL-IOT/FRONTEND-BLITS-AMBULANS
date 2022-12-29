@@ -5,7 +5,7 @@
         <q-btn
           flat
           dense
-          color="blue-7"
+          style="color: #323746;"
           icon="menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
@@ -38,11 +38,36 @@
               </q-card>
             </q-menu>
           </q-btn>
-          <q-btn @click="Logout" clickable v-ripple exact dense flat text-color="blue-7" icon="highlight_off" class="q-mr-md q-mt-md">
+          <q-btn @click="confirm = true" clickable v-ripple exact dense flat text-color="blue-7" icon="highlight_off" class="q-mr-md q-mt-md">
             <q-tooltip>
               Sign Out
             </q-tooltip>
           </q-btn>
+          <q-dialog v-model="confirm" persistent>
+            <q-card class="my-card header-counter" flat bordered>
+              <q-card-section horizontal>
+                <q-card-section class="q-pt-xs">
+                  <div class="text-h6 q-mt-sm q-mb-xs">Keluar dari sistem BLITS Ambulans</div>
+                  <div class="text-caption text-grey">
+                    Apakah kamu yakin mau keluar dari sistem BLITS Ambulans sekarang ?
+                  </div>
+                </q-card-section>
+
+                <q-card-section class="col-4 flex flex-center">
+                  <q-avatar size="90px" rounded>
+                    <img src="https://img.freepik.com/free-vector/illustration-exit-door_53876-5844.jpg?size=338&ext=jpg&ga=GA1.2.675838396.1670845733&semt=sph" alt="">
+                  </q-avatar>
+                </q-card-section>
+              </q-card-section>
+
+              <q-separator />
+
+              <q-card-actions>
+                <q-btn flat color="blue-13" @click="Logout" label="Keluar" icon="sentiment_very_dissatisfied" />
+                <q-btn flat color="red-13" v-close-popup label="Batal" icon="highlight_off" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
         </div>
       </q-toolbar>
     </q-header>
@@ -51,6 +76,7 @@
       class="left-navigation text-white"
       show-if-above
       v-model="leftDrawerOpen"
+      style="background-color: #323746;"
       side="left"
       :width="250"
       elevated
@@ -61,13 +87,13 @@
             <q-avatar style="width: 50px; height: 55px;">
               <img src="icons/main_icon/icon.png" />
             </q-avatar>
-            <q-toolbar-title class="text-grey-7">
+            <q-toolbar-title>
               BLITS
               <div class="text-caption text-blue-7">Administrator <q-badge color="green" rounded text-color="white" /></div>
             </q-toolbar-title>
           </q-toolbar>
           <q-scroll-area style="height:100%;">
-            <q-list padding class="text-grey-7 text-weight-bold">
+            <q-list padding class="text-grey text-weight-bold">
               <q-item
                 active-class="tab-active"
                 :to="{ name: 'dashboard' }"
@@ -108,7 +134,7 @@
                 <q-item
                   active-class="tab-active"
                   class="q-ma-sm navigation-item"
-                  :to="('/daftarPesanan/:guid')"
+                  :to="{name: 'daftarPesanan'}"
                   exact
                   clickable
                   v-ripple
@@ -207,7 +233,8 @@ export default ({
     return {
       leftDrawerOpen: false,
       username: null,
-      dataUser: this.$q.localStorage.getItem('dataUser')
+      dataUser: this.$q.localStorage.getItem('dataUser'),
+      confirm: false
     }
   },
   methods: {
@@ -219,12 +246,6 @@ export default ({
 })
 </script>
 <style>
-.q-drawer {
-  background-size: cover !important;
-}
-.drawer_normal {
-  background-color: rgba(1, 1, 1, 0.75);
-}
 .navigation-item {
   border-radius: 5px;
 }

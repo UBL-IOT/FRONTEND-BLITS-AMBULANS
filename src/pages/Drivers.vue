@@ -253,8 +253,7 @@ export default {
   methods: {
     getDriver () {
       this.$q.loading.show()
-      this.$axios.get('http://localhost:5050/drivers/get-driver', createToken())
-      // this.$axios.get('http://192.168.18.6:5050/drivers/get-driver', createToken())
+      this.$axios.get('drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           this.data = res.data.data
@@ -279,8 +278,7 @@ export default {
         alamat: this.alamat,
         status_driver: this.status.value
       }
-      this.$axios.post('http://localhost:5050/drivers/input', {
-      // this.$axios.post('http://192.168.18.6:5050/drivers/input', {
+      this.$axios.post('drivers/input', {
         ...params
       }, createToken()).then((res) => {
         if (res.data.status === true) {

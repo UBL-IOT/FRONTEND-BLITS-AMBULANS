@@ -82,6 +82,7 @@
               <div class="justify-center q-gutter-x-xs">
                 <q-btn
                   color="blue-7"
+                  type="submit"
                   @click="Cancel"
                   dense>
                   <div class="text-uppercase">batal</div>
@@ -125,15 +126,13 @@ const columns = [
   { name: 'aksi', align: 'center', label: 'AKSI', field: 'aksi', sortable: true }
 ]
 
-const data = []
-
 export default {
   data () {
     return {
       visibles: false,
       dataUser: this.$q.localStorage.getItem('dataUser'),
       columns,
-      data,
+      data: [],
       status_pesanan: 0,
       status_driver: 0,
       nama_driver: '',
@@ -157,25 +156,21 @@ export default {
   methods: {
     getPesanan () {
       this.$q.loading.show()
-      this.$axios.get('http://localhost:5050/pesanan/get-pesanan', createToken())
-      // this.$axios.get('http://192.168.18.6:5050/pesanan/get-pesanan', createToken())
+      this.$axios.get('pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          res.data.data.forEach(pesanan => {
-            pesanan.driver = pesanan.data_driver.status_driver
-            pesanan.status = pesanan.status_pesanan
-            this.data = res.data.data
-          })
+          console.log(res)
+          this.data = res.data.data
         })
     },
     Cancel () {
       // Fungsi Untuk Membatalkan Driver
-      // this.$axios.put(`http://192.168.18.6:5050/pesanan/update-pesanan/${this.$route.params.guid}`, {
+      // this.$axios.put(`http://localhost:5050/pesanan/update-pesanan/${this.$route.params.guid}`, {
       //   status_pesanan: this.status_pesanan,
       //   status_driver: this.status_driver
       // }, createToken())
       //   .then((res) => {
-      //     // console.log(res)
+      //     console.log(res)
       //     this.$router.push({ name: 'order' })
       //   })
       // End Cancel Driver
