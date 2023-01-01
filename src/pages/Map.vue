@@ -81,7 +81,6 @@
 import { LMap, LIcon, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-// import { latLngBounds } from 'leaflet'
 export default {
   components: {
     LMap,
@@ -104,7 +103,7 @@ export default {
           [40.70081290280357, -74.26963806152345],
           [40.82991732677597, -74.08716201782228]
         ]),
-        zoom: 10,
+        zoom: 12,
         minZoom: 7,
         maxZoom: 18,
         markerLatLng: [47.313220, -1.319482],
@@ -122,15 +121,16 @@ export default {
   },
   methods: {
     async getKendaraan () {
+      this.$q.loading.show()
       this.$axios.post('https://api-kopamas-carter.pptik.id:5121/api.v1/vehicles/po-get', {
         guid_po: this.guid_po
       }, {
         headers: {
           'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJndWlkIjoiNzNhZjk3YjQtNTllZC00MGFmLWJlZTQtOTM4MzhmMzlhNGYzIiwiaWF0IjoxNjY5MTA3MDIyLCJleHAiOjE4MjY3ODcwMjJ9.4x6F8nQyDiMaiARRMOpIV2YkbPrS4iKEEf3Qtm0SjDY'
         }
-      })
+      }).finally(() => this.$q.loading.hide())
         .then((res) => {
-          if (res.status === 200) {
+          if (res.data.status === true) {
             res.data.data.forEach((marker) => {
               marker.location_latitude = marker.location.coordinates[1]
               marker.location_longitude = marker.location.coordinates[0]
@@ -145,90 +145,8 @@ export default {
               this.maps.push(marker)
             })
           }
-        })
-    },
-    log (a) {
+        }).catch(() => this.$commonErrorNotif())
     }
   }
 }
-// import {
-//   LMap,
-//   LIcon,
-//   LTileLayer,
-//   LMarker
-//   // LPopup
-//   // LCircle,
-//   // LPopup
-//   // LControlLayers,
-//   // LTooltip,
-//   // LPopup
-//   // LPolyline,
-//   // LPolygon,
-//   // LRectangle
-// } from '@vue-leaflet/vue-leaflet'
-// import 'leaflet/dist/leaflet.css'
-// // import {LPopup} from "@vue-leaflet/vue-leaflet";
-// // import { L } from 'leaflet'
-// // import L from 'leaflet'
-// export default {
-//   components: {
-//     LMap,
-//     LIcon,
-//     LTileLayer,
-//     LMarker
-//     // LCircle,
-//     // LPopup
-//     // LControlLayers,
-//     // LTooltip,
-//     // LPopup
-//     // LPolyline,
-//     // LPolygon,
-//     // LRectangle
-//   },
-//   data () {
-//     return {
-//       map: {
-//         tileLayer: 'http://vectormap.pptik.id/styles/klokantech-basic/{z}/{x}/{y}.png',
-//         attribution: '<a href="">blits ambulance</a> contributors',
-//         center: [-5.398909, 105.070861],
-//         zoom: 10,
-//         minZoom: 7,
-//         maxZoom: 18,
-//         markerLatLng: [47.313220, -1.319482],
-//         icons: ''
-//       },
-//       maps: [],
-//       // umkm: [],
-//       zoom: 2,
-//       guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432'
-//     }
-//   },
-//   async created () {
-//     await this.getKendaraan()
-//   },
-//   methods: {
-//     async getKendaraan () {
-//       this.$axios.post('https://api-kopamas-carter.pptik.id:5121/api.v1/vehicles/po-get', {
-//         guid_po: this.guid_po
-//       }, {
-//         headers: {
-//           'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJndWlkIjoiNzNhZjk3YjQtNTllZC00MGFmLWJlZTQtOTM4MzhmMzlhNGYzIiwiaWF0IjoxNjY5MTA3MDIyLCJleHAiOjE4MjY3ODcwMjJ9.4x6F8nQyDiMaiARRMOpIV2YkbPrS4iKEEf3Qtm0SjDY'
-//         }
-//       })
-//         .then((res) => {
-//           // console.log(res)
-//           if (res.status === 200) {
-//             res.data.data.forEach((marker) => {
-//               marker.location_longitude = marker.location.coordinates[0]
-//               marker.location_latitude = marker.location.coordinates[1]
-//               marker.icons = 'marker.png'
-//               this.maps.push(marker)
-//             })
-//           }
-//         })
-//     },
-//     log (a) {
-//     }
-//   }
-// }
 </script>

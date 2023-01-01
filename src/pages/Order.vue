@@ -10,7 +10,6 @@
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
         <q-table
-          title="Data pemesanan"
           :rows="data"
           class="text-grey-7"
           :hide-header="mode === 'grid'"
@@ -142,18 +141,13 @@ export default {
   data () {
     return {
       visibles: false,
-      dataUser: this.$q.localStorage.getItem('dataUser'),
       columns,
       data,
       phonex: '',
       phoneData: '',
       drivers: '',
       guid: '',
-      i: [],
-      optionPilih_driver: [],
       filter: '',
-      customer: {},
-      new_customer: false,
       mode: 'list',
       pagination: {
         rowsPerPage: 10
@@ -175,7 +169,7 @@ export default {
             this.phoneData = phonex.phones.replace('0', '62')
             phonex.statuss = phonex.status_pesanan
           })
-        })
+        }).catch(() => this.$commonErrorNotif())
     },
     Drivers (guid) {
       this.$router.push('/pilihDriver/' + guid)

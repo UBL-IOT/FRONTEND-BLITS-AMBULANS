@@ -11,7 +11,7 @@
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
         <q-table
-          title="Daftar pesanan"
+          title="Daftar Pesanan"
           :rows="data"
           class="text-grey-7"
           :hide-header="mode === 'grid'"
@@ -72,11 +72,12 @@
               <q-td class="text-uppercase" key="no_plat" :props="props">{{ props.row.data_driver.no_plat }}</q-td>
               <q-td class="text-uppercase" key="username" :props="props">{{ props.row.data_user.username }}</q-td>
               <q-td class="text-uppercase" key="kode_pesanan" :props="props">{{ props.row.kode_pesanan }}</q-td>
-              <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">{{ props.row.data_user.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a></q-td>
+              <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">
+                {{ props.row.data_user.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a>
+              </q-td>
               <q-td class="text-weight-bold text-blue-7" key="titik_jemput" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">{{ props.row.titik_jemput.substring(0,10)+"..." }}</a></q-td>
               <q-td class="text-weight-bold text-blue-7" key="tujuan" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">{{ props.row.tujuan.substring(0,10)+"..." }}</a></q-td>
               <q-td key="tanggal" :props="props">{{ new Date (props.row.tanggal).toLocaleDateString('id', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}</q-td>
-              <!-- <q-td key="tanggal" :props="props">{{this.$parseDate(props.row.tanggal).fullDate}}</q-td> -->
               <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan == '0') ? 'orange-7' :(props.row.status_pesanan == '1') ? 'blue-7' : 'green-7'">{{`${ (props.row.status_pesanan == '0') ? 'MENUNGGU' :(props.row.status_pesanan == '1') ? 'PROSES' : 'SELESAI' }`}}</q-badge></q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">
@@ -130,7 +131,6 @@ export default {
   data () {
     return {
       visibles: false,
-      dataUser: this.$q.localStorage.getItem('dataUser'),
       columns,
       data: [],
       status_pesanan: 0,
@@ -140,10 +140,7 @@ export default {
       phoneData: '',
       drivers: '',
       guid: '',
-      optionPilih_driver: [],
       filter: '',
-      customer: {},
-      new_customer: false,
       mode: 'list',
       pagination: {
         rowsPerPage: 10
@@ -159,9 +156,10 @@ export default {
       this.$axios.get('pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          console.log(res)
-          this.data = res.data.data
-        })
+          if (res.data.status) {
+            this.data = res.data.data
+          }
+        }).catch(() => this.$commonErrorNotif())
     },
     Cancel () {
       // Fungsi Untuk Membatalkan Driver

@@ -151,19 +151,17 @@ export default {
         headers: {
           'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJndWlkIjoiNzNhZjk3YjQtNTllZC00MGFmLWJlZTQtOTM4MzhmMzlhNGYzIiwiaWF0IjoxNjY5MTA3MDIyLCJleHAiOjE4MjY3ODcwMjJ9.4x6F8nQyDiMaiARRMOpIV2YkbPrS4iKEEf3Qtm0SjDY'
         }
-      })
-        .finally(() => this.$q.loading.hide())
+      }).finally(() => this.$q.loading.hide())
         .then((res) => {
           if (res.data.status === true) {
-            this.$q.loading.hide()
             this.data = res.data.data
           } else {
-            this.$.notify({
+            this.$q.notify({
               color: 'negative',
               message: 'data tidak dapat dimuat'
             })
           }
-        })
+        }).catch(() => this.$commonErrorNotif())
     },
     createKendaraan () {
       this.$axios.post('', {

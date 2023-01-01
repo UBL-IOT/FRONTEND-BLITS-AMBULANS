@@ -15,29 +15,31 @@
           <q-btn flat color="primary" text-color="blue-7" class="q-mt-md">
             {{dataUser.user.username}}
           </q-btn>
-          <q-btn dense flat text-color="blue-7" icon="notifications" class="q-mt-md">
-            <q-tooltip>
-              Information Update
-            </q-tooltip>
-            <q-badge color="green" rounded text-color="white" floating />
-            <q-menu>
-              <q-card class="my-card">
-                <q-card-section>
-                  <div class="text-h6 text-grey-7">Informasi Terbaru</div>
-                  <div class="text-subtitle text-grey-7">Daftar informasi terbaru system</div>
-                </q-card-section>
-                <q-card-section>
-                  <messages></messages>
-                </q-card-section>
+          <div>
+            <q-btn dense flat text-color="blue-7" icon="notifications" class="q-mt-sm">
+              <q-tooltip>
+                Information Update
+              </q-tooltip>
+              <q-badge color="green" rounded text-color="white" floating />
+              <q-menu>
+                <q-card class="my-card">
+                  <q-card-section>
+                    <div class="text-h6 text-grey-7">Informasi Terbaru</div>
+                    <div class="text-subtitle text-grey-7">Daftar informasi terbaru system</div>
+                  </q-card-section>
+                  <q-card-section>
+                    <messages></messages>
+                  </q-card-section>
 
-                <q-separator />
+                  <q-separator />
 
-                <q-card-actions vertical>
-                  <q-btn flat text-color="blue-7">VIEW ALL</q-btn>
-                </q-card-actions>
-              </q-card>
-            </q-menu>
-          </q-btn>
+                  <q-card-actions vertical>
+                    <q-btn flat text-color="blue-7">VIEW ALL</q-btn>
+                  </q-card-actions>
+                </q-card>
+              </q-menu>
+            </q-btn>
+          </div>
           <q-btn @click="confirm = true" clickable v-ripple exact dense flat text-color="blue-7" icon="highlight_off" class="q-mr-md q-mt-md">
             <q-tooltip>
               Sign Out
@@ -78,7 +80,7 @@
       v-model="leftDrawerOpen"
       style="background-color: #323746;"
       side="left"
-      :width="250"
+      :width="270"
       elevated
     >
       <div class="full-height">

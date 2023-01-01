@@ -78,7 +78,8 @@
             <q-card-section class="text-white bg-white">
               <div class="row">
                 <div class="col-8">
-                  <div class="text-h4 text-red-7 text-weight-bold">{{this.jumlah}}</div>
+                  <div v-if="jumlah === null || jumlah === undefined" class="text-h4 text-red-7 text-weight-bold">-</div>
+                  <div v-else class="text-h4 text-red-7 text-weight-bold">{{jumlah}}</div>
                   <div class="text-subtitle2 text-blue-7">Ambulans</div>
                   <div class="text-caption text-grey">
                     Jumlah ambulans yang terdaftar.
@@ -96,7 +97,8 @@
             <q-card-section class="text-white bg-white">
               <div class="row">
                 <div class="col-8">
-                  <div class="text-h4 text-red-7 text-weight-bold">{{this.pesanan}}</div>
+                  <div v-if="pesanan === null || pesanan === undefined" class="text-h4 text-red-7 text-weight-bold">-</div>
+                  <div v-else class="text-h4 text-red-7 text-weight-bold">{{pesanan}}</div>
                   <div class="text-subtitle2 text-blue-7">Pemesan</div>
                   <div class="text-caption text-grey">
                     Jumlah pemesan ambulans terdaftar.
@@ -114,7 +116,8 @@
             <q-card-section class="text-white bg-white">
               <div class="row">
                 <div class="col-8">
-                  <div class="text-h4 text-red-7 text-weight-bold">{{this.pengemudi}}</div>
+                  <div v-if="pengemudi === null || pengemudi === undefined" class="text-h4 text-red-7 text-weight-bold">-</div>
+                  <div v-else class="text-h4 text-red-7 text-weight-bold">{{pengemudi}}</div>
                   <div class="text-subtitle2 text-blue-7">Pengemudi</div>
                   <div class="text-caption text-grey">
                     Jumlah pengemudi terdaftar.
@@ -150,9 +153,9 @@ export default {
       map: {
         loaded: false,
         tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        attribution: 'contributors <a href="">BLITS ambulans</a>',
+        attribution: 'contributors <a href="">BLITS Ambulans</a>',
         center: L.latLng([-5.422083333333333, 105.25802]),
-        zoom: 10,
+        zoom: 12,
         minZoom: 7,
         maxZoom: 18,
         markerLatLng: [47.313220, -1.319482],
@@ -175,13 +178,14 @@ export default {
   },
   methods: {
     async getKendaraan () {
+      this.$q.loading.show()
       this.$axios.post('https://api-kopamas-carter.pptik.id:5121/api.v1/vehicles/po-get', {
         guid_po: this.guid_po
       }, {
         headers: {
           'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJndWlkIjoiNzNhZjk3YjQtNTllZC00MGFmLWJlZTQtOTM4MzhmMzlhNGYzIiwiaWF0IjoxNjY5MTA3MDIyLCJleHAiOjE4MjY3ODcwMjJ9.4x6F8nQyDiMaiARRMOpIV2YkbPrS4iKEEf3Qtm0SjDY'
         }
-      })
+      }).finally(() => this.$q.loading.hide())
         .then((res) => {
           if (res.status === 200) {
             this.jumlah = res.data.data.length
@@ -199,21 +203,23 @@ export default {
               this.maps.push(marker)
             })
           }
-        })
+        }).catch(() => this.$commonErrorNotif())
     },
     getDriver () {
+      this.$q.loading.show()
       this.$axios.get('drivers/get-driver', createToken())
+        .finally(() => this.$q.loading.hide())
         .then((res) => {
           this.pengemudi = res.data.data.length
         })
     },
     getPesanan () {
+      this.$q.loading.show()
       this.$axios.get('pesanan/get-pesanan', createToken())
+        .finally(() => this.$q.loading.hide())
         .then((res) => {
           this.pesanan = res.data.data.length
         })
-    },
-    log (a) {
     }
   }
 }

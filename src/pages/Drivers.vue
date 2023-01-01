@@ -256,8 +256,10 @@ export default {
       this.$axios.get('drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          this.data = res.data.data
-        })
+          if (res.data.status) {
+            this.data = res.data.data
+          }
+        }).catch(() => this.$commonErrorNotif())
     },
     getKendaraan () {
       this.$axios.post('https://api-kopamas-carter.pptik.id:5121/api.v1/vehicles/po-get', {

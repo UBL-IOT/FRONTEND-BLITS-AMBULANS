@@ -26,6 +26,7 @@ module.exports = configure(function (ctx) {
     boot: [
       'i18n',
       'axios',
+      'showNotif',
       'leaflet',
       ['google-maps']
     ],

@@ -129,8 +129,8 @@ export default {
       columns,
       data,
       Pesanan: '',
-      status_pesanan: 1,
-      status_driver: 1,
+      status_pesanan: '',
+      status_driver: '',
       guid: '',
       pilih: '',
       driver: '',
@@ -149,8 +149,10 @@ export default {
       this.$axios.get('drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          this.data = res.data.data
-        })
+          if (res.data.status) {
+            this.data = res.data.data
+          }
+        }).catch(() => this.$commonErrorNotif())
     },
     Pilih (guid, Pesanan) {
       this.$axios.put(`pesanan/update-pesanan/${Pesanan}`, {
