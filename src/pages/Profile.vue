@@ -4,7 +4,7 @@
     <q-card class="q-pa-md q-ma-md">
       <q-breadcrumbs>
         <q-breadcrumbs-el label="Home" icon="home" />
-        <q-breadcrumbs-el class="text-grey-7" label="Profile" icon="health_and_safety" />
+        <q-breadcrumbs-el class="text-grey-7" label="Profile" icon="manage_accounts" />
       </q-breadcrumbs>
     </q-card>
     <div class="q-ma-md q-mt-lg" style="height: fit-content;">

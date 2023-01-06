@@ -7,45 +7,77 @@
           dense
           style="color: #323746;"
           icon="menu"
-          aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
+          round
         />
         <q-space/>
         <div class="row q-gutter-sm">
-          <q-btn flat color="primary" text-color="blue-7" class="q-mt-md">
-            {{dataUser.user.username}}
-          </q-btn>
-          <div>
-            <q-btn dense flat text-color="blue-7" icon="notifications" class="q-mt-sm">
-              <q-tooltip>
-                Information Update
-              </q-tooltip>
-              <q-badge color="green" rounded text-color="white" floating />
-              <q-menu>
-                <q-card class="my-card">
-                  <q-card-section>
-                    <div class="text-h6 text-grey-7">Informasi Terbaru</div>
-                    <div class="text-subtitle text-grey-7">Daftar informasi terbaru system</div>
-                  </q-card-section>
-                  <q-card-section>
-                    <messages></messages>
-                  </q-card-section>
-
-                  <q-separator />
-
-                  <q-card-actions vertical>
-                    <q-btn flat text-color="blue-7">VIEW ALL</q-btn>
-                  </q-card-actions>
-                </q-card>
-              </q-menu>
-            </q-btn>
-          </div>
-          <q-btn @click="confirm = true" clickable v-ripple exact dense flat text-color="blue-7" icon="highlight_off" class="q-mr-md q-mt-md">
+          <q-btn flat text-color="blue-7" icon="notifications" class="q-mt-xs q-mr-xs">
             <q-tooltip>
-              Sign Out
+              Information Update
             </q-tooltip>
+            <q-badge color="green" rounded text-color="white" floating />
+            <q-menu>
+              <q-card class="my-card">
+                <q-card-section>
+                  <div class="text-h6 text-grey-7">Informasi Terbaru</div>
+                  <div class="text-subtitle text-grey-7">Daftar informasi terbaru system</div>
+                </q-card-section>
+                <q-card-section>
+                  <messages></messages>
+                </q-card-section>
+
+                <q-separator />
+
+                <q-card-actions vertical>
+                  <q-btn clickable v-ripple exact :to="{ name: 'order' }" v-close-popup flat text-color="blue-7">VIEW ALL</q-btn>
+                </q-card-actions>
+              </q-card>
+            </q-menu>
           </q-btn>
-          <q-dialog v-model="confirm" persistent>
+        </div>
+        <q-btn-dropdown
+          flat
+          text-color="blue-7"
+          icon="manage_accounts"
+          left
+          stretch
+          no-caps
+        >
+          <div class="row no-wrap q-pa-md">
+            <div class="column">
+              <div class="text-h6 q-mb-md">Settings</div>
+              <q-btn
+                outline
+                color="primary"
+                label="Profile"
+                clickable
+                :to="{ name: 'profil' }"
+                size="sm"
+                icon="manage_accounts"
+                left
+                v-close-popup
+              />
+            </div>
+
+            <q-separator vertical inset class="q-mx-lg" />
+
+            <div class="column items-center">
+              <q-avatar size="72px">
+                <img src="avatar.png" />
+              </q-avatar>
+
+              <div class="text-subtitle1 q-mt-md q-mb-xs">{{ dataUser.user.username }}</div>
+
+              <q-btn
+                color="red orange"
+                label="Keluar"
+                outline
+                size="sm"
+                v-close-popup
+                @click="Logout"
+              />
+              <q-dialog v-model="confirm" persistent>
             <q-card class="my-card header-counter" flat bordered>
               <q-card-section horizontal>
                 <q-card-section class="q-pt-xs">
@@ -56,8 +88,8 @@
                 </q-card-section>
 
                 <q-card-section class="col-4 flex flex-center">
-                  <q-avatar size="90px" rounded>
-                    <img src="https://img.freepik.com/free-vector/illustration-exit-door_53876-5844.jpg?size=338&ext=jpg&ga=GA1.2.675838396.1670845733&semt=sph" alt="">
+                  <q-avatar size="120px" rounded>
+                    <img src="image-logout.jpg" alt="">
                   </q-avatar>
                 </q-card-section>
               </q-card-section>
@@ -70,7 +102,9 @@
               </q-card-actions>
             </q-card>
           </q-dialog>
-        </div>
+            </div>
+          </div>
+        </q-btn-dropdown>
       </q-toolbar>
     </q-header>
 
@@ -89,7 +123,7 @@
             <q-avatar style="width: 50px; height: 55px;">
               <img src="icons/main_icon/icon.png" />
             </q-avatar>
-            <q-toolbar-title>
+            <q-toolbar-title style="font-family: monospace;">
               BLITS
               <div class="text-caption text-blue-7">Administrator <q-badge color="green" rounded text-color="white" /></div>
             </q-toolbar-title>
@@ -168,7 +202,7 @@
 
               <q-item
                 active-class="tab-active"
-                :to="{name: 'driver'}"
+                :to="{ name: 'driver' }"
                 exact
                 class="q-ma-sm navigation-item"
                 clickable
@@ -205,7 +239,7 @@
                 v-ripple
               >
                 <q-item-section avatar>
-                  <q-icon name="health_and_safety" />
+                  <q-icon name="manage_accounts" />
                 </q-item-section>
                 <q-item-section>
                   Profil
@@ -258,7 +292,7 @@ export default ({
 .header_normal {
   background: linear-gradient(
     145deg,
-    rgb(32, 106, 80) 15%,
+    rgb(86, 106, 32) 15%,
     rgb(21, 57, 102) 70%
   );
 }

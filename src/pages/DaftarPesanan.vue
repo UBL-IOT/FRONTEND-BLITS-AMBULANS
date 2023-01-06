@@ -69,27 +69,20 @@
           <template v-slot:body="props">
             <q-tr :props="props" v-if="props.row.status_pesanan === 1">
               <q-td class="text-uppercase" key="nama_driver" :props="props">{{ props.row.data_driver.nama_driver }}</q-td>
+              <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.telpDriver">
+                {{ props.row.data_driver.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a>
+              </q-td>
               <q-td class="text-uppercase" key="no_plat" :props="props">{{ props.row.data_driver.no_plat }}</q-td>
-              <q-td class="text-uppercase" key="username" :props="props">{{ props.row.data_user.username }}</q-td>
+              <q-td class="text-uppercase" key="fullname" :props="props">{{ props.row.data_user.fullname }}</q-td>
               <q-td class="text-uppercase" key="kode_pesanan" :props="props">{{ props.row.kode_pesanan }}</q-td>
               <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">
                 {{ props.row.data_user.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a>
               </q-td>
               <q-td class="text-weight-bold text-blue-7" key="titik_jemput" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">{{ props.row.titik_jemput.substring(0,10)+"..." }}</a></q-td>
               <q-td class="text-weight-bold text-blue-7" key="tujuan" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">{{ props.row.tujuan.substring(0,10)+"..." }}</a></q-td>
-              <q-td key="tanggal" :props="props">{{ new Date (props.row.tanggal).toLocaleDateString('id', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}</q-td>
-              <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan == '0') ? 'orange-7' :(props.row.status_pesanan == '1') ? 'blue-7' : 'green-7'">{{`${ (props.row.status_pesanan == '0') ? 'MENUNGGU' :(props.row.status_pesanan == '1') ? 'PROSES' : 'SELESAI' }`}}</q-badge></q-td>
-              <q-td key="aksi" :props="props">
-              <div class="justify-center q-gutter-x-xs">
-                <q-btn
-                  color="blue-7"
-                  type="submit"
-                  @click="Cancel"
-                  dense>
-                  <div class="text-uppercase">batal</div>
-                </q-btn>
-              </div>
-            </q-td>
+              <q-td key="created_at" :props="props">{{ new Date (props.row.created_at).toLocaleDateString('id', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}</q-td>
+              <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan === 0) ? 'orange-7' :(props.row.status_pesanan === 1) ? 'blue-7' :(props.row.status_pesanan === 2) ? 'teal-7' : 'green-7'">{{`${ (props.row.status_pesanan === 0) ? 'MENUNGGU' :(props.row.status_pesanan === 1) ? 'MENJEMPUT' :(props.row.status_pesanan === 2) ? 'MENGANTAR' : 'SELESAI' }`}}</q-badge>
+              </q-td>
             </q-tr>
           </template>
         </q-table>
@@ -116,15 +109,16 @@ function wrapCsvValue (val, formatFn) {
 
 const columns = [
   { name: 'nama_driver', align: 'left', label: 'NAMA DRIVER', field: 'nama_driver', sortable: true },
+  { name: 'no_telpon', align: 'left', label: 'NO TELPON', field: 'no_telpon', sortable: true },
   { name: 'no_plat', align: 'left', label: 'NO PLAT', field: 'no_plat', sortable: true },
-  { name: 'username', align: 'left', label: 'NAMA PEMESAN', field: 'username', sortable: true },
-  { name: 'kode_pesanan', align: 'left', label: 'KODE', field: 'kode_pesanan', sortable: true },
+  { name: 'fullname', align: 'left', label: 'NAMA PEMESAN', field: 'fullname', sortable: true },
+  // { name: 'kode_pesanan', align: 'left', label: 'KODE', field: 'kode_pesanan', sortable: true },
   { name: 'no_telpon', align: 'left', label: 'NO. HANDPHONE', field: 'no_telpon', sortable: true },
   { name: 'titik_jemput', align: 'left', label: 'TITIK JEMPUT', field: 'titik_jemput', sortable: true },
   { name: 'tujuan', required: true, label: 'TUJUAN', align: 'left', field: row => row.tujuan, sortable: true },
-  { name: 'tanggal', align: 'left', label: 'TGL. PEMESANAN', field: 'tanggal', sortable: true },
-  { name: 'status_pesanan', align: 'left', label: 'STATUS', field: 'status_pesanan', sortable: true },
-  { name: 'aksi', align: 'center', label: 'AKSI', field: 'aksi', sortable: true }
+  // { name: 'tanggal', align: 'left', label: 'TGL. PEMESANAN', field: 'tanggal', sortable: true },
+  { name: 'created_at', align: 'left', label: 'TGL. PEMESANAN', field: 'created_at', sortable: true },
+  { name: 'status_pesanan', align: 'left', label: 'STATUS', field: 'status_pesanan', sortable: true }
 ]
 
 export default {
@@ -138,6 +132,7 @@ export default {
       nama_driver: '',
       phonex: '',
       phoneData: '',
+      telpDriver: '',
       drivers: '',
       guid: '',
       filter: '',
@@ -156,22 +151,17 @@ export default {
       this.$axios.get('pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
+          console.log(res)
           if (res.data.status) {
             this.data = res.data.data
+            res.data.data.forEach((phonex) => {
+              phonex.phones = phonex.data_user.no_telpon
+              this.phoneData = phonex.phones.replace('0', '62')
+              this.telpDriver = phonex.data_driver.no_telpon.replace('0', '62')
+              phonex.statuss = phonex.status_pesanan
+            })
           }
         }).catch(() => this.$commonErrorNotif())
-    },
-    Cancel () {
-      // Fungsi Untuk Membatalkan Driver
-      // this.$axios.put(`http://localhost:5050/pesanan/update-pesanan/${this.$route.params.guid}`, {
-      //   status_pesanan: this.status_pesanan,
-      //   status_driver: this.status_driver
-      // }, createToken())
-      //   .then((res) => {
-      //     console.log(res)
-      //     this.$router.push({ name: 'order' })
-      //   })
-      // End Cancel Driver
     },
     exportTable () {
       // naive encoding to csv format

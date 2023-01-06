@@ -3,7 +3,7 @@
   <q-layout>
     <q-page-container>
       <q-page class="flex flex-center">
-        <q-card class="my-card" flat bordered v-bind:style="$q.platform.is.mobile ? { width: '80%' } : { width: '55%' }">
+        <q-card class="my-card" flat bordered v-bind:style="$q.platform.is.mobile ? { width: '80%' } : { width: '50%' }">
           <div class="row q-col-gutter-md">
             <div class="col-12 col-md-5">
               <q-carousel
@@ -51,7 +51,7 @@
 
                   <div class="text-subtitle2 q-mt-lg text-right">
                     <q-btn
-                      class="q-mt-md"
+                      class="q-mt-md full-width"
                       label="Sign In"
                       type="button"
                       style="width: 150px; align-content: right;"
@@ -60,8 +60,6 @@
                     />
                   </div>
                 </q-form>
-              </div>
-              <div class="col-9">
               </div>
             </div>
           </div>
@@ -94,7 +92,8 @@
           password: this.password
         })
         .then((res) => {
-          if (res.data.status) {
+          console.log(res);
+          if (res.data.status === true) {
             this.$q.localStorage.set('dataUser', res.data.data)
             if (res.data.data.user.role === '1') {
               this.$router.push({name: 'dashboard'})
@@ -121,18 +120,4 @@
 </script>
 
 <style>
-#particles-js {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 50% 50%;
-}
-.normal_gradient {
-  background: linear-gradient(145deg, rgb(74, 94, 137) 15%, #b61924 70%);
-}
-.login-form {
-  position: absolute;
-}
 </style>

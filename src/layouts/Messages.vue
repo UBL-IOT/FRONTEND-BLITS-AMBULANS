@@ -1,7 +1,26 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <q-item style="width: 350px;" v-for="(d, i) in dataInformasi" :key="i" clickable v-ripple>
-    <!-- <div v-if="d.status_pesanan === 1"> -->
+    <q-item-section top avatar>
+      <q-avatar>
+        <q-icon name="person_pin" class="text-blue-7" size="35px" />
+      </q-avatar>
+    </q-item-section>
+
+    <q-item-section>
+      <q-item-label class="text-uppercase">{{ d.data_user.fullname }}</q-item-label>
+      <q-item-label caption>{{ d.titik_jemput.substring(0,20)+"..." }} <q-icon name="sync_alt" color="blue-7" size="15px" /> {{ d.tujuan.substring(0,20)+"..." }}</q-item-label>
+    </q-item-section>
+
+    <q-item-section side top>
+      <q-item-label caption>{{ d.kode_pesanan }}</q-item-label>
+      <q-btn :to="{ name: 'order' }" class="btn-sm" flat size="sm" icon="trip_origin" text-color="blue-7"></q-btn>
+    </q-item-section>
+  </q-item>
+</template>
+<!-- <template>
+  <q-item v-for="(d, i) in dataInformasi" :key="i" clickable v-ripple>
+    <div v-if="d.status_pesanan === 0">
       <q-item-section top avatar>
         <q-avatar>
           <q-icon name="person_pin" class="text-blue-7" size="35px" />
@@ -16,15 +35,13 @@
           <q-icon name="sync_alt" color="blue-7" size="15px" />
           {{ d.tujuan.substring(0,20)+"..." }}
         </q-item-label>
+        <q-item-label caption>
+          {{ d.kode_pesanan.substring(0,20)+"..." }}
+        </q-item-label>
       </q-item-section>
-
-      <q-item-section side top>
-        <q-item-label caption>{{ d.kode_pesanan }}</q-item-label>
-        <q-btn :to="{ name: 'order' }" class="btn-sm" flat size="sm" icon="trip_origin" text-color="blue-7"></q-btn>
-      </q-item-section>
-    <!-- </div> -->
+    </div>
   </q-item>
-</template>
+</template> -->
 
 <script>
 import createToken from 'src/boot/create_token'

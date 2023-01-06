@@ -115,7 +115,8 @@
 
           <q-card-section horizontal>
             <q-card-section class="q-gutter-md fit">
-              <q-input class="text-capitalize" dense outlined v-model="nama_driver" label="Nama Driver"/>
+              <q-input dense outlined v-model="nama_driver" label="Nama Driver"/>
+              <q-input type="number" dense outlined v-model="no_telpon" label="No Telpon"/>
               <q-select
                 dense outlined
                 key="value"
@@ -147,7 +148,8 @@
                   </q-item>
                 </template>
               </q-select>
-              <q-input class="text-capitalize" dense outlined v-model="alamat" label="Alamat"/>
+              <q-input dense outlined v-model="email" label="Email"/>
+              <q-input dense outlined v-model="alamat" label="Alamat"/>
             </q-card-section>
           </q-card-section>
 
@@ -189,6 +191,22 @@ const columns = [
     sortable: true
   },
   {
+    name: 'email',
+    required: true,
+    label: 'EMAIL',
+    align: 'left',
+    field: row => row.email,
+    sortable: true
+  },
+  {
+    name: 'no_telpon',
+    required: true,
+    label: 'NO TELPON',
+    align: 'left',
+    field: row => row.no_telpon,
+    sortable: true
+  },
+  {
     name: 'no_plat',
     required: true,
     label: 'NO PLAT',
@@ -225,6 +243,8 @@ export default {
       nama_driver: null,
       alamat: null,
       columns,
+      no_telpon: null,
+      email: null,
       status: null,
       optionStatus: [
         {
@@ -246,7 +266,7 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     this.getDriver()
     this.getKendaraan()
   },
@@ -256,6 +276,7 @@ export default {
       this.$axios.get('drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
+          console.log(res)
           if (res.data.status) {
             this.data = res.data.data
           }
@@ -277,24 +298,22 @@ export default {
       const params = {
         no_plat: this.no_plat.plat_id,
         nama_driver: this.nama_driver,
+        email: this.email,
+        no_telpon: this.no_telpon,
         alamat: this.alamat,
         status_driver: this.status.value
       }
+      // this.$axios.post('users/registrasiDriver', {
       this.$axios.post('drivers/input', {
         ...params
       }, createToken()).then((res) => {
         if (res.data.status === true) {
-          this.$router.push('/Drivers')
+          this.$router.push({ name: 'driver' })
           this.$q.notify({
             message: res.data.message,
             color: 'green'
           })
           this.getDriver()
-        } else {
-          this.$q.notify({
-            message: res.data.message,
-            color: 'red'
-          })
         }
       })
     },
