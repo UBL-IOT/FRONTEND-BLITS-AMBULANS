@@ -80,7 +80,7 @@
               dense
               class="text-weight-bold"
               square
-            >{{ props.row.status_driver === 0 ? 'AKTIF' :(props.row.status_driver === 1) ? 'SEDANG MENGANTAR' :(props.row.status_driver === 2) ? 'SELESAI'  : 'TIDAK AKTIF' }}
+            >{{ props.row.status_driver === 0 ? 'AKTIF' :(props.row.status_driver === 1) ? 'SEDANG MENJEMPUT' :(props.row.status_driver === 2) ? 'SEDANG MENGANTAR'  : 'TIDAK AKTIF' }}
             </q-badge>
           </q-td>
         </template>
@@ -347,6 +347,11 @@ export default {
       }
     }
   }
+  // computed: {
+  //   infostatusDriver: function () {
+  //     return this.status_driver === 0 ? 'AKTIF' : (this.status_driver === 1) ? 'SEDANG MENGANTAR' : (this.status_driver === 2) ? 'SELESAI' : 'TIDAK AKTIF'
+  //   }
+  // }
 }
 </script>
 <style>

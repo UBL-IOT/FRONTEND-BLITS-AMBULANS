@@ -87,7 +87,7 @@
       async loginNotify() {
         await this.$axios.post('users/login', {
           // email: 'admin@gmail.com',
-          // password: 1234
+          // password: 123
           email: this.email,
           password: this.password
         })

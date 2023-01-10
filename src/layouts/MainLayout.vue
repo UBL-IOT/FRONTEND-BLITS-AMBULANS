@@ -10,36 +10,49 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
           round
         />
-        <q-space/>
-        <div class="row q-gutter-sm">
-          <q-btn flat text-color="blue-7" icon="notifications" class="q-mt-xs q-mr-xs">
-            <q-tooltip>
-              Information Update
-            </q-tooltip>
-            <q-badge color="green" rounded text-color="white" floating />
+        <q-space />
+        <div class="row q-gutter-md q-mr-md" v-for="(d, i) in data" :key="i">
+          <q-btn round dense flat color="blue-7" icon="notifications" v-if="d.status_pesanan === 0">
+            <q-badge color="red" text-color="white" floating >
+              {{ pesanan }}
+            </q-badge>
             <q-menu>
               <q-card class="my-card">
                 <q-card-section>
-                  <div class="text-h6 text-grey-7">Informasi Terbaru</div>
-                  <div class="text-subtitle text-grey-7">Daftar informasi terbaru system</div>
-                </q-card-section>
-                <q-card-section>
+                  <div class="text-h6 text-grey-7">Informasi Pesanan</div>
+                  <div class="text-subtitle text-grey-7">Daftar informasi pesanan masuk system</div>
                   <messages></messages>
                 </q-card-section>
 
                 <q-separator />
 
                 <q-card-actions vertical>
-                  <q-btn clickable v-ripple exact :to="{ name: 'order' }" v-close-popup flat text-color="blue-7">VIEW ALL</q-btn>
+                  <q-btn clickable v-ripple exact :to="{ name: 'order' }" v-close-popup flat text-color="blue-7">Lihat Semua</q-btn>
                 </q-card-actions>
               </q-card>
             </q-menu>
           </q-btn>
+          <q-btn round dense flat color="blue-7" icon="notifications" v-else>
+            <q-badge color="red" text-color="white" floating >
+              0
+            </q-badge>
+            <q-menu>
+              <q-card class="my-card">
+                <q-card-section>
+                  <div class="text-subtitle text-grey-7">Maaf belum ada pesanan masuk</div>
+                </q-card-section>
+                <q-separator />
+              </q-card>
+            </q-menu>
+          </q-btn>
+
         </div>
+
         <q-btn-dropdown
           flat
           text-color="blue-7"
-          icon="manage_accounts"
+          class="text-capitalize text-weight-bold text-subtitle1"
+          :label="salam()"
           left
           stretch
           no-caps
@@ -67,7 +80,7 @@
                 <img src="avatar.png" />
               </q-avatar>
 
-              <div class="text-subtitle1 q-mt-md q-mb-xs">{{ dataUser.user.username }}</div>
+              <div class="text-subtitle1 q-mt-md q-mb-xs text-capitalize text-bold">{{ dataUser.user.username }}</div>
 
               <q-btn
                 color="red orange"
@@ -123,7 +136,7 @@
             <q-avatar style="width: 50px; height: 55px;">
               <img src="icons/main_icon/icon.png" />
             </q-avatar>
-            <q-toolbar-title style="font-family: monospace;">
+            <q-toolbar-title style="font-family: monospace; font-weight: bold;">
               BLITS
               <div class="text-caption text-blue-7">Administrator <q-badge color="green" rounded text-color="white" /></div>
             </q-toolbar-title>
@@ -259,6 +272,7 @@
 </template>
 
 <script>
+import createToken from 'src/boot/create_token'
 import Messages from './Messages'
 export default ({
   name: 'MainLayout',
@@ -270,10 +284,28 @@ export default ({
       leftDrawerOpen: false,
       username: null,
       dataUser: this.$q.localStorage.getItem('dataUser'),
-      confirm: false
+      confirm: false,
+      pesanan: null,
+      sapa: 'Hallo, ',
+      data: ''
     }
   },
+  async created () {
+    await this.getPesanan()
+  },
   methods: {
+    getPesanan () {
+      this.$q.loading.show()
+      this.$axios.get('pesanan/get-pesanan', createToken())
+        .finally(() => this.$q.loading.hide())
+        .then((res) => {
+          this.data = res.data.data
+          this.pesanan = res.data.data.length
+        })
+    },
+    salam () {
+      return this.sapa + this.dataUser.user.username
+    },
     Logout () {
       this.$q.localStorage.clear()
       this.$router.push({ name: 'login' })
@@ -286,8 +318,10 @@ export default ({
   border-radius: 5px;
 }
 .tab-active {
-  background-color: #2777EF;
+  /* background-color: #2777EF; */
+  /* background-color: white; */
   color: white;
+  /* color: #2777EF; */
 }
 .header_normal {
   background: linear-gradient(

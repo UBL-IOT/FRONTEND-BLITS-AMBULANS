@@ -94,7 +94,7 @@ export default {
       map: {
         loaded: false,
         tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        attribution: 'contributors <a href="">BLITS ambulans</a>',
+        attribution: 'contributors <a href="">BLITS Ambulans</a>',
         center: L.latLng([-5.422083333333333, 105.25802]),
         bounds: L.latLngBounds([
           [-5.422083333333333, 105.25802]

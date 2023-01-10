@@ -21,7 +21,7 @@
         >
           <template v-slot:top>
             <div class="col">
-              <div class="col-2 q-table__title">
+              <div class="col-2 q-table_title">
                 Pesanan Masuk
               </div>
               <p class="text-caption">
@@ -163,7 +163,6 @@ export default {
       this.$axios.get('pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          console.log(res)
           this.data = res.data.data
           res.data.data.forEach((phonex) => {
             phonex.phones = phonex.data_user.no_telpon
