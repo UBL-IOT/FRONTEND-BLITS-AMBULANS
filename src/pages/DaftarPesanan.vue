@@ -116,7 +116,6 @@ const columns = [
   { name: 'no_telpon', align: 'left', label: 'NO. HANDPHONE', field: 'no_telpon', sortable: true },
   { name: 'titik_jemput', align: 'left', label: 'TITIK JEMPUT', field: 'titik_jemput', sortable: true },
   { name: 'tujuan', required: true, label: 'TUJUAN', align: 'left', field: row => row.tujuan, sortable: true },
-  // { name: 'tanggal', align: 'left', label: 'TGL. PEMESANAN', field: 'tanggal', sortable: true },
   { name: 'created_at', align: 'left', label: 'TGL. PEMESANAN', field: 'created_at', sortable: true },
   { name: 'status_pesanan', align: 'left', label: 'STATUS', field: 'status_pesanan', sortable: true }
 ]
@@ -151,7 +150,6 @@ export default {
       this.$axios.get('pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          console.log(res)
           if (res.data.status) {
             this.data = res.data.data
             res.data.data.forEach((phonex) => {

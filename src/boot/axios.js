@@ -8,8 +8,8 @@ import axios from 'axios'
 // "export default () => {}" function below (which runs individually
 // for each client)
 // const api = axios.create({ baseURL: 'http://localhost:5050/' })
-const api = axios.create({ baseURL: 'https://ambulance-blits.pptik.id:5134/' })
-// const api = axios.create({ baseURL: 'http://192.168.43.172:5050' })
+// const api = axios.create({ baseURL: 'https://ambulance-blits.pptik.id:5134/' })
+const api = axios.create({ baseURL: 'http://192.168.245.151:5050' })
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

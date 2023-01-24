@@ -19,5 +19,8 @@ export default boot(async ({ app }) => {
   app.config.globalProperties.$errorNotif = (msg) => {
     notif(msg, 'negative')
   }
+  app.config.globalProperties.$errorServer = (msg) => {
+    notif('Terjadi kesalahan pada server. Silahkan hubungi administrator', 'negative')
+  }
 })
 export { notif }

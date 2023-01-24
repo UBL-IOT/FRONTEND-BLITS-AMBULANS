@@ -18,7 +18,7 @@
                 <img src="avatar.png" />
               </q-avatar>
               <div class="col text-h6 q-ml-lg text-capitalize text-blue-7 text-weight-bold">
-                {{dataUser.user.username}}
+                {{ fullname }}
                 <q-btn @click="profile=true" dense flat text-color="blue-7" icon="edit" class="q-mr-md" size="10px">
                   <q-tooltip>
                     Edit
@@ -28,7 +28,7 @@
                   Administrator system BLITS Ambulans.
                 </div>
                 <div class="col text-caption text-grey">
-                  <q-icon name="email" /> {{dataUser.user.email}} | <q-icon name="location_on" /> {{dataUser.user.alamat}}
+                  <q-icon name="email" /> {{ email }} | <q-icon name="location_on" /> {{ alamat }}
                 </div>
               </div>
             </div>
@@ -63,10 +63,10 @@
           <q-separator />
 
           <q-form
-            @submit="Profile (guid)">
+            @submit="profil(dataUser.user.guid)">
             <q-card-section horizontal>
               <q-card-section class="q-gutter-md fit">
-                <q-input dense outlined v-model="username" label="Username"/>
+                <q-input dense outlined v-model="fullname" label="Nama Lengkap"/>
                 <q-input dense outlined v-model="no_telpon" label="No. Telepon"/>
               </q-card-section>
               <q-separator vertical />
@@ -94,15 +94,33 @@ export default {
   data () {
     return {
       dataUser: this.$q.localStorage.getItem('dataUser'),
-      username: null,
+      fullname: null,
       email: null,
       no_telpon: null,
       alamat: null,
       profile: false
     }
   },
+  created () {
+    this.getUser()
+  },
   methods: {
-    Profile (guid) {
+    getUser () {
+      this.$axios.get('users/get-role-admin', {
+        fullname: this.fullname,
+        email: this.email,
+        no_telpon: this.no_telpon,
+        alamat: this.alamat
+      }, createToken())
+        .then((res) => {
+          this.data = res.data.data
+          this.fullname = this.data[0].fullname
+          this.email = this.data[0].email
+          this.no_telpon = this.data[0].no_telpon
+          this.alamat = this.data[0].alamat
+        })
+    },
+    profil (guid) {
       this.$axios.put(`users/user-update/${this.dataUser.user.guid}`, {
         username: this.username,
         email: this.email,
@@ -119,29 +137,10 @@ export default {
             })
           }
         })
-    },
-    getUser () {
-      this.$axios.get('users/get-role-admin', {
-        username: this.username,
-        email: this.email,
-        no_telpon: this.no_telpon,
-        alamat: this.alamat
-      }, createToken())
-        .then((res) => {
-          this.data = res.data.data
-          this.username = this.data[0].username
-          this.email = this.data[0].email
-          this.no_telpon = this.data[0].no_telpon
-          this.alamat = this.data[0].alamat
-        })
     }
-  },
-  mounted () {
-    this.getUser()
   }
 }
 </script>
 
 <style scoped>
-
 </style>

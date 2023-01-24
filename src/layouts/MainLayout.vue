@@ -11,11 +11,13 @@
           round
         />
         <q-space />
-        <div class="row q-gutter-md q-mr-md" v-for="(d, i) in data" :key="i">
-          <q-btn round dense flat color="blue-7" icon="notifications" v-if="d.status_pesanan === 0">
-            <q-badge color="red" text-color="white" floating >
-              {{ pesanan }}
-            </q-badge>
+        <div class="row q-gutter-md q-mr-md">
+          <q-btn round dense flat color="blue-7" icon="notifications">
+            <div v-for="(d, i) in data" :key="i">
+              <q-badge v-if="d.status_pesanan === 0" color="red" text-color="white" floating >
+                {{ pesanan }}
+              </q-badge>
+            </div>
             <q-menu>
               <q-card class="my-card">
                 <q-card-section>
@@ -32,19 +34,6 @@
               </q-card>
             </q-menu>
           </q-btn>
-          <q-btn round dense flat color="blue-7" icon="notifications" v-else>
-            <q-badge color="red" text-color="white" floating >
-              0
-            </q-badge>
-            <q-menu>
-              <q-card class="my-card">
-                <q-card-section>
-                  <div class="text-subtitle text-grey-7">Maaf belum ada pesanan masuk</div>
-                </q-card-section>
-                <q-separator />
-              </q-card>
-            </q-menu>
-          </q-btn>
 
         </div>
 
@@ -55,8 +44,7 @@
           :label="salam()"
           left
           stretch
-          no-caps
-        >
+          no-caps>
           <div class="row no-wrap q-pa-md">
             <div class="column">
               <div class="text-h6 q-mb-md">Settings</div>
@@ -77,10 +65,11 @@
 
             <div class="column items-center">
               <q-avatar size="72px">
+                <!-- <lottie :options="dashboard" /> -->
                 <img src="avatar.png" />
               </q-avatar>
 
-              <div class="text-subtitle1 q-mt-md q-mb-xs text-capitalize text-bold">{{ dataUser.user.username }}</div>
+              <div class="text-subtitle1 q-mt-md q-mb-xs text-capitalize text-bold">{{ dataUser.user.fullname }}</div>
 
               <q-btn
                 color="red orange"
@@ -91,30 +80,30 @@
                 @click="Logout"
               />
               <q-dialog v-model="confirm" persistent>
-            <q-card class="my-card header-counter" flat bordered>
-              <q-card-section horizontal>
-                <q-card-section class="q-pt-xs">
-                  <div class="text-h6 q-mt-sm q-mb-xs">Keluar dari sistem BLITS Ambulans</div>
-                  <div class="text-caption text-grey">
-                    Apakah kamu yakin mau keluar dari sistem BLITS Ambulans sekarang ?
-                  </div>
-                </q-card-section>
+                <q-card class="my-card header-counter" flat bordered>
+                  <q-card-section horizontal>
+                    <q-card-section class="q-pt-xs">
+                      <div class="text-h6 q-mt-sm q-mb-xs">Keluar dari sistem BLITS Ambulans</div>
+                      <div class="text-caption text-grey">
+                        Apakah kamu yakin mau keluar dari sistem BLITS Ambulans sekarang ?
+                      </div>
+                    </q-card-section>
 
-                <q-card-section class="col-4 flex flex-center">
-                  <q-avatar size="120px" rounded>
-                    <img src="image-logout.jpg" alt="">
-                  </q-avatar>
-                </q-card-section>
-              </q-card-section>
+                    <q-card-section class="col-4 flex flex-center">
+                      <q-avatar size="120px" rounded>
+                        <img src="image-logout.jpg" alt="">
+                      </q-avatar>
+                    </q-card-section>
+                  </q-card-section>
 
-              <q-separator />
+                  <q-separator />
 
-              <q-card-actions>
-                <q-btn flat color="blue-13" @click="Logout" label="Keluar" icon="sentiment_very_dissatisfied" />
-                <q-btn flat color="red-13" v-close-popup label="Batal" icon="highlight_off" />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
+                  <q-card-actions>
+                    <q-btn flat color="blue-13" @click="Logout" label="Keluar" icon="sentiment_very_dissatisfied" />
+                    <q-btn flat color="red-13" v-close-popup label="Batal" icon="highlight_off" />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
             </div>
           </div>
         </q-btn-dropdown>
@@ -282,6 +271,7 @@ export default ({
   data () {
     return {
       leftDrawerOpen: false,
+      fullname: null,
       username: null,
       dataUser: this.$q.localStorage.getItem('dataUser'),
       confirm: false,
@@ -300,11 +290,15 @@ export default ({
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           this.data = res.data.data
-          this.pesanan = res.data.data.length
+          const tempRecipes = this.data.filter((item) => {
+            return (item.status_pesanan === 0)
+          })
+          this.pesanan = tempRecipes.length
         })
     },
     salam () {
-      return this.sapa + this.dataUser.user.username
+      return this.sapa + this.dataUser.user.fullname
+      // return this.sapa + this.fullname
     },
     Logout () {
       this.$q.localStorage.clear()
@@ -318,10 +312,7 @@ export default ({
   border-radius: 5px;
 }
 .tab-active {
-  /* background-color: #2777EF; */
-  /* background-color: white; */
   color: white;
-  /* color: #2777EF; */
 }
 .header_normal {
   background: linear-gradient(

@@ -195,7 +195,7 @@ const columns = [
     required: true,
     label: 'EMAIL',
     align: 'left',
-    field: row => row.email,
+    field: row => row.data_user.email,
     sortable: true
   },
   {
@@ -240,6 +240,7 @@ export default {
       listPlat: [],
       no_plat: null,
       guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432',
+      headers: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJndWlkIjoiNzNhZjk3YjQtNTllZC00MGFmLWJlZTQtOTM4MzhmMzlhNGYzIiwiaWF0IjoxNjY5MTA3MDIyLCJleHAiOjE4MjY3ODcwMjJ9.4x6F8nQyDiMaiARRMOpIV2YkbPrS4iKEEf3Qtm0SjDY',
       nama_driver: null,
       alamat: null,
       columns,
@@ -276,7 +277,6 @@ export default {
       this.$axios.get('drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          console.log(res)
           if (res.data.status) {
             this.data = res.data.data
           }
@@ -287,7 +287,7 @@ export default {
         guid_po: this.guid_po
       }, {
         headers: {
-          'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJndWlkIjoiNzNhZjk3YjQtNTllZC00MGFmLWJlZTQtOTM4MzhmMzlhNGYzIiwiaWF0IjoxNjY5MTA3MDIyLCJleHAiOjE4MjY3ODcwMjJ9.4x6F8nQyDiMaiARRMOpIV2YkbPrS4iKEEf3Qtm0SjDY'
+          'x-access-token': this.headers
         }
       })
         .then((res) => {
@@ -303,10 +303,10 @@ export default {
         alamat: this.alamat,
         status_driver: this.status.value
       }
-      // this.$axios.post('users/registrasiDriver', {
-      this.$axios.post('drivers/input', {
+      this.$axios.post('users/registrasiDriver', {
+      // this.$axios.post('drivers/input', {
         ...params
-      }, createToken()).then((res) => {
+      }, createToken()).then(async (res) => {
         if (res.data.status === true) {
           this.$router.push({ name: 'driver' })
           this.$q.notify({
@@ -314,6 +314,12 @@ export default {
             color: 'green'
           })
           this.getDriver()
+        }
+      }).catch((err) => {
+        if (err.response) {
+          this.$errorNotif(err.response.data.message)
+        } else {
+          this.$errorServer()
         }
       })
     },

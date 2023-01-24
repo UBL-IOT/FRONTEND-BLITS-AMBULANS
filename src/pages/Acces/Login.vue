@@ -2,8 +2,8 @@
 <template>
   <q-layout>
     <q-page-container>
-      <q-page class="flex flex-center">
-        <q-card class="my-card" flat bordered v-bind:style="$q.platform.is.mobile ? { width: '80%' } : { width: '50%' }">
+      <q-page class="flex flex-center" style="background-color: lightgrey;">
+        <q-card class="my-card" flat unelevated dense bordered v-bind:style="$q.platform.is.mobile ? { width: '80%' } : { width: '50%' }">
           <div class="row q-col-gutter-md">
             <div class="col-12 col-md-5">
               <q-carousel
@@ -30,7 +30,8 @@
                 <div class="text-caption text-grey-7">Bandar Lampung Intellegent Transportation System</div>
                 <div class="text-subtitle2 q-mt-lg text-left" style="font-size: 20px;">Sign In</div>
                 <q-form class="q-gutter-md q-mt-md">
-                  <q-input type="email" dense v-model="email" label="Email" lazy-rules>
+                  <!-- <q-input type="number" dense v-model="no_telpon" label="No Telpon" lazy-rules> -->
+                  <q-input type="email" dense v-model="email" label="No Telpon" lazy-rules>
                     <template v-slot:prepend>
                       <q-icon size="20px" name="alternate_email" />
                     </template>
@@ -74,6 +75,7 @@
   export default {
     data() {
       return {
+        no_telpon: null,
         email: null,
         password: null,
         role: null,
@@ -86,7 +88,7 @@
     methods: {
       async loginNotify() {
         await this.$axios.post('users/login', {
-          // email: 'admin@gmail.com',
+          // no_telpon: 081368344612,
           // password: 123
           email: this.email,
           password: this.password

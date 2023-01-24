@@ -21,7 +21,7 @@
         >
           <template v-slot:top>
             <div class="col">
-              <div class="col-2 q-table_title">
+              <div class="col-2 q-table__title">
                 Pesanan Masuk
               </div>
               <p class="text-caption">
@@ -65,40 +65,49 @@
             </q-slide-transition>
           </template>
           <template v-slot:body="props">
-            <q-tr :props="props" v-if="props.row.status_pesanan === 0">
-              <q-td class="text-uppercase" key="kode_pesanan">
+            <q-tr class="text-uppercase" :props="props" v-if="props.row.status_pesanan === 0">
+              <q-td key="kode_pesanan">
                 {{ props.row.kode_pesanan }}
               </q-td>
-              <q-td class="text-uppercase" key="fullname" :props="props">
+              <q-td key="fullname" :props="props">
                 {{ props.row.data_user.fullname }}
               </q-td>
-              <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">
-                {{ props.row.data_user.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a>
+              <q-td class="text-bold" key="no_telpon" :props="props">
+                <a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">
+                  {{ props.row.data_user.no_telpon }}
+                  <q-tooltip>CHAT WHATSAPP</q-tooltip>
+                </a>
               </q-td>
-              <q-td class="text-weight-bold text-blue-7" key="titik_jemput" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">
-                {{ props.row.titik_jemput.substring(0,10)+"..." }}</a>
+              <q-td class="text-bold" key="titik_jemput" :props="props">
+                <a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">
+                  {{ props.row.titik_jemput.substring(0,10)+"..." }}
+                </a>
               </q-td>
-              <q-td class="text-weight-bold text-blue-7" key="tujuan" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">
-                {{ props.row.tujuan.substring(0,10)+"..." }}
-              </a></q-td>
+              <q-td class="text-bold" key="tujuan" :props="props">
+                <a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">
+                  {{ props.row.tujuan.substring(0,10)+"..." }}
+                </a>
+              </q-td>
               <q-td key="created_at" :props="props">
                 {{ new Date (props.row.created_at).toLocaleDateString('id', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}
               </q-td>
-              <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan === 0) ? 'orange-7' :(props.row.status_pesanan === 1) ? 'blue-7' : 'green-7'">
-                {{`${ (props.row.status_pesanan === 0) ? 'MENUNGGU' :(props.row.status_pesanan === 1) ? 'PROSES' : 'SELESAI' }`}}
-              </q-badge></q-td>
+              <q-td key="status_pesanan" :props="props">
+                <q-badge :color="(props.row.status_pesanan === 0) ? 'orange-7' :(props.row.status_pesanan === 1) ? 'blue-7' : 'green-7'">
+                  {{`${ (props.row.status_pesanan === 0) ? 'MENUNGGU' :(props.row.status_pesanan === 1) ? 'PROSES' : 'SELESAI' }`}}
+                </q-badge>
+              </q-td>
               <q-td key="aksi" :props="props">
-              <div class="justify-center q-gutter-x-xs">
-                <q-btn
-                  color="blue-7"
-                  flat
-                  @click="Drivers (props.row.guid)"
-                  dense>
-                  <q-icon left size="xs" name="supervised_user_circle" />
-                  <div>DRIVER</div>
-                </q-btn>
-              </div>
-            </q-td>
+                <div class="justify-center q-gutter-x-xs">
+                  <q-btn
+                    color="blue-7"
+                    flat
+                    @click="Drivers (props.row.guid)"
+                    dense>
+                    <q-icon left size="xs" name="supervised_user_circle" />
+                    <div>DRIVER</div>
+                  </q-btn>
+                </div>
+              </q-td>
             </q-tr>
           </template>
         </q-table>
@@ -143,6 +152,7 @@ export default {
       columns,
       data,
       phonex: '',
+      kodePesanan: '',
       no_telpon: '',
       phoneData: '',
       drivers: '',
@@ -165,6 +175,7 @@ export default {
         .then((res) => {
           this.data = res.data.data
           res.data.data.forEach((phonex) => {
+            this.kodePesanan = phonex.kode_pesanan
             phonex.phones = phonex.data_user.no_telpon
             this.phoneData = phonex.phones.replace('0', '62')
             phonex.statuss = phonex.status_pesanan
