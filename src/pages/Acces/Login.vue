@@ -30,8 +30,7 @@
                 <div class="text-caption text-grey-7">Bandar Lampung Intellegent Transportation System</div>
                 <div class="text-subtitle2 q-mt-lg text-left" style="font-size: 20px;">Sign In</div>
                 <q-form class="q-gutter-md q-mt-md">
-                  <!-- <q-input type="number" dense v-model="no_telpon" label="No Telpon" lazy-rules> -->
-                  <q-input type="email" dense v-model="email" label="No Telpon" lazy-rules>
+                  <q-input type="number" dense v-model="no_telpon" label="No Telpon" lazy-rules>
                     <template v-slot:prepend>
                       <q-icon size="20px" name="alternate_email" />
                     </template>
@@ -89,8 +88,8 @@
       async loginNotify() {
         await this.$axios.post('users/login', {
           // no_telpon: 081368344612,
-          // password: 123
-          email: this.email,
+          // password: siapasaya
+          no_telpon: this.no_telpon,
           password: this.password
         })
         .then((res) => {
@@ -112,7 +111,7 @@
           } else {
             this.$q.notify({
               color: 'negative',
-              message: 'Email atau password salah'
+              message: res.data.message
             })
           }
         })

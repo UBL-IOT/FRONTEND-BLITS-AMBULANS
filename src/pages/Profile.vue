@@ -122,7 +122,7 @@ export default {
     },
     profil (guid) {
       this.$axios.put(`users/user-update/${this.dataUser.user.guid}`, {
-        username: this.username,
+        fullname: this.fullname,
         email: this.email,
         no_telpon: this.no_telpon,
         alamat: this.alamat
@@ -133,6 +133,7 @@ export default {
               title: 'Peringatan',
               message: 'apakah anda yakin? klik ok untuk melanjutkan'
             }).onOk(() => {
+              this.$q.localStorage.clear()
               this.$router.push({ name: 'login' })
             })
           }

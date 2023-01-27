@@ -150,7 +150,7 @@ export default {
       this.$axios.get('pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          if (res.data.status) {
+          if (res.data.status === true) {
             this.data = res.data.data
             res.data.data.forEach((phonex) => {
               phonex.phones = phonex.data_user.no_telpon

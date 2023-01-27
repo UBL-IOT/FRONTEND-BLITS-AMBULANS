@@ -218,6 +218,43 @@
                 </q-item-section>
               </q-item>
 
+              <q-expansion-item
+                class="q-pl-sm"
+                icon="supervisor_account"
+                label="Data Users"
+              >
+                <q-item
+                  active-class="tab-active"
+                  class="q-ma-sm navigation-item"
+                  :to="{ name: 'userVerified' }"
+                  exact
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="person" />
+                  </q-item-section>
+                  <q-item-section>
+                    Users Verified
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  class="q-ma-sm navigation-item"
+                  :to="{ name: 'userDenied' }"
+                  exact
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="person_off" />
+                  </q-item-section>
+                  <q-item-section>
+                    Users Denied
+                  </q-item-section>
+                </q-item>
+              </q-expansion-item>
+
               <q-item
                 active-class="tab-active"
                 :to="{ name: 'map' }"

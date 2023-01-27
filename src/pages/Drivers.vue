@@ -10,7 +10,6 @@
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
       <q-table
-        title="Detail Pengemudi"
         :rows="data"
         :hide-header="mode === 'grid'"
         :columns="columns"
@@ -74,8 +73,7 @@
           <q-td :props="props">
             <q-badge
               :color="(props.row.status_driver === 0) ?'green'
-              :(props.row.status_driver === 1 ?'orange':'red')
-              "
+              :(props.row.status_driver === 1 ?'orange':'red')"
               text-color="white"
               dense
               class="text-weight-bold"
@@ -115,7 +113,7 @@
 
           <q-card-section horizontal>
             <q-card-section class="q-gutter-md fit">
-              <q-input dense outlined v-model="nama_driver" label="Nama Driver"/>
+              <q-input class="text-capitalize" dense outlined v-model="nama_driver" label="Nama Driver"/>
               <q-input type="number" dense outlined v-model="no_telpon" label="No Telpon"/>
               <q-select
                 dense outlined
@@ -149,7 +147,7 @@
                 </template>
               </q-select>
               <q-input dense outlined v-model="email" label="Email"/>
-              <q-input dense outlined v-model="alamat" label="Alamat"/>
+              <q-input class="text-capitalize" dense outlined v-model="alamat" label="Alamat"/>
             </q-card-section>
           </q-card-section>
 
@@ -194,8 +192,10 @@ const columns = [
     name: 'email',
     required: true,
     label: 'EMAIL',
+    class: 'text-capitalized',
     align: 'left',
-    field: row => row.data_user.email,
+    // field: row => row.data_user.email,
+    field: row => row.email,
     sortable: true
   },
   {
@@ -277,6 +277,7 @@ export default {
       this.$axios.get('drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
+          console.log(res)
           if (res.data.status) {
             this.data = res.data.data
           }
@@ -307,13 +308,22 @@ export default {
       // this.$axios.post('drivers/input', {
         ...params
       }, createToken()).then(async (res) => {
-        if (res.data.status === true) {
-          this.$router.push({ name: 'driver' })
-          this.$q.notify({
-            message: res.data.message,
-            color: 'green'
+        if (res.data.status) {
+          await this.$q.dialog({
+            title: 'peringatan',
+            message: 'Apakah anda yakin ? klik ok untuk melanjutkan',
+            cancel: true,
+            persistent: true
+          }).onOk(() => {
+            this.$router.push({ name: 'driver' })
+            this.getDriver()
           })
-          this.getDriver()
+        } else {
+          this.$q.notify({
+            type: 'error',
+            color: 'red',
+            message: res.data.message
+          })
         }
       }).catch((err) => {
         if (err.response) {
@@ -353,11 +363,6 @@ export default {
       }
     }
   }
-  // computed: {
-  //   infostatusDriver: function () {
-  //     return this.status_driver === 0 ? 'AKTIF' : (this.status_driver === 1) ? 'SEDANG MENGANTAR' : (this.status_driver === 2) ? 'SELESAI' : 'TIDAK AKTIF'
-  //   }
-  // }
 }
 </script>
 <style>

@@ -72,6 +72,11 @@
               <q-td key="nama_driver" :props="props">
                 {{ props.row.nama_driver }}
               </q-td>
+              <q-td class="text-weight-bold" key="no_telpon" :props="props">
+                <a style="text-decoration: none;" target="_blank" :href="'http://https://api.whatsapp.com/send?phone=' + telponDriver">
+                {{ props.row.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip>
+              </a>
+              </q-td>
               <q-td key="no_plat" :props="props">
                 {{ props.row.no_plat }}
               </q-td>
@@ -114,6 +119,7 @@ function wrapCsvValue (val, formatFn) {
 
 const columns = [
   { name: 'nama_driver', align: 'left', label: 'NAMA DRIVER', field: 'nama_driver', sortable: true },
+  { name: 'no_telpon', align: 'left', label: 'No Telpon', field: 'no_telpon', sortable: true },
   { name: 'no_plat', align: 'left', label: 'NO PLAT', field: 'no_plat', sortable: true },
   { name: 'status_driver', align: 'center', label: 'STATUS DRIVER', field: 'status_driver', sortable: true },
   { name: 'aksi', align: 'center', label: 'Pilih Driver', field: 'aksi', sortable: true }
@@ -131,6 +137,7 @@ export default {
       Pesanan: '',
       status_pesanan: '',
       status_driver: '',
+      telponDriver: '',
       guid: '',
       pilih: '',
       driver: '',
@@ -151,6 +158,10 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.data = res.data.data
+            res.data.data.forEach(telpon => {
+              telpon = telpon.no_telpon.replace('0', '62')
+              this.telponDriver = telpon
+            })
           }
         }).catch(() => this.$commonErrorNotif())
     },

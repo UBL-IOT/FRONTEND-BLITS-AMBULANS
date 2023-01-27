@@ -6,6 +6,219 @@
         <q-breadcrumbs-el class="text-grey-7" label="Dashboard" icon="widgets" />
       </q-breadcrumbs>
     </q-card>
+
+    <q-card class="q-pa-md q-ma-md">
+      <q-card-section class="text-h6 q-pb-none">
+        <q-item>
+          <q-item-section avatar class="">
+            <q-icon color="blue" name="key" size="44px"/>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>
+              <div class="text-h6">Users Validation</div>
+            </q-item-label>
+            <q-item-label caption class="text-black">
+              Monitoring new users. Tracking users, and shipping status here.
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <div class="row q-mt-sm q-gutter-md">
+
+        <!-- <div class="row col fit">
+          <q-card-section horizontal class="my-card col">
+            <q-card-section class="col q-pa-lg">
+
+              <q-form>
+                <div class="row q-gutter-sm text-uppercase">
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      lazy-rules
+                      use-input
+                      option-label="sekolah"
+                      label="DRIVERS"
+                      :rules="[ val => val !== null || 'Please type something']"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="school" class="text-blue-13" />
+                      </template>
+                      <template v-slot:option="scope">
+                        <q-item v-bind="scope.itemProps">
+                          <q-item-section>
+                            <q-item-label>{{scope.opt.sekolah}}</q-item-label>
+                            <q-item-label caption>{{scope.opt.kabupaten_kota}} - {{scope.opt.propinsi}}</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                      <template v-slot:no-option>
+                        <q-item>
+                          <q-item-section class="text-grey">
+                            Hasil tidak ditemukan
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                  </div>
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      lazy-rules
+                      use-input
+                      option-label="sekolah"
+                      label="USERS"
+                      :rules="[ val => val !== null || 'Please type something']"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="school" class="text-blue-13" />
+                      </template>
+                      <template v-slot:option="scope">
+                        <q-item v-bind="scope.itemProps">
+                          <q-item-section>
+                            <q-item-label>{{scope.opt.sekolah}}</q-item-label>
+                            <q-item-label caption>{{scope.opt.kabupaten_kota}} - {{scope.opt.propinsi}}</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                      <template v-slot:no-option>
+                        <q-item>
+                          <q-item-section class="text-grey">
+                            Hasil tidak ditemukan
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                  </div>
+                </div>
+                <div class="row q-gutter-sm">
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      lazy-rules
+                      use-input
+                      option-label="sekolah"
+                      label="USERS"
+                      :rules="[ val => val !== null || 'Please type something']"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="school" class="text-blue-13" />
+                      </template>
+                      <template v-slot:option="scope">
+                        <q-item v-bind="scope.itemProps">
+                          <q-item-section>
+                            <q-item-label>{{scope.opt.sekolah}}</q-item-label>
+                            <q-item-label caption>{{scope.opt.kabupaten_kota}} - {{scope.opt.propinsi}}</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                      <template v-slot:no-option>
+                        <q-item>
+                          <q-item-section class="text-grey">
+                            Hasil tidak ditemukan
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                  </div>
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      lazy-rules
+                      use-input
+                      option-label="sekolah"
+                      label="USERS"
+                      :rules="[ val => val !== null || 'Please type something']"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="school" class="text-blue-13" />
+                      </template>
+                      <template v-slot:option="scope">
+                        <q-item v-bind="scope.itemProps">
+                          <q-item-section>
+                            <q-item-label>{{scope.opt.sekolah}}</q-item-label>
+                            <q-item-label caption>{{scope.opt.kabupaten_kota}} - {{scope.opt.propinsi}}</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                      <template v-slot:no-option>
+                        <q-item>
+                          <q-item-section class="text-grey">
+                            Hasil tidak ditemukan
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                  </div>
+                </div>
+              </q-form>
+            </q-card-section>
+          </q-card-section>
+        </div> -->
+      </div>
+      </q-card-section>
+      <q-card-section class="q-pa-none q-ma-none">
+        <q-table class="no-shadow no-border"
+          :rows="data"
+          :columns="columns"
+          row-key="name"
+          :pagination="pagination">
+          <template v-slot:body="props">
+            <q-tr :props="props" v-if="props.row.verifikasi === 0 && props.row.role === '2'">
+              <q-td key="fullname" :props="props">
+                <q-item>
+                  <q-item-section>
+                    <q-avatar square>
+                      <!-- <img :src="props.row.prod_img"/> -->
+                      <img src="../../public/avatar.png"/>
+                    </q-avatar>
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label>{{ props.row.fullname }}</q-item-label>
+                    <q-badge v-if="props.row.role === '2'" :color="props.row.verifikasi === 0 ? 'orange' :props.row.role === '3' ? 'red' : 'primari'">
+                      {{ props.row.verifikasi === 0 ? 'unverified' : 'verified' }}
+                      <!-- {{ props.row.verifikasi === 0 ? 'unverified' :props.row.role === '3' ? 'driver' :props.row.role === '1' ? 'admin' : 'teal' }} -->
+                    </q-badge>
+                  </q-item-section>
+                </q-item>
+              </q-td>
+              <q-td key="email" :props="props">
+                <q-item>
+                  <q-item-section>
+                    <q-item-label>{{ props.row.email }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-td>
+              <q-td key="no_telpon" :props="props">
+                <q-item>
+                  <q-item-section>
+                    <q-item-label>{{ props.row.no_telpon }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-td>
+              <q-td key="status" :props="props">
+                <div class="text-grey-8 q-gutter-xs">
+                  <q-badge :color="props.row.role === '1' ? 'orange' :props.row.role === '2' ? 'red' : 'primary'">
+                    {{ props.row.role === '3' ? 'Driver' :props.row.role === '2' ? 'Users' : 'Admins' }}
+                  </q-badge>
+                </div>
+              </q-td>
+              <q-td key="aksi" :props="props">
+                <div class="text-grey-8 q-gutter-xs">
+                  <q-btn @click="denied (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" class="gt-xs" size="md" flat color="red" dense round icon="close"/>
+                  <q-btn @click="verified (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="md" flat dense round color="blue" icon="add_task"/>
+                </div>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </q-card-section>
+    </q-card>
+
     <div class="row q-col-gutter-md q-ma-xs">
       <div class="col-12 col-md-9 q-pr-md">
         <q-card>
@@ -79,7 +292,7 @@
               <div class="row">
                 <div class="col-8">
                   <div v-if="jumlah === null || jumlah === undefined" class="text-h4 text-red-7 text-weight-bold">-</div>
-                  <div v-else class="text-h4 text-red-7 text-weight-bold">{{jumlah}}</div>
+                  <div v-else class="text-h4 text-red-7 text-weight-bold">{{ jumlah }}</div>
                   <div class="text-subtitle2 text-blue-7">Ambulans</div>
                   <div class="text-caption text-grey">
                     Jumlah ambulans yang terdaftar.
@@ -117,7 +330,7 @@
               <div class="row">
                 <div class="col-8">
                   <div v-if="pengemudi === null || pengemudi === undefined" class="text-h4 text-red-7 text-weight-bold">-</div>
-                  <div v-else class="text-h4 text-red-7 text-weight-bold">{{pengemudi}}</div>
+                  <div v-else class="text-h4 text-red-7 text-weight-bold">{{ pengemudi }}</div>
                   <div class="text-subtitle2 text-blue-7">Pengemudi</div>
                   <div class="text-caption text-grey">
                     Jumlah pengemudi terdaftar.
@@ -136,6 +349,15 @@
 </template>
 
 <script>
+
+const columns = [
+  { name: 'fullname', label: 'Nama Lengkap', field: 'fullname', sortable: true, align: 'left' },
+  { name: 'email', label: 'Email', field: 'email', sortable: true, align: 'center' },
+  { name: 'no_telpon', label: 'No. Telpon', field: 'no_telpon', sortable: true, align: 'center', class: 'text-bold' },
+  { name: 'status', label: 'Status', field: 'status', sortable: true, align: 'center', class: 'text-bold' },
+  { name: 'aksi', label: 'Aksi', field: 'aksi', sortable: true, align: 'center', class: 'text-bold' }
+]
+
 import createToken from 'src/boot/create_token'
 import { LMap, LIcon, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import L from 'leaflet'
@@ -150,6 +372,11 @@ export default {
   },
   data () {
     return {
+      columns,
+      data: [],
+      pagination: {
+        rowsPerPage: 50
+      },
       map: {
         loaded: false,
         tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -167,6 +394,8 @@ export default {
       pengemudi: null,
       pesanan: null,
       jumlah: null,
+      verifikasi: '',
+      guid: '',
       guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432'
     }
   },
@@ -174,6 +403,7 @@ export default {
     await this.getKendaraan()
     await this.getDriver()
     await this.getPesanan()
+    await this.getCustomers()
     this.map.loaded = true
   },
   methods: {
@@ -219,6 +449,36 @@ export default {
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           this.pesanan = res.data.data.length
+        })
+    },
+    getCustomers () {
+      this.$q.loading.show()
+      this.$axios.get('users/get-all/', createToken())
+        .finally(() => this.$q.loading.hide())
+        .then((res) => {
+          if (res.data.status) {
+            this.data = res.data.data
+          }
+        })
+    },
+    verified (guid) {
+      this.$axios.put(`users/user-update/${guid}`, {
+        verifikasi: 1
+      }, createToken())
+        .then((res) => {
+          if (res.data.status === true) {
+            this.$router.push({ name: 'userVerified' })
+          }
+        })
+    },
+    denied (guid) {
+      this.$axios.put(`users/user-update/${guid}`, {
+        verifikasi: 2
+      }, createToken())
+        .then((res) => {
+          if (res.data.status === true) {
+            this.$router.push({ name: 'userDenied' })
+          }
         })
     }
   }
