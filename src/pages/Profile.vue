@@ -128,14 +128,13 @@ export default {
         alamat: this.alamat
       }, createToken())
         .then((res) => {
-          if (res.data.status) {
-            this.$q.dialog({
-              title: 'Peringatan',
-              message: 'apakah anda yakin? klik ok untuk melanjutkan'
-            }).onOk(() => {
-              this.$q.localStorage.clear()
-              this.$router.push({ name: 'login' })
+          if (res.data.status === true) {
+            this.$q.notify({
+              color: 'success',
+              message: 'Data berhasil diubah!'
             })
+            this.$router.push({ name: 'profil' })
+            this.profile = false
           }
         })
     }

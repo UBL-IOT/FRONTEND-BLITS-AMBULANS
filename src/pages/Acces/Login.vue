@@ -87,25 +87,24 @@
     methods: {
       async loginNotify() {
         await this.$axios.post('users/login', {
-          // no_telpon: 081368344612,
+          // no_telpon: 0813683446121,
           // password: siapasaya
           no_telpon: this.no_telpon,
           password: this.password
         })
         .then((res) => {
-          console.log(res);
           if (res.data.status === true) {
             this.$q.localStorage.set('dataUser', res.data.data)
             if (res.data.data.user.role === '1') {
               this.$router.push({name: 'dashboard'})
               this.$q.notify({
                 color: 'positive',
-                message: 'Selamat anda berhasil login'
+                message: res.data.message
               })
             } else {
               this.$q.notify({
                 color: 'negative',
-                message: 'Maaf anda tidak dapat login'
+                message: res.data.message
               })
             }
           } else {

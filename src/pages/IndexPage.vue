@@ -9,7 +9,7 @@
 
     <q-card class="q-pa-md q-ma-md">
       <q-card-section class="text-h6 q-pb-none">
-        <q-item>
+        <q-item >
           <q-item-section avatar class="">
             <q-icon color="blue" name="key" size="44px"/>
           </q-item-section>
@@ -22,144 +22,11 @@
               Monitoring new users. Tracking users, and shipping status here.
             </q-item-label>
           </q-item-section>
+
         </q-item>
-        <div class="row q-mt-sm q-gutter-md">
-
-        <!-- <div class="row col fit">
-          <q-card-section horizontal class="my-card col">
-            <q-card-section class="col q-pa-lg">
-
-              <q-form>
-                <div class="row q-gutter-sm text-uppercase">
-                  <div class="col">
-                    <q-select
-                      outlined
-                      dense
-                      lazy-rules
-                      use-input
-                      option-label="sekolah"
-                      label="DRIVERS"
-                      :rules="[ val => val !== null || 'Please type something']"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon name="school" class="text-blue-13" />
-                      </template>
-                      <template v-slot:option="scope">
-                        <q-item v-bind="scope.itemProps">
-                          <q-item-section>
-                            <q-item-label>{{scope.opt.sekolah}}</q-item-label>
-                            <q-item-label caption>{{scope.opt.kabupaten_kota}} - {{scope.opt.propinsi}}</q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                      <template v-slot:no-option>
-                        <q-item>
-                          <q-item-section class="text-grey">
-                            Hasil tidak ditemukan
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                    </q-select>
-                  </div>
-                  <div class="col">
-                    <q-select
-                      outlined
-                      dense
-                      lazy-rules
-                      use-input
-                      option-label="sekolah"
-                      label="USERS"
-                      :rules="[ val => val !== null || 'Please type something']"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon name="school" class="text-blue-13" />
-                      </template>
-                      <template v-slot:option="scope">
-                        <q-item v-bind="scope.itemProps">
-                          <q-item-section>
-                            <q-item-label>{{scope.opt.sekolah}}</q-item-label>
-                            <q-item-label caption>{{scope.opt.kabupaten_kota}} - {{scope.opt.propinsi}}</q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                      <template v-slot:no-option>
-                        <q-item>
-                          <q-item-section class="text-grey">
-                            Hasil tidak ditemukan
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                    </q-select>
-                  </div>
-                </div>
-                <div class="row q-gutter-sm">
-                  <div class="col">
-                    <q-select
-                      outlined
-                      dense
-                      lazy-rules
-                      use-input
-                      option-label="sekolah"
-                      label="USERS"
-                      :rules="[ val => val !== null || 'Please type something']"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon name="school" class="text-blue-13" />
-                      </template>
-                      <template v-slot:option="scope">
-                        <q-item v-bind="scope.itemProps">
-                          <q-item-section>
-                            <q-item-label>{{scope.opt.sekolah}}</q-item-label>
-                            <q-item-label caption>{{scope.opt.kabupaten_kota}} - {{scope.opt.propinsi}}</q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                      <template v-slot:no-option>
-                        <q-item>
-                          <q-item-section class="text-grey">
-                            Hasil tidak ditemukan
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                    </q-select>
-                  </div>
-                  <div class="col">
-                    <q-select
-                      outlined
-                      dense
-                      lazy-rules
-                      use-input
-                      option-label="sekolah"
-                      label="USERS"
-                      :rules="[ val => val !== null || 'Please type something']"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon name="school" class="text-blue-13" />
-                      </template>
-                      <template v-slot:option="scope">
-                        <q-item v-bind="scope.itemProps">
-                          <q-item-section>
-                            <q-item-label>{{scope.opt.sekolah}}</q-item-label>
-                            <q-item-label caption>{{scope.opt.kabupaten_kota}} - {{scope.opt.propinsi}}</q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                      <template v-slot:no-option>
-                        <q-item>
-                          <q-item-section class="text-grey">
-                            Hasil tidak ditemukan
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                    </q-select>
-                  </div>
-                </div>
-              </q-form>
-            </q-card-section>
-          </q-card-section>
-        </div> -->
-      </div>
+        <div class="row q-mt-sm q-gutter-md"></div>
       </q-card-section>
+
       <q-card-section class="q-pa-none q-ma-none">
         <q-table class="no-shadow no-border"
           :rows="data"
@@ -170,6 +37,7 @@
             <q-tr :props="props" v-if="props.row.verifikasi === 0 && props.row.role === '2'">
               <q-td key="fullname" :props="props">
                 <q-item>
+
                   <q-item-section>
                     <q-avatar square>
                       <!-- <img :src="props.row.prod_img"/> -->

@@ -67,7 +67,7 @@
             </q-slide-transition>
           </template>
           <template v-slot:body="props">
-            <q-tr :props="props" v-if="props.row.status_pesanan === 1">
+            <q-tr :props="props" v-if="props.row.status_pesanan === 1 || props.row.status_pesanan === 2 || props.row.status_pesanan === 3">
               <q-td class="text-uppercase" key="nama_driver" :props="props">{{ props.row.data_driver.nama_driver }}</q-td>
               <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.telpDriver">
                 {{ props.row.data_driver.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a>

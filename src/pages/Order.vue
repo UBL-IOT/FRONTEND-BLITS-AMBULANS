@@ -183,7 +183,7 @@ export default {
         }).catch(() => this.$commonErrorNotif())
     },
     Drivers (guid) {
-      this.$router.push('/pilihDriver/' + guid)
+      this.$router.push('/pilih-drivers/' + guid)
     },
     exportTable () {
       // naive encoding to csv format

@@ -319,6 +319,7 @@ export default ({
   },
   async created () {
     await this.getPesanan()
+    await this.getUser()
   },
   methods: {
     getPesanan () {
@@ -333,9 +334,24 @@ export default ({
           this.pesanan = tempRecipes.length
         })
     },
+    getUser () {
+      this.$axios.get('users/get-role-admin', {
+        fullname: this.fullname,
+        email: this.email,
+        no_telpon: this.no_telpon,
+        alamat: this.alamat
+      }, createToken())
+        .then((res) => {
+          this.data = res.data.data
+          this.fullname = this.data[0].fullname
+          this.email = this.data[0].email
+          this.no_telpon = this.data[0].no_telpon
+          this.alamat = this.data[0].alamat
+        })
+    },
     salam () {
-      return this.sapa + this.dataUser.user.fullname
-      // return this.sapa + this.fullname
+      // return this.sapa + this.dataUser.user.fullname
+      return this.sapa + this.fullname
     },
     Logout () {
       this.$q.localStorage.clear()

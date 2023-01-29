@@ -7,6 +7,7 @@
         <q-breadcrumbs-el class="text-grey-7" label="Pengemudi" icon="supervised_user_circle" />
       </q-breadcrumbs>
     </q-card>
+
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
       <q-table
@@ -16,8 +17,7 @@
         row-key="no_plat"
         :grid="mode=='grid'"
         :filter="filter"
-        :pagination="pagination"
-      >
+        :pagination="pagination">
         <template v-slot:top>
           <div class="col">
             <div class="col-2 q-table__title">
@@ -73,12 +73,13 @@
           <q-td :props="props">
             <q-badge
               :color="(props.row.status_driver === 0) ?'green'
-              :(props.row.status_driver === 1 ?'orange':'red')"
+              :(props.row.status_driver === 1 ?'red':'red')"
               text-color="white"
               dense
               class="text-weight-bold"
-              square
-            >{{ props.row.status_driver === 0 ? 'AKTIF' :(props.row.status_driver === 1) ? 'SEDANG MENJEMPUT' :(props.row.status_driver === 2) ? 'SEDANG MENGANTAR'  : 'TIDAK AKTIF' }}
+              square>
+              <!-- {{ props.row.status_driver === 0 ? 'AKTIF' :(props.row.status_driver === 1) ? 'SEDANG MENJEMPUT' :(props.row.status_driver === 2) ? 'SEDANG MENGANTAR'  : 'TIDAK AKTIF' }} -->
+              {{ props.row.status_driver === 0 ? 'AKTIF' : 'TIDAK AKTIF' }}
             </q-badge>
           </q-td>
         </template>
@@ -109,12 +110,12 @@
 
         <q-separator />
 
-        <q-form @submit="InputDriver">
+        <q-form @submit="InputDriver()">
 
           <q-card-section horizontal>
-            <q-card-section class="q-gutter-md fit">
-              <q-input class="text-capitalize" dense outlined v-model="nama_driver" label="Nama Driver"/>
-              <q-input type="number" dense outlined v-model="no_telpon" label="No Telpon"/>
+            <q-card-section class="q-gutter-xs fit">
+              <q-input class="text-capitalize" dense outlined v-model="nama_driver" label="Nama Driver" :rules="[ val => val && val.length > 0 || 'Nama driver tidak boleh kosong']"/>
+              <q-input type="number" dense outlined v-model="no_telpon" label="No Telpon" :rules="[ val => val && val.length > 0 || 'No telpon tidak boleh kosong']"/>
               <q-select
                 dense outlined
                 key="value"
@@ -122,12 +123,13 @@
                 option-label="label"
                 :options="optionStatus"
                 label="Status"
+                :rules="[ val => val !== null || 'Status tidak boleh kosong']"
               />
             </q-card-section>
 
             <q-separator vertical />
 
-            <q-card-section class="q-gutter-md fit">
+            <q-card-section class="q-gutter-xs fit">
               <q-select
                 dense
                 width="fit-content"
@@ -137,6 +139,7 @@
                 option-label="plat_id"
                 :options="listPlat"
                 label="No Plat"
+                :rules="[ val => val !== null || 'No plat tidak boleh kosong']"
               >
                 <template v-slot:option="scope">
                   <q-item v-bind="scope.itemProps">
@@ -146,17 +149,15 @@
                   </q-item>
                 </template>
               </q-select>
-              <q-input dense outlined v-model="email" label="Email"/>
-              <q-input class="text-capitalize" dense outlined v-model="alamat" label="Alamat"/>
+              <q-input dense outlined v-model="email" label="Email" :rules="[ val => val && val.length > 0 || 'Email tidak boleh kosong']"/>
+              <q-input class="text-capitalize" dense outlined v-model="alamat" label="Alamat" :rules="[ val => val && val.length > 0 || 'Alamat tidak boleh kosong']"/>
             </q-card-section>
           </q-card-section>
 
           <q-separator />
 
           <q-card-actions>
-            <q-btn v-close-popup type="submit" flat color="primary">
-              Simpan
-            </q-btn>
+            <q-btn type="submit" label="Simpan" color="primary"/>
           </q-card-actions>
 
         </q-form>
@@ -194,8 +195,7 @@ const columns = [
     label: 'EMAIL',
     class: 'text-capitalized',
     align: 'left',
-    // field: row => row.data_user.email,
-    field: row => row.email,
+    field: row => row.data_user.email,
     sortable: true
   },
   {
@@ -277,7 +277,6 @@ export default {
       this.$axios.get('drivers/get-driver', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          console.log(res)
           if (res.data.status) {
             this.data = res.data.data
           }
@@ -305,19 +304,16 @@ export default {
         status_driver: this.status.value
       }
       this.$axios.post('users/registrasiDriver', {
-      // this.$axios.post('drivers/input', {
         ...params
-      }, createToken()).then(async (res) => {
-        if (res.data.status) {
-          await this.$q.dialog({
-            title: 'peringatan',
-            message: 'Apakah anda yakin ? klik ok untuk melanjutkan',
-            cancel: true,
-            persistent: true
-          }).onOk(() => {
-            this.$router.push({ name: 'driver' })
-            this.getDriver()
+      }, createToken()).then((res) => {
+        console.log(res)
+        if (res.data.status === true) {
+          this.$q.notify({
+            color: 'green',
+            message: res.data.message
           })
+          this.new_driver = false
+          this.getDriver()
         } else {
           this.$q.notify({
             type: 'error',
