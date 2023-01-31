@@ -1,7 +1,7 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
-import { LocalStorage, Notify } from 'quasar'
+import { LocalStorage } from 'quasar'
 
 /*
  * If not building with SSR mode, you can
@@ -33,10 +33,10 @@ export default route(function (/* { store, ssrContext } */) {
         next({
           name: 'login'
         })
-        Notify.create({
-          color: 'negative',
-          message: 'Maaf anda belum pernah login'
-        })
+        // Notify.create({
+        //   color: 'negative',
+        //   message: 'Maaf anda belum pernah login'
+        // })
       } else {
         next()
       }

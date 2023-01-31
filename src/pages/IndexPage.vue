@@ -77,8 +77,8 @@
               </q-td>
               <q-td key="aksi" :props="props">
                 <div class="text-grey-8 q-gutter-xs">
-                  <q-btn @click="denied (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" class="gt-xs" size="md" flat color="red" dense round icon="close"/>
-                  <q-btn @click="verified (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="md" flat dense round color="blue" icon="add_task"/>
+                  <q-btn @click="denied (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" class="gt-xs" size="md" flat color="red" dense round icon="close"><q-tooltip>denied</q-tooltip></q-btn>
+                  <q-btn @click="verified (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="md" flat dense round color="blue" icon="add_task"><q-tooltip>verified</q-tooltip></q-btn>
                 </div>
               </q-td>
             </q-tr>
@@ -247,7 +247,7 @@ export default {
       },
       map: {
         loaded: false,
-        tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        tileLayer: 'http://vectormap.pptik.id/styles/klokantech-basic/{z}/{x}/{y}.png',
         attribution: 'contributors <a href="">BLITS Ambulans</a>',
         center: L.latLng([-5.422083333333333, 105.25802]),
         zoom: 12,
@@ -334,9 +334,21 @@ export default {
         verifikasi: 1
       }, createToken())
         .then((res) => {
-          if (res.data.status === true) {
+          this.$q.dialog({
+            title: 'Confirm',
+            message: 'apakah anda yakin? ',
+            cancel: true,
+            persistent: true
+          }).onOk(() => {
+            // if (res.data.status = true) {
             this.$router.push({ name: 'userVerified' })
-          }
+            // }
+          }).onCancel((err) => {
+            console.log(err)
+          })
+          // if (res.data.status === true) {
+          //   this.$router.push({ name: 'userVerified' })
+          // }
         })
     },
     denied (guid) {
