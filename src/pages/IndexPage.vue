@@ -8,83 +8,88 @@
     </q-card>
 
     <q-card class="q-pa-md q-ma-md">
-      <q-card-section class="text-h6 q-pb-none">
-        <q-item >
-          <q-item-section avatar class="">
-            <q-icon color="blue" name="key" size="44px"/>
-          </q-item-section>
+      <q-table
+        :rows="data"
+        class="text-grey-7"
+        :hide-header="mode === 'grid'"
+        :columns="columns"
+        row-key="name"
+        :grid="mode=='grid'"
+        :filter="filter"
+        :pagination="pagination"
+      >
+        <template v-slot:top>
+          <div class="col">
+            <div class="col-2 q-table__title">
+              Verifikasi Pengguna Baru
+            </div>
+            <p class="text-caption">
+              Daftar pengguna layanan BLITS yang baru terdaftar di sistem
+            </p>
+          </div>
 
-          <q-item-section>
-            <q-item-label>
-              <div class="text-h6">Users Validation</div>
-            </q-item-label>
-            <q-item-label caption class="text-black">
-              Monitoring new users. Tracking users, and shipping status here.
-            </q-item-label>
-          </q-item-section>
+          <q-space />
 
-        </q-item>
-        <div class="row q-mt-sm q-gutter-md"></div>
-      </q-card-section>
-
-      <q-card-section class="q-pa-none q-ma-none">
-        <q-table class="no-shadow no-border"
-          :rows="data"
-          :columns="columns"
-          row-key="name"
-          :pagination="pagination">
-          <template v-slot:body="props">
-            <q-tr :props="props" v-if="props.row.verifikasi === 0 && props.row.role === '2'">
-              <q-td key="fullname" :props="props">
-                <q-item>
-
-                  <q-item-section>
-                    <q-avatar square>
-                      <!-- <img :src="props.row.prod_img"/> -->
-                      <img src="../../public/avatar.png"/>
-                    </q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label>{{ props.row.fullname }}</q-item-label>
-                    <q-badge v-if="props.row.role === '2'" :color="props.row.verifikasi === 0 ? 'orange' :props.row.role === '3' ? 'red' : 'primari'">
-                      {{ props.row.verifikasi === 0 ? 'unverified' : 'verified' }}
-                      <!-- {{ props.row.verifikasi === 0 ? 'unverified' :props.row.role === '3' ? 'driver' :props.row.role === '1' ? 'admin' : 'teal' }} -->
-                    </q-badge>
-                  </q-item-section>
-                </q-item>
-              </q-td>
-              <q-td key="email" :props="props">
-                <q-item>
-                  <q-item-section>
-                    <q-item-label>{{ props.row.email }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-td>
-              <q-td key="no_telpon" :props="props">
-                <q-item>
-                  <q-item-section>
-                    <q-item-label>{{ props.row.no_telpon }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-td>
-              <q-td key="status" :props="props">
-                <div class="text-grey-8 q-gutter-xs">
-                  <q-badge :color="props.row.role === '1' ? 'orange' :props.row.role === '2' ? 'red' : 'primary'">
-                    {{ props.row.role === '3' ? 'Driver' :props.row.role === '2' ? 'Users' : 'Admins' }}
-                  </q-badge>
-                </div>
-              </q-td>
-              <q-td key="aksi" :props="props">
-                <div class="text-grey-8 q-gutter-xs">
-                  <q-btn @click="denied (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" class="gt-xs" size="md" flat color="red" dense round icon="close"><q-tooltip>denied</q-tooltip></q-btn>
-                  <q-btn @click="verified (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="md" flat dense round color="blue" icon="add_task"><q-tooltip>verified</q-tooltip></q-btn>
-                </div>
-              </q-td>
-            </q-tr>
-          </template>
-        </q-table>
-      </q-card-section>
+          <q-btn
+            flat
+            color="primary"
+            icon="search"
+            @click="visibles = !visibles"
+            size="md"
+            class="q-mr-sm"
+          />
+          <q-slide-transition>
+            <div v-show="visibles">
+              <q-input
+                outlined
+                debounce="300"
+                placeholder="Pencarian"
+                style="width: 200px"
+                color="primary"
+                v-model="filter"
+                dense
+              />
+            </div>
+          </q-slide-transition>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props" v-if="props.row.verifikasi === 0 && props.row.role === '2'">
+            <q-td key="fullname">
+              {{ props.row.fullname }}
+              <q-badge v-if="props.row.role === '2'" :color="props.row.verifikasi === 0 ? 'orange' :props.row.role === '3' ? 'red' : 'primari'">
+                {{ props.row.verifikasi === 0 ? 'unverified' : 'verified' }}
+              </q-badge>
+            </q-td>
+            <q-td key="email" :props="props">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>{{ props.row.email === null ? '-' : 'Belum ada email' }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-td>
+            <q-td key="no_telpon" :props="props">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>{{ props.row.no_telpon }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-td>
+            <q-td key="status" :props="props">
+              <div class="text-grey-8 q-gutter-xs">
+                <q-badge :color="props.row.role === '1' ? 'orange' :props.row.role === '2' ? 'success' : 'red'">
+                  {{ props.row.role === '3' ? 'Driver' :props.row.role === '2' ? 'Customer' : 'Admins' }}
+                </q-badge>
+              </div>
+            </q-td>
+            <q-td key="aksi" :props="props">
+              <div class="text-grey-8 q-gutter-xs">
+                <q-btn @click="denied (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="sm" class="q-pl-md q-pr-md" color="red" dense>Tolak</q-btn>
+                <q-btn @click="verified (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="sm" class="q-pl-md q-pr-md" color="primary" dense>Terima</q-btn>
+              </div>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
     </q-card>
 
     <div class="row q-col-gutter-md q-ma-xs">
@@ -205,7 +210,7 @@
                   </div>
                 </div>
                 <div class="col-2">
-                  <q-img src="drivers.jpg" width="60px" />
+                  <q-img src="driver.png" width="60px" />
                 </div>
               </div>
             </q-card-section>
@@ -219,11 +224,11 @@
 <script>
 
 const columns = [
-  { name: 'fullname', label: 'Nama Lengkap', field: 'fullname', sortable: true, align: 'left' },
-  { name: 'email', label: 'Email', field: 'email', sortable: true, align: 'center' },
-  { name: 'no_telpon', label: 'No. Telpon', field: 'no_telpon', sortable: true, align: 'center', class: 'text-bold' },
-  { name: 'status', label: 'Status', field: 'status', sortable: true, align: 'center', class: 'text-bold' },
-  { name: 'aksi', label: 'Aksi', field: 'aksi', sortable: true, align: 'center', class: 'text-bold' }
+  { name: 'fullname', label: 'NAMA LENGKAP', field: 'fullname', sortable: true, align: 'left' },
+  { name: 'email', label: 'EMAIL', field: 'email', sortable: true, align: 'center' },
+  { name: 'no_telpon', label: 'NOMOR TELEPON', field: 'no_telpon', sortable: true, align: 'center', class: 'text-bold' },
+  { name: 'status', label: 'STATUS', field: 'status', sortable: true, align: 'center', class: 'text-bold' },
+  { name: 'aksi', label: '', field: 'aksi', sortable: true, align: 'center', class: 'text-bold' }
 ]
 
 import createToken from 'src/boot/create_token'

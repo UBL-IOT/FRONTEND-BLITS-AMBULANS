@@ -3,7 +3,7 @@
   <q-layout>
     <q-page-container>
       <q-page class="flex flex-center" style="background-color: lightgrey;">
-        <q-card class="my-card" flat unelevated dense bordered v-bind:style="$q.platform.is.mobile ? { width: '80%' } : { width: '50%' }">
+        <q-card class="my-card" flat unelevated dense bordered v-bind:style="$q.platform.is.mobile ? { width: '80%' } : { width: '60%' }">
           <div class="row q-col-gutter-md">
             <div class="col-12 col-md-5">
               <q-carousel
@@ -23,16 +23,16 @@
                 <q-carousel-slide :name="4" img-src="banner_4.png" />
               </q-carousel>
             </div>
-            <div class="row col-12 col-md-7 flex-center flex">
+            <div class="row col-md-7 col-sm-12 flex-center flex">
               <div class="col-9 text-center q-mt-lg q-mb-lg">
                 <q-img src="icons/main_icon/icon.png" width="60px" />
                 <div class="text-h6 q-mt-sm text-blue-7 text-weight-bold">BLITS AMBULANS</div>
                 <div class="text-caption text-grey-7">Bandar Lampung Intellegent Transportation System</div>
                 <div class="text-subtitle2 q-mt-lg text-left" style="font-size: 20px;">Sign In</div>
                 <q-form class="q-gutter-md q-mt-md">
-                  <q-input type="number" dense v-model="no_telpon" label="No Telpon" lazy-rules>
+                  <q-input dense v-model="no_telpon" label="Nomor Telepon" lazy-rules mask="#############">
                     <template v-slot:prepend>
-                      <q-icon size="20px" name="alternate_email" />
+                      <q-icon size="20px" name="dialpad" />
                     </template>
                   </q-input>
 

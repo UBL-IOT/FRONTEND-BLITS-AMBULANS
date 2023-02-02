@@ -18,7 +18,7 @@
               :min-zoom="map.minZoom"
               :bounds="map.bounds"
               :max-bounds="map.maxBounds"
-              style="height: 445px; width: 100%"
+              style="height: 475px; width: 100%"
               v-if="map.loaded"
             >
               <l-tile-layer

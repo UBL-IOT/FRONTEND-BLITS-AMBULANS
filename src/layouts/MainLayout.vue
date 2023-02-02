@@ -40,7 +40,7 @@
         <q-btn-dropdown
           flat
           text-color="blue-7"
-          class="text-capitalize text-weight-bold text-subtitle1"
+          class="text-capitalize text-subtitle1"
           :label="salam()"
           left
           stretch
@@ -69,7 +69,7 @@
                 <img src="avatar.png" />
               </q-avatar>
 
-              <div class="text-subtitle1 q-mt-md q-mb-xs text-capitalize text-bold">{{ dataUser.user.fullname }}</div>
+              <div class="text-subtitle1 q-mt-md q-mb-xs text-capitalize">{{ dataUser.user.fullname }}</div>
 
               <q-btn
                 color="red orange"
@@ -116,11 +116,11 @@
       v-model="leftDrawerOpen"
       style="background-color: #323746;"
       side="left"
-      :width="270"
+      :width="280"
       elevated
     >
       <div class="full-height">
-        <div style="height: calc(100% - 117px); padding:20px; align-items: center;">
+        <div style="height: calc(100% - 67px); padding:20px; align-items: center;">
           <q-toolbar class="q-mb-md">
             <q-avatar style="width: 50px; height: 55px;">
               <img src="icons/main_icon/icon.png" />
@@ -186,6 +186,43 @@
                 </q-item>
               </q-expansion-item>
 
+              <q-expansion-item
+                class="q-pl-sm"
+                icon="supervisor_account"
+                label="Pengguna"
+              >
+                <q-item
+                  active-class="tab-active"
+                  class="q-ma-sm navigation-item"
+                  :to="{ name: 'userVerified' }"
+                  exact
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="verified" />
+                  </q-item-section>
+                  <q-item-section>
+                    Terverifikasi
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  class="q-ma-sm navigation-item"
+                  :to="{ name: 'userDenied' }"
+                  exact
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="do_disturb" />
+                  </q-item-section>
+                  <q-item-section>
+                    Tertolak
+                  </q-item-section>
+                </q-item>
+              </q-expansion-item>
+
               <q-item
                 active-class="tab-active"
                 :to="{ name: 'vehicle' }"
@@ -217,43 +254,6 @@
                   Pengemudi
                 </q-item-section>
               </q-item>
-
-              <q-expansion-item
-                class="q-pl-sm"
-                icon="supervisor_account"
-                label="Data Users"
-              >
-                <q-item
-                  active-class="tab-active"
-                  class="q-ma-sm navigation-item"
-                  :to="{ name: 'userVerified' }"
-                  exact
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="person" />
-                  </q-item-section>
-                  <q-item-section>
-                    Users Verified
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  active-class="tab-active"
-                  class="q-ma-sm navigation-item"
-                  :to="{ name: 'userDenied' }"
-                  exact
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="person_off" />
-                  </q-item-section>
-                  <q-item-section>
-                    Users Denied
-                  </q-item-section>
-                </q-item>
-              </q-expansion-item>
 
               <q-item
                 active-class="tab-active"

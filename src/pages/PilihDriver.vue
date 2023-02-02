@@ -21,10 +21,10 @@
           <template v-slot:top>
             <div class="col">
               <div class="col-2 q-table__title">
-                Pemilihan Pengemudi
+                Pilih Driver
               </div>
               <p class="text-caption">
-                Id Pemesanan: <span class="text-blue"> {{this.$route.params.guid}} </span><br>
+                Kode Pemesanan : <span class="text-blue text-h6"> {{this.$route.params.guid}} </span><br>
                 Pilihkan driver yang sedang bertugas dengan status aktif.
               </p>
             </div>
@@ -82,14 +82,13 @@
               </q-td>
               <q-td key="status_driver" :props="props">
                 <q-badge :color="(props.row.status_driver === 0) ? 'green-7' :(props.row.status_driver === 1) ? 'orange-7' : 'green-7'">
-                {{ props.row.status_driver === 0 ? 'AKTIF' :(props.row.status_driver === 1) ? 'TIDAK AKTIF' : 'SELESAI' }}
+                {{ props.row.status_driver === 0 ? 'SIAP JEMPUT' :(props.row.status_driver === 1) ? 'TIDAK AKTIF' : 'SELESAI' }}
                 </q-badge>
               </q-td>
               <q-td key="aksi" :props="props">
               <div class="justify-center q-gutter-x-xs">
-                <q-btn @click="Pilih(props.row.guid, this.$route.params.guid)" color="blue-7" dense>
-                  <q-icon left size="xs" name="supervised_user_circle" />
-                  <div>Pilih</div>
+                <q-btn @click="Pilih(props.row.guid, this.$route.params.guid)" color="blue-7" dense flat size="sm">
+                  <div>Pilih Driver</div>
                 </q-btn>
               </div>
             </q-td>
@@ -119,10 +118,10 @@ function wrapCsvValue (val, formatFn) {
 
 const columns = [
   { name: 'nama_driver', align: 'left', label: 'NAMA DRIVER', field: 'nama_driver', sortable: true },
-  { name: 'no_telpon', align: 'left', label: 'No Telpon', field: 'no_telpon', sortable: true },
-  { name: 'no_plat', align: 'left', label: 'NO PLAT', field: 'no_plat', sortable: true },
-  { name: 'status_driver', align: 'center', label: 'STATUS DRIVER', field: 'status_driver', sortable: true },
-  { name: 'aksi', align: 'center', label: 'Pilih Driver', field: 'aksi', sortable: true }
+  { name: 'no_telpon', align: 'left', label: 'NOMOR TELEPON', field: 'no_telpon', sortable: true },
+  { name: 'no_plat', align: 'left', label: 'NOMOR PLAT', field: 'no_plat', sortable: true },
+  { name: 'status_driver', align: 'left', label: 'STATUS DRIVER', field: 'status_driver', sortable: true },
+  { name: 'aksi', align: 'center', label: '', field: 'aksi', sortable: true }
 ]
 
 const data = []
