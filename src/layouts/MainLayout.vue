@@ -350,8 +350,8 @@ export default ({
         })
     },
     salam () {
-      // return this.sapa + this.dataUser.user.fullname
-      return this.sapa + this.fullname
+      return this.sapa + this.dataUser.user.fullname
+      // return this.sapa + this.fullname
     },
     Logout () {
       this.$q.localStorage.clear()

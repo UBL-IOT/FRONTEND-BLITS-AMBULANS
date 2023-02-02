@@ -306,7 +306,6 @@ export default {
       this.$axios.post('users/registrasiDriver', {
         ...params
       }, createToken()).then((res) => {
-        console.log(res)
         if (res.data.status === true) {
           this.$q.notify({
             color: 'green',

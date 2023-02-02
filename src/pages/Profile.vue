@@ -18,7 +18,7 @@
                 <img src="avatar.png" />
               </q-avatar>
               <div class="col text-h6 q-ml-lg text-capitalize text-blue-7 text-weight-bold">
-                {{ fullname }}
+                {{ dataUser.user.fullname }}
                 <q-btn @click="profile=true" dense flat text-color="blue-7" icon="edit" class="q-mr-md" size="10px">
                   <q-tooltip>
                     Edit
@@ -28,7 +28,7 @@
                   Administrator system BLITS Ambulans.
                 </div>
                 <div class="col text-caption text-grey">
-                  <q-icon name="email" /> {{ email }} | <q-icon name="location_on" /> {{ alamat }}
+                  <q-icon name="email" /> {{ dataUser.user.email }} | <q-icon name="location_on" /> {{ dataUser.user.alamat }}
                 </div>
               </div>
             </div>
@@ -114,10 +114,10 @@ export default {
       }, createToken())
         .then((res) => {
           this.data = res.data.data
-          this.fullname = this.data[0].fullname
-          this.email = this.data[0].email
-          this.no_telpon = this.data[0].no_telpon
-          this.alamat = this.data[0].alamat
+          this.fullname = this.data[1].fullname
+          this.email = this.data[1].email
+          this.no_telpon = this.data[1].no_telpon
+          this.alamat = this.data[1].alamat
         })
     },
     profil (guid) {
@@ -129,12 +129,20 @@ export default {
       }, createToken())
         .then((res) => {
           if (res.data.status === true) {
-            this.$q.notify({
-              color: 'success',
-              message: 'Data berhasil diubah!'
+            this.$q.dialog({
+              title: 'Berhasil',
+              message: 'Apakah anda yakin akan mengubah data profile pengguna?'
+            }).onOk(() => {
+              this.$router.push({
+                name: 'login'
+              })
             })
-            this.$router.push({ name: 'profil' })
-            this.profile = false
+            // this.$q.notify({
+            //   color: 'success',
+            //   message: 'Data berhasil diubah!'
+            // })
+            // this.$router.push({ name: 'login' })
+            // this.profile = false
           }
         })
     }
