@@ -81,6 +81,20 @@
                 </q-badge>
               </div>
             </q-td>
+            <q-td class="col q-gutter-sm" key="identitas" auto-width="true" :props="props">
+                <q-img
+                  class="rounded-borders"
+                  :ratio="16/9"
+                  style="width:70px"
+                  :src="'https://img.psti-ubl.id/blits/uploads/' + props.row.foto_ktp"
+                />
+                <q-img
+                  class="rounded-borders"
+                  :ratio="16/9"
+                  style="width:70px"
+                  :src="'https://img.psti-ubl.id/blits/uploads/' + props.row.foto_selfie"
+                />
+            </q-td>
             <q-td key="aksi" :props="props">
               <div class="text-grey-8 q-gutter-xs">
                 <q-btn @click="denied (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="sm" class="q-pl-md q-pr-md" color="red" dense>Tolak</q-btn>
@@ -118,7 +132,7 @@
                     <q-item>
                       <q-item-section avatar>
                         <q-avatar>
-                          <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                          <img src="driver.png">
                         </q-avatar>
                       </q-item-section>
 
@@ -222,12 +236,12 @@
 </template>
 
 <script>
-
 const columns = [
   { name: 'fullname', label: 'NAMA LENGKAP', field: 'fullname', sortable: true, align: 'left' },
   { name: 'email', label: 'EMAIL', field: 'email', sortable: true, align: 'center' },
   { name: 'no_telpon', label: 'NOMOR TELEPON', field: 'no_telpon', sortable: true, align: 'center', class: 'text-bold' },
   { name: 'status', label: 'STATUS', field: 'status', sortable: true, align: 'center', class: 'text-bold' },
+  { name: 'identitas', label: 'IDENTITAS', field: 'identitas', sortable: true, align: 'left', class: 'text-bold' },
   { name: 'aksi', label: '', field: 'aksi', sortable: true, align: 'center', class: 'text-bold' }
 ]
 
@@ -331,6 +345,7 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.data = res.data.data
+            console.log(this.data)
           }
         })
     },

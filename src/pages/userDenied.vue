@@ -65,7 +65,7 @@
             </q-slide-transition>
           </template>
           <template v-slot:body="props">
-            <q-tr class="text-uppercase" :props="props" v-if="props.row.verifikasi === 1">
+            <q-tr class="text-uppercase" :props="props" v-if="props.row.verifikasi === 2">
               <q-td key="fullname" :props="props">
                 {{ props.row.fullname }}
               </q-td>

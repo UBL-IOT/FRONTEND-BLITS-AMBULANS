@@ -41,7 +41,7 @@
           flat
           text-color="blue-7"
           class="text-capitalize text-subtitle1"
-          :label="salam()"
+          :label="this.sapa"
           left
           stretch
           no-caps>
@@ -313,7 +313,7 @@ export default ({
       dataUser: this.$q.localStorage.getItem('dataUser'),
       confirm: false,
       pesanan: null,
-      sapa: 'Hallo, ',
+      sapa: null,
       data: ''
     }
   },
@@ -347,11 +347,12 @@ export default ({
           this.email = this.data[0].email
           this.no_telpon = this.data[0].no_telpon
           this.alamat = this.data[0].alamat
+          this.sapa = 'Hello, ' + this.fullname
         })
     },
     salam () {
       // return this.sapa + this.dataUser.user.fullname
-      return this.sapa + this.fullname
+      // return this.sapa + this.fullname
     },
     Logout () {
       this.$q.localStorage.clear()

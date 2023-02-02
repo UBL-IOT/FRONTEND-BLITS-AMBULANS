@@ -35,7 +35,7 @@
                       <q-item>
                         <q-item-section avatar>
                           <q-avatar>
-                            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                            <img src="driver.png">
                           </q-avatar>
                         </q-item-section>
 
