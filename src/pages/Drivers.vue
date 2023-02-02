@@ -15,6 +15,7 @@
         :hide-header="mode === 'grid'"
         :columns="columns"
         row-key="no_plat"
+        class="text-grey-7"
         :grid="mode=='grid'"
         :filter="filter"
         :pagination="pagination">
@@ -115,7 +116,7 @@
           <q-card-section horizontal>
             <q-card-section class="q-gutter-xs fit">
               <q-input class="text-capitalize" dense outlined v-model="nama_driver" label="Nama Driver" :rules="[ val => val && val.length > 0 || 'Nama driver tidak boleh kosong']"/>
-              <q-input type="number" dense outlined v-model="no_telpon" label="No Telpon" :rules="[ val => val && val.length > 0 || 'No telpon tidak boleh kosong']"/>
+              <q-input dense outlined v-model="no_telpon" label="No Telpon" :rules="[ val => val && val.length > 0 || 'No telpon tidak boleh kosong']" mask="#############"/>
               <q-select
                 dense outlined
                 key="value"
@@ -149,7 +150,7 @@
                   </q-item>
                 </template>
               </q-select>
-              <q-input dense outlined v-model="email" label="Email" :rules="[ val => val && val.length > 0 || 'Email tidak boleh kosong']"/>
+              <q-input type="mail" dense outlined v-model="email" label="Email" :rules="[ val => val && val.length > 0 || 'Email tidak boleh kosong']"/>
               <q-input class="text-capitalize" dense outlined v-model="alamat" label="Alamat" :rules="[ val => val && val.length > 0 || 'Alamat tidak boleh kosong']"/>
             </q-card-section>
           </q-card-section>
@@ -223,7 +224,7 @@ const columns = [
   },
   {
     name: 'status_driver',
-    align: 'center',
+    align: 'left',
     label: 'STATUS DRIVER',
     field: 'status_driver',
     sortable: true

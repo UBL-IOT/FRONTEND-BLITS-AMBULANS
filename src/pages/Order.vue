@@ -100,11 +100,11 @@
                 <div class="justify-center q-gutter-x-xs">
                   <q-btn
                     color="blue-7"
+                    size="sm"
                     flat
                     @click="Drivers (props.row.guid)"
                     dense>
-                    <q-icon left size="xs" name="supervised_user_circle" />
-                    <div>DRIVER</div>
+                    <div>PILIH DRIVER</div>
                   </q-btn>
                 </div>
               </q-td>
@@ -136,11 +136,11 @@ const columns = [
   { name: 'kode_pesanan', align: 'left', label: 'KODE', field: 'kode_pesanan', sortable: true },
   { name: 'fullname', align: 'left', label: 'NAMA PEMESAN', field: 'fullname', sortable: true },
   { name: 'no_telpon', align: 'left', label: 'NO. HANDPHONE', field: 'no_telpon', sortable: true },
-  { name: 'titik_jemput', align: 'left', label: 'TITIK JEMPUT', field: 'titik_jemput', sortable: true },
+  { name: 'titik_jemput', align: 'left', label: 'JEMPUT', field: 'titik_jemput', sortable: true },
   { name: 'tujuan', required: true, label: 'TUJUAN', align: 'left', field: row => row.tujuan, sortable: true },
   { name: 'created_at', align: 'left', label: 'TGL. PEMESANAN', field: 'created_at', sortable: true },
   { name: 'status_pesanan', align: 'left', label: 'STATUS', field: 'status_pesanan', sortable: true },
-  { name: 'aksi', align: 'center', label: 'DRIVER', field: 'aksi', sortable: true }
+  { name: 'aksi', align: 'center', label: '', field: 'aksi', sortable: true }
 ]
 
 const data = []

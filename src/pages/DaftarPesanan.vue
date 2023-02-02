@@ -73,6 +73,8 @@
                 {{ props.row.data_driver.no_telpon }}<q-tooltip>CHAT WHATSAPP</q-tooltip></a>
               </q-td>
               <q-td class="text-uppercase" key="no_plat" :props="props">{{ props.row.data_driver.no_plat }}</q-td>
+              <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan === 0) ? 'orange-7' :(props.row.status_pesanan === 1) ? 'blue-7' :(props.row.status_pesanan === 2) ? 'teal-7' : 'green-7'">{{`${ (props.row.status_pesanan === 0) ? 'MENUNGGU' :(props.row.status_pesanan === 1) ? 'MENJEMPUT' :(props.row.status_pesanan === 2) ? 'MENGANTAR' : 'SELESAI' }`}}</q-badge>
+              </q-td>
               <q-td class="text-uppercase" key="fullname" :props="props">{{ props.row.data_user.fullname }}</q-td>
               <q-td class="text-uppercase" key="kode_pesanan" :props="props">{{ props.row.kode_pesanan }}</q-td>
               <q-td class="text-weight-bold text-blue-7" key="no_telpon" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://api.whatsapp.com/send?phone=' + this.phoneData">
@@ -81,8 +83,6 @@
               <q-td class="text-weight-bold text-blue-7" key="titik_jemput" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.titik_jemput_lat + ',' + props.row.titik_jemput_long">{{ props.row.titik_jemput.substring(0,10)+"..." }}</a></q-td>
               <q-td class="text-weight-bold text-blue-7" key="tujuan" :props="props"><a target="_blank" style="text-decoration: none;" :href="'https://www.google.com/maps/?q=' + props.row.tujuan_lat + ',' + props.row.tujuan_long">{{ props.row.tujuan.substring(0,10)+"..." }}</a></q-td>
               <q-td key="created_at" :props="props">{{ new Date (props.row.created_at).toLocaleDateString('id', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}</q-td>
-              <q-td key="status_pesanan" :props="props"><q-badge :color="(props.row.status_pesanan === 0) ? 'orange-7' :(props.row.status_pesanan === 1) ? 'blue-7' :(props.row.status_pesanan === 2) ? 'teal-7' : 'green-7'">{{`${ (props.row.status_pesanan === 0) ? 'MENUNGGU' :(props.row.status_pesanan === 1) ? 'MENJEMPUT' :(props.row.status_pesanan === 2) ? 'MENGANTAR' : 'SELESAI' }`}}</q-badge>
-              </q-td>
             </q-tr>
           </template>
         </q-table>
@@ -108,16 +108,16 @@ function wrapCsvValue (val, formatFn) {
 }
 
 const columns = [
-  { name: 'nama_driver', align: 'left', label: 'NAMA DRIVER', field: 'nama_driver', sortable: true },
-  { name: 'no_telpon', align: 'left', label: 'NO TELPON', field: 'no_telpon', sortable: true },
-  { name: 'no_plat', align: 'left', label: 'NO PLAT', field: 'no_plat', sortable: true },
-  { name: 'fullname', align: 'left', label: 'NAMA PEMESAN', field: 'fullname', sortable: true },
+  { name: 'nama_driver', align: 'left', label: 'DRIVER', field: 'nama_driver', sortable: true },
+  { name: 'no_telpon', align: 'left', label: 'NO. HP', field: 'no_telpon', sortable: true },
+  { name: 'no_plat', align: 'left', label: 'NO. PLAT', field: 'no_plat', sortable: true },
+  { name: 'status_pesanan', align: 'left', label: 'STATUS', field: 'status_pesanan', sortable: true },
+  { name: 'fullname', align: 'left', label: 'PEMESAN', field: 'fullname', sortable: true },
   // { name: 'kode_pesanan', align: 'left', label: 'KODE', field: 'kode_pesanan', sortable: true },
-  { name: 'no_telpon', align: 'left', label: 'NO. HANDPHONE', field: 'no_telpon', sortable: true },
-  { name: 'titik_jemput', align: 'left', label: 'TITIK JEMPUT', field: 'titik_jemput', sortable: true },
+  { name: 'no_telpon', align: 'left', label: 'NO. HP', field: 'no_telpon', sortable: true },
+  { name: 'titik_jemput', align: 'left', label: 'JEMPUT', field: 'titik_jemput', sortable: true },
   { name: 'tujuan', required: true, label: 'TUJUAN', align: 'left', field: row => row.tujuan, sortable: true },
-  { name: 'created_at', align: 'left', label: 'TGL. PEMESANAN', field: 'created_at', sortable: true },
-  { name: 'status_pesanan', align: 'left', label: 'STATUS', field: 'status_pesanan', sortable: true }
+  { name: 'created_at', align: 'left', label: 'TGL. PEMESANAN', field: 'created_at', sortable: true }
 ]
 
 export default {
