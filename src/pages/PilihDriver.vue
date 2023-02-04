@@ -24,7 +24,7 @@
                 Pilih Driver
               </div>
               <p class="text-caption">
-                Kode Pemesanan : <span class="text-blue text-h6"> {{this.$route.params.guid}} </span><br>
+                Kode Pemesanan : <span class="text-blue"> {{kodePesanan}} </span><br>
                 Pilihkan driver yang sedang bertugas dengan status aktif.
               </p>
             </div>
@@ -135,6 +135,7 @@ export default {
       data,
       Pesanan: '',
       status_pesanan: '',
+      kodePesanan: '',
       status_driver: '',
       telponDriver: '',
       guid: '',
@@ -148,7 +149,7 @@ export default {
   },
   created () {
     this.getDriver()
-    this.getPesanan()
+    this.getidPesanan()
   },
   methods: {
     getDriver () {
@@ -165,15 +166,13 @@ export default {
           }
         }).catch(() => this.$commonErrorNotif())
     },
-    getPesanan () {
-      this.$q.loading.show()
-      this.$axios.get(`pilih-drivers/${this.$route.params.guid}`, createToken())
-        .finally(() => this.$q.loading.hide())
+    getidPesanan () {
+      this.$axios.get(`pesanan/${this.$route.params.guid}`, createToken())
         .then((res) => {
-          console.log(res)
-          // this.data = res.data.data
-          // console.log(this.data)
-        }).catch(() => this.$commonErrorNotif())
+          if (res.data.status === true) {
+            this.kodePesanan = res.data.data[0].kode_pesanan
+          }
+        })
     },
     Pilih (guid, Pesanan) {
       this.$axios.put(`pesanan/update-pesanan/${Pesanan}`, {

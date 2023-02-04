@@ -99,6 +99,7 @@ const columns = [
 export default {
   data () {
     return {
+      mode: '',
       initialPagination: {
         sortBy: 'desc',
         descending: false,

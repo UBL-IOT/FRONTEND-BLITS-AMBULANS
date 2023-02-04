@@ -14,7 +14,7 @@
         <div class="row q-gutter-md q-mr-md">
           <q-btn round dense flat color="blue-7" icon="notifications">
             <div v-for="(d, i) in data" :key="i">
-              <q-badge v-if="d.status_pesanan === 0" color="red" text-color="white" floating >
+              <q-badge v-if="d.status_pesanan === 0" color="red" text-color="white" floating>
                 {{ pesanan }}
               </q-badge>
             </div>
@@ -41,7 +41,7 @@
           flat
           text-color="blue-7"
           class="text-capitalize text-subtitle1"
-          :label="this.sapa"
+          :label="this.sapa + dataUser.user.fullname"
           left
           stretch
           no-caps>
@@ -313,13 +313,12 @@ export default ({
       dataUser: this.$q.localStorage.getItem('dataUser'),
       confirm: false,
       pesanan: null,
-      sapa: null,
+      sapa: 'Hallo, ',
       data: ''
     }
   },
   async created () {
     await this.getPesanan()
-    await this.getUser()
   },
   methods: {
     getPesanan () {
@@ -333,27 +332,6 @@ export default ({
           })
           this.pesanan = tempRecipes.length
         })
-    },
-    getUser () {
-      this.$axios.get('users/get-role-admin', {
-        fullname: this.fullname,
-        email: this.email,
-        no_telpon: this.no_telpon,
-        alamat: this.alamat
-      }, createToken())
-        .then((res) => {
-          this.data = res.data.data
-          this.fullname = this.data[0].fullname
-          this.email = this.data[0].email
-          this.no_telpon = this.data[0].no_telpon
-          this.alamat = this.data[0].alamat
-          this.sapa = 'Hello, ' + this.fullname
-        })
-    },
-    salam () {
-      return this.sapa + this.dataUser.user.fullname
-      // return this.sapa + this.dataUser.user.fullname
-      // return this.sapa + this.fullname
     },
     Logout () {
       this.$q.localStorage.clear()

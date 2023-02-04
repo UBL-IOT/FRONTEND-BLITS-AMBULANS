@@ -11,7 +11,6 @@
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
         <q-table
-          title="Daftar Pesanan"
           :rows="data"
           class="text-grey-7"
           :hide-header="mode === 'grid'"
@@ -159,7 +158,7 @@ export default {
               phonex.statuss = phonex.status_pesanan
             })
           }
-        }).catch(() => this.$commonErrorNotif())
+        })
     },
     exportTable () {
       // naive encoding to csv format

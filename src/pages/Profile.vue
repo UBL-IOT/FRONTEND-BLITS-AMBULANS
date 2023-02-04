@@ -67,7 +67,7 @@
             <q-card-section horizontal>
               <q-card-section class="q-gutter-md fit">
                 <q-input dense outlined v-model="fullname" label="Nama Lengkap"/>
-                <q-input dense outlined v-model="no_telpon" label="No. Telepon"/>
+                <q-input :disable="true" dense outlined v-model="no_telpon" label="No. Telepon"/>
               </q-card-section>
               <q-separator vertical />
               <q-card-section class="q-gutter-md fit">
@@ -106,19 +106,10 @@ export default {
   },
   methods: {
     getUser () {
-      this.$axios.get('users/get-role-admin', {
-        fullname: this.fullname,
-        email: this.email,
-        no_telpon: this.no_telpon,
-        alamat: this.alamat
-      }, createToken())
-        .then((res) => {
-          this.data = res.data.data
-          this.fullname = this.data[1].fullname
-          this.email = this.data[1].email
-          this.no_telpon = this.data[1].no_telpon
-          this.alamat = this.data[1].alamat
-        })
+      this.fullname = this.dataUser.user.fullname
+      this.email = this.dataUser.user.email
+      this.no_telpon = this.dataUser.user.no_telpon
+      this.alamat = this.dataUser.user.alamat
     },
     profil (guid) {
       this.$axios.put(`users/user-update/${this.dataUser.user.guid}`, {
@@ -137,12 +128,6 @@ export default {
                 name: 'login'
               })
             })
-            // this.$q.notify({
-            //   color: 'success',
-            //   message: 'Data berhasil diubah!'
-            // })
-            // this.$router.push({ name: 'login' })
-            // this.profile = false
           }
         })
     }

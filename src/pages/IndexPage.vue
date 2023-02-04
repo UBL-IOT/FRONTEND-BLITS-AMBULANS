@@ -11,11 +11,8 @@
       <q-table
         :rows="data"
         class="text-grey-7"
-        :hide-header="mode === 'grid'"
         :columns="columns"
         row-key="name"
-        :grid="mode=='grid'"
-        :filter="filter"
         :pagination="pagination"
       >
         <template v-slot:top>
@@ -46,7 +43,6 @@
                 placeholder="Pencarian"
                 style="width: 200px"
                 color="primary"
-                v-model="filter"
                 dense
               />
             </div>
@@ -81,7 +77,7 @@
                 </q-badge>
               </div>
             </q-td>
-            <q-td class="col q-gutter-sm" key="identitas" auto-width="true" :props="props">
+            <q-td class="col q-gutter-sm" key="identitas" :props="props">
                 <q-img
                   class="rounded-borders"
                   :ratio="16/9"
@@ -259,6 +255,7 @@ export default {
   },
   data () {
     return {
+      visibles: false,
       columns,
       data: [],
       pagination: {
@@ -340,12 +337,11 @@ export default {
     },
     getCustomers () {
       this.$q.loading.show()
-      this.$axios.get('users/get-all/', createToken())
+      this.$axios.get('users/get/all', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           if (res.data.status) {
             this.data = res.data.data
-            console.log(this.data)
           }
         })
     },
@@ -360,15 +356,10 @@ export default {
             cancel: true,
             persistent: true
           }).onOk(() => {
-            // if (res.data.status = true) {
             this.$router.push({ name: 'userVerified' })
-            // }
           }).onCancel((err) => {
             console.log(err)
           })
-          // if (res.data.status === true) {
-          //   this.$router.push({ name: 'userVerified' })
-          // }
         })
     },
     denied (guid) {

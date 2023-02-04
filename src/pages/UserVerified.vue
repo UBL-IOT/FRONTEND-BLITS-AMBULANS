@@ -1,99 +1,72 @@
 <template>
   <q-page>
     <q-card class="q-pa-md q-ma-md">
-      <q-breadcrumbs>
-        <q-breadcrumbs-el label="Home" icon="home" />
-        <q-breadcrumbs-el class="text-grey-7" label="Pengguna Terverifikasi" icon="verified" />
-      </q-breadcrumbs>
-    </q-card>
+      <q-card-section>
+        <div class="text-h6 text-indigo-8">
+          Users Verified
+        </div>
+        <div class="text-subtitle2">
+          Data users yang telah di verifikasi
+        </div>
+      </q-card-section>
 
-    <div class="col q-col-gutter-md q-ma-md q-mt-lg">
-      <q-card>
-        <q-table
+      <q-separator></q-separator>
+      <q-card-section class="q-pa-none q-ma-none">
+        <q-table class="no-shadow no-border"
           :rows="usersVerified"
-          class="text-grey-7"
-          :hide-header="mode === 'grid'"
           :columns="columns"
           row-key="name"
-          :grid="mode=='grid'"
-          :filter="filter"
-          :pagination="pagination"
-        >
-          <template v-slot:top>
-            <div class="col">
-              <div class="col-2 q-table__title">
-                Data Pengguna Terverifikasi
-              </div>
-              <p class="text-caption">
-                Daftar pengguna yang terverifikasi admin
-              </p>
-            </div>
-
-            <q-space />
-
-            <q-btn
-              flat
-              icon-right="document_scanner"
-              text-color="blue-7"
-              @click="exportTable"
-            >
-              <q-tooltip>
-                Export Data
-              </q-tooltip>
-            </q-btn>
-
-            <q-btn
-              flat
-              color="primary"
-              icon="search"
-              @click="visibles = !visibles"
-              size="md"
-              class="q-mr-sm"
-            />
-            <q-slide-transition>
-              <div v-show="visibles">
-                <q-input
-                  outlined
-                  debounce="300"
-                  placeholder="Pencarian"
-                  style="width: 200px"
-                  color="primary"
-                  v-model="filter"
-                  dense
-                />
-              </div>
-            </q-slide-transition>
-          </template>
+          :pagination="pagination">
           <template v-slot:body="props">
-            <q-tr class="text-uppercase" :props="props" v-if="props.row.verifikasi === 1">
+            <q-tr :props="props" v-if="props.row.verifikasi === 1 && props.row.role === 2">
               <q-td key="fullname" :props="props">
-                {{ props.row.fullname }}
+                <q-item>
+                  <q-item-section>
+                    <q-avatar square>
+                      <!-- <img :src="props.row.prod_img"/> -->
+                      <img src="../../public/avatar.png"/>
+                    </q-avatar>
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label>{{ props.row.fullname }}</q-item-label>
+                  </q-item-section>
+                </q-item>
               </q-td>
               <q-td key="email" :props="props">
-                {{ props.row.email }}
+                <q-item>
+                  <q-item-section>
+                    <q-item-label>{{ props.row.email }}</q-item-label>
+                  </q-item-section>
+                </q-item>
               </q-td>
-              <q-td class="text-bold" key="no_telpon" :props="props">
-                {{ props.row.no_telpon }}
+              <q-td key="no_telpon" :props="props">
+                <q-item>
+                  <q-item-section>
+                    <q-item-label>{{ props.row.no_telpon }}</q-item-label>
+                  </q-item-section>
+                </q-item>
               </q-td>
-              <q-td class="text-bold" key="status" :props="props">
-                <q-badge color="primary"><q-icon name="verified" size="14px" class="q-mr-xs"/> Verified</q-badge>
+              <q-td key="status" :props="props">
+                <div class="text-grey-8 q-gutter-xs">
+                  <q-badge color="green">Verified</q-badge>
+                </div>
               </q-td>
             </q-tr>
           </template>
         </q-table>
-      </q-card>
-    </div>
-
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 <script>
 import createToken from 'src/boot/create_token'
 
 const columns = [
-  { name: 'fullname', label: 'NAMA LENGKAP', field: 'fullname', sortable: true, align: 'left' },
-  { name: 'email', label: 'EMAIL', field: 'email', sortable: true, align: 'center' },
-  { name: 'no_telpon', label: 'NOMOR TELEPON', field: 'no_telpon', sortable: true, align: 'center', class: 'text-bold' },
-  { name: 'status', label: 'STATUS', field: 'status', sortable: true, align: 'center', class: 'text-bold' }
+  { name: 'fullname', label: 'Nama Lengkap', field: 'fullname', sortable: true, align: 'left' },
+  { name: 'email', label: 'Email', field: 'email', sortable: true, align: 'center' },
+  { name: 'no_telpon', label: 'No. Telpon', field: 'no_telpon', sortable: true, align: 'center', class: 'text-bold' },
+  { name: 'status', label: 'status', field: 'status', sortable: true, align: 'center', class: 'text-bold' }
 ]
 
 export default {
@@ -115,9 +88,11 @@ export default {
   methods: {
     async getCustomers () {
       this.$q.loading.show()
-      const response = await this.$axios.get('users/get-all', createToken()).finally(() => this.$q.loading.hide())
+      const response = await this.$axios.get('users/get/all', createToken()).finally(() => this.$q.loading.hide())
+      console.log(response)
       if (response.data.status === true) {
         this.usersVerified = response.data.data
+        console.log(this.usersVerified)
       }
       // response.data.data.forEach(verified => {
       //   verified = verified.verifikasi
