@@ -65,12 +65,12 @@
             </q-slide-transition>
           </template>
           <template v-slot:body="props">
-            <q-tr class="text-uppercase" :props="props" v-if="props.row.verifikasi === 1">
+            <q-tr class="text-uppercase" :props="props" v-if="props.row.verifikasi == 1 && props.row.role == 2">
               <q-td key="fullname" :props="props">
                 {{ props.row.fullname }}
               </q-td>
               <q-td key="email" :props="props">
-                {{ props.row.email }}
+                {{ props.row.email == null ? 'Belum ada email' : props.row.email }}
               </q-td>
               <q-td class="text-bold" key="no_telpon" :props="props">
                 {{ props.row.no_telpon }}
@@ -115,9 +115,10 @@ export default {
   methods: {
     async getCustomers () {
       this.$q.loading.show()
-      const response = await this.$axios.get('users/get-all', createToken()).finally(() => this.$q.loading.hide())
+      const response = await this.$axios.get('users/get/all', createToken()).finally(() => this.$q.loading.hide())
       if (response.data.status === true) {
         this.usersVerified = response.data.data
+        console.log(this.usersVerified)
       }
       // response.data.data.forEach(verified => {
       //   verified = verified.verifikasi

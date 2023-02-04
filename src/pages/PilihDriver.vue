@@ -81,7 +81,7 @@
                 {{ props.row.no_plat }}
               </q-td>
               <q-td key="status_driver" :props="props">
-                <q-badge :color="(props.row.status_driver === 0) ? 'green-7' :(props.row.status_driver === 1) ? 'orange-7' : 'green-7'">
+                <q-badge :color="(props.row.status_driver === 0) ? 'green-7' :(props.row.status_driver == 1) ? 'orange-7' : 'green-7'">
                 {{ props.row.status_driver === 0 ? 'SIAP JEMPUT' :(props.row.status_driver === 1) ? 'TIDAK AKTIF' : 'SELESAI' }}
                 </q-badge>
               </q-td>
@@ -148,6 +148,7 @@ export default {
   },
   created () {
     this.getDriver()
+    this.getPesanan()
   },
   methods: {
     getDriver () {
@@ -160,7 +161,23 @@ export default {
             res.data.data.forEach(telpon => {
               telpon = telpon.no_telpon.replace('0', '62')
               this.telponDriver = telpon
+              console.log(res.data)
             })
+          }
+        }).catch(() => this.$commonErrorNotif())
+    },
+    getPesanan () {
+      this.$q.loading.show()
+      this.$axios.get(`pesanan/${this.$route.params.guid}`, createToken())
+        .finally(() => this.$q.loading.hide())
+        .then((res) => {
+          if (res.data.status) {
+            this.data = res.data.data
+            console.log('Data' + this.data)
+            // res.data.data.forEach(telpon => {
+            // telpon = telpon.no_telpon.replace('0', '62')
+            // this.telponDriver = telpon
+            // })
           }
         }).catch(() => this.$commonErrorNotif())
     },

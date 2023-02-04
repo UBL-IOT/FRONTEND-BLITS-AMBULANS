@@ -53,7 +53,7 @@
           </q-slide-transition>
         </template>
         <template v-slot:body="props">
-          <q-tr :props="props" v-if="props.row.verifikasi === 0 && props.row.role === '2'">
+          <q-tr :props="props" v-if="props.row.verifikasi == 0 && props.row.role == '2'">
             <q-td key="fullname">
               {{ props.row.fullname }}
               <q-badge v-if="props.row.role === '2'" :color="props.row.verifikasi === 0 ? 'orange' :props.row.role === '3' ? 'red' : 'primari'">
@@ -97,14 +97,100 @@
             </q-td>
             <q-td key="aksi" :props="props">
               <div class="text-grey-8 q-gutter-xs">
-                <q-btn @click="denied (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="sm" class="q-pl-md q-pr-md" color="red" dense>Tolak</q-btn>
-                <q-btn @click="verified (props.row.guid)" v-if="props.row.role === '2'" :disable="props.row.verifikasi === 1" size="sm" class="q-pl-md q-pr-md" color="primary" dense>Terima</q-btn>
+                <q-btn @click="this.verifyUser(props.row.guid)" dense color="blue-7" class="q-pr-md q-pl-md" size="10px">
+                  Verified
+                </q-btn>
               </div>
             </q-td>
           </q-tr>
         </template>
       </q-table>
     </q-card>
+
+    <q-dialog v-model="verify">
+      <q-card class="my-card" flat bordered style="width: 650px; max-width: 60vw;">
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar>
+              <q-icon name="verified" size="40px" color="blue-7" />
+            </q-avatar>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Verifikasi Customer</q-item-label>
+            <q-item-label caption>
+              Cek data pengguna untuk di konfirmasi
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section class="col-1">
+            <q-btn flat dense icon="close" class="float-right" color="grey-8" v-close-popup></q-btn>
+          </q-item-section>
+        </q-item>
+
+        <q-separator />
+
+        <q-card-section horizontal>
+          <q-card-section class="q-gutter-sm fit">
+            <q-item-section>
+              <q-item-label>NAMA LENGKAP</q-item-label>
+              <q-item-label caption>
+                {{ this.fullname }}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>NOMOR TELEPON</q-item-label>
+              <q-item-label caption>
+                {{ this.phone }}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>FOTO KTP</q-item-label>
+              <q-item-label caption>
+                <q-img
+                  class="rounded-borders"
+                  :ratio="16/9"
+                  style="width:270px"
+                  :src="'https://img.psti-ubl.id/blits/uploads/' + this.ktp"
+                />
+              </q-item-label>
+            </q-item-section>
+          </q-card-section>
+          <q-separator vertical />
+          <q-card-section class="q-gutter-sm fit">
+            <q-item-section>
+              <q-item-label>EMAIL</q-item-label>
+              <q-item-label caption>
+                {{ this.email == null ? 'Belum ada email' : this.email }}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>STATUS</q-item-label>
+              <q-item-label caption>
+                {{ this.status == 2 ? 'Customer' : '-'}}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>SELFIE KTP</q-item-label>
+              <q-item-label caption>
+                <q-img
+                  class="rounded-borders"
+                  :ratio="16/9"
+                  style="width:270px"
+                  :src="'https://img.psti-ubl.id/blits/uploads/' + this.selfie"
+                />
+              </q-item-label>
+            </q-item-section>
+          </q-card-section>
+        </q-card-section>
+        <q-separator />
+        <q-card-actions>
+          <q-btn @click="denied (this.guidVerify)" v-if="this.status === '2'" :disable="this.verifyAct === 1" class="q-pl-md q-pr-md" color="red" flat dense>Tolak</q-btn>
+          <q-btn @click="verified (this.guidVerify)" v-if="this.status === '2'" :disable="this.verifyAct === 1" class="q-pl-md q-pr-md" color="primary" flat dense>Terima</q-btn>
+        </q-card-actions>
+
+      </q-card>
+    </q-dialog>
 
     <div class="row q-col-gutter-md q-ma-xs">
       <div class="col-12 col-md-9 q-pr-md">
@@ -260,6 +346,7 @@ export default {
   data () {
     return {
       columns,
+      verify: false,
       data: [],
       pagination: {
         rowsPerPage: 50
@@ -283,6 +370,15 @@ export default {
       jumlah: null,
       verifikasi: '',
       guid: '',
+      sample: null,
+      fullname: null,
+      email: null,
+      phone: null,
+      status: null,
+      selfie: null,
+      ktp: null,
+      guidVerify: null,
+      verifyAct: null,
       guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432'
     }
   },
@@ -294,6 +390,23 @@ export default {
     this.map.loaded = true
   },
   methods: {
+    verifyUser (guid) {
+      this.verify = true
+      this.$axios.get(`users/${guid}`, createToken())
+        .then((res) => {
+          if (res.data.status) {
+            this.sample = res.data.data
+            this.fullname = this.sample.fullname
+            this.email = this.sample.email
+            this.phone = this.sample.no_telpon
+            this.status = this.sample.role
+            this.selfie = this.sample.foto_selfie
+            this.ktp = this.sample.foto_ktp
+            this.guidVerify = guid
+            this.verifyAct = this.sample.verifikasi
+          }
+        })
+    },
     async getKendaraan () {
       this.$q.loading.show()
       this.$axios.post('https://api-kopamas-carter.pptik.id:5121/api.v1/vehicles/po-get', {
@@ -340,7 +453,7 @@ export default {
     },
     getCustomers () {
       this.$q.loading.show()
-      this.$axios.get('users/get-all/', createToken())
+      this.$axios.get('users/get/all', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           if (res.data.status) {
@@ -369,6 +482,24 @@ export default {
           // if (res.data.status === true) {
           //   this.$router.push({ name: 'userVerified' })
           // }
+        })
+    },
+    verifyDetail (guid) {
+      this.$axios.put(`users/get-pesanan/${this.pesanan.guid}`, {
+        fullname: this.fullname,
+        email: this.email,
+        no_telpon: this.no_telpon,
+        alamat: this.alamat
+      }, createToken())
+        .then((res) => {
+          if (res.data.status === true) {
+            this.$q.notify({
+              color: 'success',
+              message: 'Data berhasil diubah!'
+            })
+            this.$router.push({ name: 'profil' })
+            this.profile = false
+          }
         })
     },
     denied (guid) {
