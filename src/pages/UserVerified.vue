@@ -18,7 +18,7 @@
           row-key="name"
           :pagination="pagination">
           <template v-slot:body="props">
-            <q-tr :props="props" v-if="props.row.verifikasi === 1 && props.row.role === 2">
+            <q-tr class="text-uppercase" :props="props" v-if="props.row.verifikasi == 1 && props.row.role == 2">
               <q-td key="fullname" :props="props">
                 <q-item>
                   <q-item-section>
@@ -34,11 +34,7 @@
                 </q-item>
               </q-td>
               <q-td key="email" :props="props">
-                <q-item>
-                  <q-item-section>
-                    <q-item-label>{{ props.row.email }}</q-item-label>
-                  </q-item-section>
-                </q-item>
+                {{ props.row.email == null ? 'Belum ada email' : props.row.email }}
               </q-td>
               <q-td key="no_telpon" :props="props">
                 <q-item>
@@ -89,7 +85,6 @@ export default {
     async getCustomers () {
       this.$q.loading.show()
       const response = await this.$axios.get('users/get/all', createToken()).finally(() => this.$q.loading.hide())
-      console.log(response)
       if (response.data.status === true) {
         this.usersVerified = response.data.data
         console.log(this.usersVerified)
