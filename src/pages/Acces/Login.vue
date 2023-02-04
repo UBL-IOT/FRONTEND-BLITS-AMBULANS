@@ -96,7 +96,7 @@
           if (res.data.status === true) {
             this.$q.localStorage.set('dataUser', res.data.data)
             if (res.data.data.user.role === '1') {
-              this.$router.push({name: 'dashboard'})
+              this.$router.push({ name: 'dashboard' })
               this.$q.notify({
                 color: 'positive',
                 message: res.data.message

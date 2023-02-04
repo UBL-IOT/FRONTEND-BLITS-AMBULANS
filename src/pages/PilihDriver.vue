@@ -168,17 +168,12 @@ export default {
     },
     getPesanan () {
       this.$q.loading.show()
-      this.$axios.get(`pesanan/${this.$route.params.guid}`, createToken())
+      this.$axios.get(`pilih-drivers/${this.$route.params.guid}`, createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
-          if (res.data.status) {
-            this.data = res.data.data
-            console.log('Data' + this.data)
-            // res.data.data.forEach(telpon => {
-            // telpon = telpon.no_telpon.replace('0', '62')
-            // this.telponDriver = telpon
-            // })
-          }
+          console.log(res)
+          // this.data = res.data.data
+          // console.log(this.data)
         }).catch(() => this.$commonErrorNotif())
     },
     Pilih (guid, Pesanan) {
