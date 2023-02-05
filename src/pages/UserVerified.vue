@@ -76,7 +76,7 @@
                 {{ props.row.no_telpon }}
               </q-td>
               <q-td class="text-bold" key="status" :props="props">
-                <q-badge color="green"><q-icon name="verified" size="14px" class="q-mr-xs"/> Verifed</q-badge>
+                <q-badge color="green"><q-icon name="verified" size="14px" class="q-mr-xs"/> Verified</q-badge>
               </q-td>
             </q-tr>
           </template>
