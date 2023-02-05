@@ -9,7 +9,7 @@ import axios from 'axios'
 // for each client)
 // const api = axios.create({ baseURL: 'http://localhost:5050/' })
 // const api = axios.create({ baseURL: 'https://ambulance-blits.pptik.id:5134/' })
-const api = axios.create({ baseURL: 'http://192.168.18.4:5050' })
+const api = axios.create({ baseURL: 'http://192.168.1.9:5050' })
 
 export default boot(({ app }) => {
   app.config.globalProperties.$axios = api
