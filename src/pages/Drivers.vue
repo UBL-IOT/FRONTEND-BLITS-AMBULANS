@@ -10,82 +10,81 @@
 
     <div class="col q-col-gutter-md q-ma-md q-mt-lg">
       <q-card>
-      <q-table
-        :rows="data"
-        :hide-header="mode === 'grid'"
-        :columns="columns"
-        row-key="no_plat"
-        class="text-grey-7"
-        :grid="mode=='grid'"
-        :filter="filter"
-        :pagination="pagination">
-        <template v-slot:top>
-          <div class="col">
-            <div class="col-2 q-table__title">
-              Data Drivers
+        <q-table
+          :rows="data"
+          :hide-header="mode === 'grid'"
+          :columns="columns"
+          row-key="no_plat"
+          class="text-grey-7"
+          :grid="mode=='grid'"
+          :filter="filter"
+          :pagination="pagination">
+          <template v-slot:top>
+            <div class="col">
+              <div class="col-2 q-table__title">
+                Data Drivers
+              </div>
+              <p class="text-caption">
+                Daftar semua drivers ambulans pada saat ini
+              </p>
             </div>
-            <p class="text-caption">
-              Daftar semua drivers ambulans pada saat ini
-            </p>
-          </div>
 
-          <q-space />
+            <q-space />
 
-          <q-btn @click="new_driver=true" flat icon="library_add" text-color="blue-7">
-            <q-tooltip>
-              Tambah Data
-            </q-tooltip>
-          </q-btn>
+            <q-btn @click="new_driver=true" flat icon="library_add" text-color="blue-7">
+              <q-tooltip>
+                Tambah Data
+              </q-tooltip>
+            </q-btn>
 
-          <q-btn
-            flat
-            icon-right="document_scanner"
-            text-color="blue-7"
-            @click="exportTable"
-          >
-            <q-tooltip>
-              Export Data
-            </q-tooltip>
-          </q-btn>
+            <q-btn
+              flat
+              icon-right="document_scanner"
+              text-color="blue-7"
+              @click="exportTable"
+            >
+              <q-tooltip>
+                Export Data
+              </q-tooltip>
+            </q-btn>
 
-          <q-btn
-            flat
-            color="primary"
-            icon="search"
-            @click="visibles = !visibles"
-            size="md"
-            class="q-mr-sm"
-          />
-          <q-slide-transition>
-            <div v-show="visibles">
-              <q-input
-                outlined
-                debounce="300"
-                placeholder="Pencarian"
-                style="width: 200px"
-                color="primary"
-                v-model="filter"
+            <q-btn
+              flat
+              color="primary"
+              icon="search"
+              @click="visibles = !visibles"
+              size="md"
+              class="q-mr-sm"
+            />
+            <q-slide-transition>
+              <div v-show="visibles">
+                <q-input
+                  outlined
+                  debounce="300"
+                  placeholder="Pencarian"
+                  style="width: 200px"
+                  color="primary"
+                  v-model="filter"
+                  dense
+                />
+              </div>
+            </q-slide-transition>
+          </template>
+          <template v-slot:body-cell-status_driver="props">
+            <q-td :props="props">
+              <q-badge
+                :color="(props.row.status_driver === 0) ?'green'
+                :(props.row.status_driver === 1 ?'red':'red')"
+                text-color="white"
                 dense
-              />
-            </div>
-          </q-slide-transition>
-        </template>
-        <template v-slot:body-cell-status_driver="props">
-          <q-td :props="props">
-            <q-badge
-              :color="(props.row.status_driver === 0) ?'green'
-              :(props.row.status_driver === 1 ?'red':'red')"
-              text-color="white"
-              dense
-              class="text-weight-bold"
-              square>
-              <!-- {{ props.row.status_driver === 0 ? 'AKTIF' :(props.row.status_driver === 1) ? 'SEDANG MENJEMPUT' :(props.row.status_driver === 2) ? 'SEDANG MENGANTAR'  : 'TIDAK AKTIF' }} -->
-              {{ props.row.status_driver === 0 ? 'AKTIF' : 'TIDAK AKTIF' }}
-            </q-badge>
-          </q-td>
-        </template>
-      </q-table>
-    </q-card>
+                class="text-weight-bold"
+                square>
+                {{ props.row.status_driver === 0 ? 'AKTIF' : 'TIDAK AKTIF' }}
+              </q-badge>
+            </q-td>
+          </template>
+        </q-table>
+      </q-card>
     </div>
 
     <q-dialog v-model="new_driver">
@@ -162,7 +161,6 @@
           </q-card-actions>
 
         </q-form>
-
       </q-card>
     </q-dialog>
   </q-page>
@@ -182,6 +180,7 @@ function wrapCsvValue (val, formatFn) {
 
   return `"${formatted}"`
 }
+
 const columns = [
   {
     name: 'nama_driver',

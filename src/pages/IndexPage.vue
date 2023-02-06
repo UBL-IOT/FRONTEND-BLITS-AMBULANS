@@ -13,6 +13,7 @@
         class="text-grey-7"
         :columns="columns"
         row-key="name"
+        :filter="filter"
         :pagination="pagination"
       >
         <template v-slot:top>
@@ -344,6 +345,7 @@ export default {
       visibles: false,
       columns,
       verify: false,
+      filter: '',
       data: [],
       pagination: {
         rowsPerPage: 50

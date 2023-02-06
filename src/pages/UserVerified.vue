@@ -86,7 +86,19 @@
   </q-page>
 </template>
 <script>
+import { exportFile } from 'quasar'
 import createToken from 'src/boot/create_token'
+
+function wrapCsvValue (val, formatFn) {
+  let formatted = formatFn !== void 0 ? formatFn(val) : val
+
+  formatted =
+      formatted === void 0 || formatted === null ? '' : String(formatted)
+
+  formatted = formatted.split('"').join('""')
+
+  return `"${formatted}"`
+}
 
 const columns = [
   { name: 'fullname', label: 'Nama Lengkap', field: 'fullname', sortable: true, align: 'left' },
@@ -98,14 +110,17 @@ const columns = [
 export default {
   data () {
     return {
+      visibles: false,
       data: [],
       verified: '',
-      pagination: {
-        rowsPerPage: 50
-      },
       usersVerified: [],
       columns,
-      verifikasi: ''
+      filter: '',
+      mode: 'list',
+      verifikasi: '',
+      pagination: {
+        rowsPerPage: 50
+      }
     }
   },
   async created () {
@@ -117,12 +132,36 @@ export default {
       const response = await this.$axios.get('users/get/all', createToken()).finally(() => this.$q.loading.hide())
       if (response.data.status === true) {
         this.usersVerified = response.data.data
-        console.log(this.usersVerified)
       }
-      // response.data.data.forEach(verified => {
-      //   verified = verified.verifikasi
-      //   // console.log(verified)
-      // })
+    }
+  },
+  exportTable () {
+    // naive encoding to csv format
+    const content = [this.columns.map(col => wrapCsvValue(col.label))]
+      .concat(
+        this.data.map(row =>
+          this.columns
+            .map(col =>
+              wrapCsvValue(
+                typeof col.field === 'function'
+                  ? col.field(row)
+                  : row[col.field === void 0 ? col.name : col.field],
+                col.format
+              )
+            )
+            .join(',')
+        )
+      )
+      .join('\r\n')
+
+    const status = exportFile('user-verified.csv', content, 'text/csv')
+
+    if (status !== true) {
+      this.$q.notify({
+        message: 'Browser denied file download...',
+        color: 'negative',
+        icon: 'warning'
+      })
     }
   }
 }
