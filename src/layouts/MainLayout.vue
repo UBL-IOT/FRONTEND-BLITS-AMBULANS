@@ -36,6 +36,8 @@
           </q-btn>
 
         </div>
+        <div class="row q-gutter-md q-mr-md">
+        </div>
 
         <q-btn-dropdown
           flat
@@ -65,7 +67,6 @@
 
             <div class="column items-center">
               <q-avatar size="72px">
-                <!-- <lottie :options="dashboard" /> -->
                 <img src="avatar.png" />
               </q-avatar>
 
@@ -146,20 +147,30 @@
                 <q-item-section>
                   Dashboard
                 </q-item-section>
+                <div v-for="(d, i) in customers" :key="i" class="q-gutter-xs">
+                  <q-badge v-if="d.verifikasi === 0" rounded color="red">{{ totalnotif }}</q-badge>
+                </div>
               </q-item>
 
-              <q-expansion-item
-                class="q-pl-sm"
-                icon="perm_phone_msg"
-                label="Pemesanan"
-              >
+              <q-expansion-item class="q-pl-sm">
+                <template v-slot:header>
+                  <q-item-section avatar>
+                    <q-icon name="perm_phone_msg" />
+                  </q-item-section>
+                  <q-item-section>
+                    Pemesanan
+                  </q-item-section>
+                  <div v-for="(d, i) in data" :key="i" class="q-gutter-md">
+                    <q-badge v-if="d.status_pesanan === 0" rounded color="red">{{ pesanan }}</q-badge>
+                  </div>
+                </template>
                 <q-item
-                  active-class="tab-active"
-                  class="q-ma-sm navigation-item"
-                  :to="{ name: 'order' }"
-                  exact
-                  clickable
-                  v-ripple
+                active-class="tab-active"
+                class="q-ma-sm navigation-item"
+                :to="{ name: 'order' }"
+                exact
+                clickable
+                v-ripple
                 >
                   <q-item-section avatar>
                     <q-icon name="verified" />
@@ -300,6 +311,7 @@
 <script>
 import createToken from 'src/boot/create_token'
 import Messages from './Messages'
+import mqttjs from 'mqtt'
 export default ({
   name: 'MainLayout',
   components: {
@@ -314,11 +326,41 @@ export default ({
       confirm: false,
       pesanan: null,
       sapa: 'Hallo, ',
+      totalnotif: null,
+      customers: [],
       data: ''
     }
   },
+  beforeCreate: async function () {
+    const option = {
+      clientId: 'order_notif',
+      username: '/blits_ambulance:blits',
+      password: 'blits123abc45',
+      protocolId: 'MQTT',
+      reconnectPeriode: 0,
+      keepAlive: 0
+    }
+    const client = mqttjs.connect('ws://103.167.112.188:15675/ws', option)
+    client.on('connect', function () {
+      console.log('connected')
+    })
+    // const options = {
+    //   username: '/shadoofpertanian:shadoofpertanian',
+    //   password: 'TaniBertani19',
+    //   clientId: 'goblok',
+    //   protocolId: 'MQTT',
+    //   reconnectPeriode: 0,
+    //   keepAlive: 0
+    // }
+
+    // const client = mqttjs.connect('ws://rmq1.pptik.id:15675/ws', options)
+    // client.on('connect', function (err) {
+    //   console.log(err)
+    // })
+  },
   async created () {
     await this.getPesanan()
+    await this.getCustomers()
   },
   methods: {
     getPesanan () {
@@ -331,6 +373,20 @@ export default ({
             return (item.status_pesanan === 0)
           })
           this.pesanan = tempRecipes.length
+        })
+    },
+    getCustomers () {
+      this.$q.loading.show()
+      this.$axios.get('users/get/all', createToken())
+        .finally(() => this.$q.loading.hide())
+        .then((res) => {
+          if (res.data.status) {
+            this.customers = res.data.data
+            const totalnotif = this.customers.filter((item) => {
+              return (item.verifikasi === 0)
+            })
+            this.totalnotif = totalnotif.length
+          }
         })
     },
     Logout () {

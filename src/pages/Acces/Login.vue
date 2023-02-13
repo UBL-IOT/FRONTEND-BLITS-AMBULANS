@@ -87,8 +87,8 @@
     methods: {
       async loginNotify() {
         await this.$axios.post('users/login', {
-          // no_telpon: 0813683446121,
-          // password: siapasaya
+          // no_telpon: 12345678,
+          // password: blits2023
           no_telpon: this.no_telpon,
           password: this.password
         })

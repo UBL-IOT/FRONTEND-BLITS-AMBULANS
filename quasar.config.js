@@ -11,7 +11,7 @@
 const ESLintPlugin = require('eslint-webpack-plugin')
 
 const { configure } = require('quasar/wrappers')
-
+const webpack = require('webpack')
 module.exports = configure(function (ctx) {
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
@@ -81,11 +81,23 @@ module.exports = configure(function (ctx) {
       // https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
 
+      // chainWebpack (chain) {
+      //   const nodePolyfillWebpackPlugin = require('node-polyfill-webpack-plugin')
+      //   chain.plugin('node-polyfill').use(nodePolyfillWebpackPlugin)
+      //   chain.plugin('eslint-webpack-plugin').use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
+      // }
+      extendWebpack (cfg) { cfg.plugins.push(new webpack.ProvidePlugin({ process: 'process/browser', Buffer: ['buffer', 'Buffer'] })) },
       chainWebpack (chain) {
+        const nodePolyfillWebpackPlugin = require('node-polyfill-webpack-plugin')
+        chain.plugin('node-polyfill').use(nodePolyfillWebpackPlugin)
         chain.plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
       }
-
+      // chainWebpack (chain) {
+      //   chain.plugin('eslint-webpack-plugin')
+      //     .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
+      // }
+      // extendWebpack (cfg) { cfg.plugins.push(new ESLintPlugin.ProvidePlugin({ process: 'process/browser', Buffer: ['buffer', 'Buffer'] })) }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer

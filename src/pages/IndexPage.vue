@@ -332,6 +332,7 @@ import createToken from 'src/boot/create_token'
 import { LMap, LIcon, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+// import mqtt from 'mqtt'
 export default {
   components: {
     LMap,
@@ -381,6 +382,17 @@ export default {
       guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432'
     }
   },
+  // beforeCreate: async function () {
+  //   const option = {
+  //     clientId: 'order_notif',
+  //     username: 'blitspass',
+  //     password: 'blits123abc45'
+  //   }
+  //   const client = mqtt.connect('ws://103.167.112.188:15672/ws', option)
+  //   client.on('connect', function () {
+  //     console.log('connected')
+  //   })
+  // },
   async created () {
     await this.getKendaraan()
     await this.getDriver()

@@ -11,10 +11,10 @@
       <q-card>
         <q-table
           :rows="usersVerified"
-          class="text-grey-7"
           :hide-header="mode === 'grid'"
           :columns="columns"
           row-key="name"
+          class="text-grey-7"
           :grid="mode=='grid'"
           :filter="filter"
           :pagination="pagination"
@@ -129,14 +129,16 @@ export default {
   methods: {
     async getCustomers () {
       this.$q.loading.show()
-      const response = await this.$axios.get('users/get/all', createToken()).finally(() => this.$q.loading.hide())
-      if (response.data.status === true) {
-        this.usersVerified = response.data.data
-      }
+      this.$axios.get('users/get/all', createToken())
+        .finally(() => this.$q.loading.hide())
+        .then((res) => {
+          if (res.data.status) {
+            this.usersVerified = res.data.data
+          }
+        })
     }
   },
   exportTable () {
-    // naive encoding to csv format
     const content = [this.columns.map(col => wrapCsvValue(col.label))]
       .concat(
         this.data.map(row =>

@@ -16,7 +16,6 @@ const routes = [
       { path: 'pilih-drivers/:guid', name: 'pilihDriver', component: () => import('pages/PilihDriver.vue') },
       { path: 'daftar-pesanan', name: 'daftarPesanan', component: () => import('pages/DaftarPesanan.vue') },
       { path: 'vehicle', name: 'vehicle', component: () => import('pages/Vehicle.vue') },
-      // { path: 'Schedule', name: 'schedule', component: () => import('pages/Schedule.vue') },
       { path: 'profile', name: 'profil', component: () => import('pages/Profile.vue') },
       { path: 'Profile/:guid', name: 'editProfile', component: () => import('pages/Profile.vue') }
     ]
@@ -28,13 +27,13 @@ const routes = [
       { path: 'Login', name: 'login', component: () => import('pages/Acces/Login.vue') }
     ]
   },
-  {
-    path: '/',
-    component: () => import('pages/Acces/LoginPage.vue'),
-    children: [
-      { path: 'login-page', name: 'loginPage', component: () => import('pages/Acces/LoginPage.vue') }
-    ]
-  },
+  // {
+  //   path: '/',
+  //   component: () => import('pages/Acces/LoginPage.vue'),
+  //   children: [
+  //     { path: 'login-page', name: 'loginPage', component: () => import('pages/Acces/LoginPage.vue') }
+  //   ]
+  // },
 
   // Always leave this as last one,
   // but you can also remove it
