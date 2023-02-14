@@ -146,6 +146,7 @@
                 </q-item-section>
                 <q-item-section>
                   Dashboard
+                  <!-- {{rmqdata}} -->
                 </q-item-section>
                 <div v-for="(d, i) in customers" :key="i" class="q-gutter-xs">
                   <q-badge v-if="d.verifikasi === 0" rounded color="red">{{ totalnotif }}</q-badge>
@@ -312,6 +313,8 @@
 import createToken from 'src/boot/create_token'
 import Messages from './Messages'
 import mqttjs from 'mqtt'
+let client = null
+// var mqttjs = require('mqtt')
 export default ({
   name: 'MainLayout',
   components: {
@@ -328,39 +331,36 @@ export default ({
       sapa: 'Hallo, ',
       totalnotif: null,
       customers: [],
-      data: ''
+      data: '',
+      rmqdata: null
     }
   },
   beforeCreate: async function () {
     const option = {
-      clientId: 'order_notif',
+      clientId: 'topic',
       username: '/blits_ambulance:blits',
       password: 'blits123abc45',
       protocolId: 'MQTT',
       reconnectPeriode: 0,
-      keepAlive: 0
+      keepAlive: true
     }
-    const client = mqttjs.connect('ws://103.167.112.188:15675/ws', option)
+
+    client = mqttjs.connect('ws://103.167.112.188:15675/ws', option)
     client.on('connect', function () {
       console.log('connected')
+      client.subscribe('order_notif', function (err) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('tidak error')
+        }
+      })
     })
-    // const options = {
-    //   username: '/shadoofpertanian:shadoofpertanian',
-    //   password: 'TaniBertani19',
-    //   clientId: 'goblok',
-    //   protocolId: 'MQTT',
-    //   reconnectPeriode: 0,
-    //   keepAlive: 0
-    // }
-
-    // const client = mqttjs.connect('ws://rmq1.pptik.id:15675/ws', options)
-    // client.on('connect', function (err) {
-    //   console.log(err)
-    // })
   },
   async created () {
     await this.getPesanan()
     await this.getCustomers()
+  // await this.getMessages()
   },
   methods: {
     getPesanan () {
@@ -392,7 +392,18 @@ export default ({
     Logout () {
       this.$q.localStorage.clear()
       this.$router.push({ name: 'login' })
+    },
+    getMessages: function () {
+      console.log('get message')
+      client.on('message', function (topic, message) {
+        console.log(message)
+        const msg = JSON.parse(message.toString())
+        console.log(msg)
+      })
     }
+  },
+  mounted () {
+    this.getMessages()
   }
 })
 </script>

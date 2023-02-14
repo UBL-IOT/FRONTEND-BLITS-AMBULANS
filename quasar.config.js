@@ -11,7 +11,7 @@
 const ESLintPlugin = require('eslint-webpack-plugin')
 
 const { configure } = require('quasar/wrappers')
-const webpack = require('webpack')
+// const webpack = require('webpack')
 module.exports = configure(function (ctx) {
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
@@ -86,7 +86,7 @@ module.exports = configure(function (ctx) {
       //   chain.plugin('node-polyfill').use(nodePolyfillWebpackPlugin)
       //   chain.plugin('eslint-webpack-plugin').use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
       // }
-      extendWebpack (cfg) { cfg.plugins.push(new webpack.ProvidePlugin({ process: 'process/browser', Buffer: ['buffer', 'Buffer'] })) },
+      // extendWebpack (cfg) { cfg.plugins.push(new webpack.ProvidePlugin({ process: 'process/browser', Buffer: ['buffer', 'Buffer'] })) },
       chainWebpack (chain) {
         const nodePolyfillWebpackPlugin = require('node-polyfill-webpack-plugin')
         chain.plugin('node-polyfill').use(nodePolyfillWebpackPlugin)
