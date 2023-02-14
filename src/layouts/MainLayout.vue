@@ -5,7 +5,7 @@
         <q-btn
           flat
           dense
-          style="color: #323746;"
+          style="color: #323746"
           icon="menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
           round
@@ -14,7 +14,12 @@
         <div class="row q-gutter-md q-mr-md">
           <q-btn round dense flat color="blue-7" icon="notifications">
             <div v-for="(d, i) in data" :key="i">
-              <q-badge v-if="d.status_pesanan === 0" color="red" text-color="white" floating>
+              <q-badge
+                v-if="d.status_pesanan === 0"
+                color="red"
+                text-color="white"
+                floating
+              >
                 {{ pesanan }}
               </q-badge>
             </div>
@@ -22,22 +27,31 @@
               <q-card class="my-card">
                 <q-card-section>
                   <div class="text-h6 text-grey-7">Informasi Pesanan</div>
-                  <div class="text-subtitle text-grey-7">Daftar informasi pesanan masuk system</div>
+                  <div class="text-subtitle text-grey-7">
+                    Daftar informasi pesanan masuk system
+                  </div>
                   <messages></messages>
                 </q-card-section>
 
                 <q-separator />
 
                 <q-card-actions vertical>
-                  <q-btn clickable v-ripple exact :to="{ name: 'order' }" v-close-popup flat text-color="blue-7">Lihat Semua</q-btn>
+                  <q-btn
+                    clickable
+                    v-ripple
+                    exact
+                    :to="{ name: 'order' }"
+                    v-close-popup
+                    flat
+                    text-color="blue-7"
+                    >Lihat Semua</q-btn
+                  >
                 </q-card-actions>
               </q-card>
             </q-menu>
           </q-btn>
-
         </div>
-        <div class="row q-gutter-md q-mr-md">
-        </div>
+        <div class="row q-gutter-md q-mr-md"></div>
 
         <q-btn-dropdown
           flat
@@ -46,7 +60,8 @@
           :label="this.sapa + dataUser.user.fullname"
           left
           stretch
-          no-caps>
+          no-caps
+        >
           <div class="row no-wrap q-pa-md">
             <div class="column">
               <div class="text-h6 q-mb-md">Settings</div>
@@ -70,7 +85,9 @@
                 <img src="avatar.png" />
               </q-avatar>
 
-              <div class="text-subtitle1 q-mt-md q-mb-xs text-capitalize">{{ dataUser.user.fullname }}</div>
+              <div class="text-subtitle1 q-mt-md q-mb-xs text-capitalize">
+                {{ dataUser.user.fullname }}
+              </div>
 
               <q-btn
                 color="red orange"
@@ -84,15 +101,18 @@
                 <q-card class="my-card header-counter" flat bordered>
                   <q-card-section horizontal>
                     <q-card-section class="q-pt-xs">
-                      <div class="text-h6 q-mt-sm q-mb-xs">Keluar dari sistem BLITS Ambulans</div>
+                      <div class="text-h6 q-mt-sm q-mb-xs">
+                        Keluar dari sistem BLITS Ambulans
+                      </div>
                       <div class="text-caption text-grey">
-                        Apakah kamu yakin mau keluar dari sistem BLITS Ambulans sekarang ?
+                        Apakah kamu yakin mau keluar dari sistem BLITS Ambulans
+                        sekarang ?
                       </div>
                     </q-card-section>
 
                     <q-card-section class="col-4 flex flex-center">
                       <q-avatar size="120px" rounded>
-                        <img src="image-logout.jpg" alt="">
+                        <img src="image-logout.jpg" alt="" />
                       </q-avatar>
                     </q-card-section>
                   </q-card-section>
@@ -100,8 +120,20 @@
                   <q-separator />
 
                   <q-card-actions>
-                    <q-btn flat color="blue-13" @click="Logout" label="Keluar" icon="sentiment_very_dissatisfied" />
-                    <q-btn flat color="red-13" v-close-popup label="Batal" icon="highlight_off" />
+                    <q-btn
+                      flat
+                      color="blue-13"
+                      @click="Logout"
+                      label="Keluar"
+                      icon="sentiment_very_dissatisfied"
+                    />
+                    <q-btn
+                      flat
+                      color="red-13"
+                      v-close-popup
+                      label="Batal"
+                      icon="highlight_off"
+                    />
                   </q-card-actions>
                 </q-card>
               </q-dialog>
@@ -115,23 +147,28 @@
       class="left-navigation text-white"
       show-if-above
       v-model="leftDrawerOpen"
-      style="background-color: #323746;"
+      style="background-color: #323746"
       side="left"
       :width="280"
       elevated
     >
       <div class="full-height">
-        <div style="height: calc(100% - 67px); padding:20px; align-items: center;">
+        <div
+          style="height: calc(100% - 67px); padding: 20px; align-items: center"
+        >
           <q-toolbar class="q-mb-md">
-            <q-avatar style="width: 50px; height: 55px;">
+            <q-avatar style="width: 50px; height: 55px">
               <img src="icons/main_icon/icon.png" />
             </q-avatar>
-            <q-toolbar-title style="font-family: monospace; font-weight: bold;">
+            <q-toolbar-title style="font-family: monospace; font-weight: bold">
               BLITS
-              <div class="text-caption text-blue-7">Administrator <q-badge color="green" rounded text-color="white" /></div>
+              <div class="text-caption text-blue-7">
+                Administrator
+                <q-badge color="green" rounded text-color="white" />
+              </div>
             </q-toolbar-title>
           </q-toolbar>
-          <q-scroll-area style="height:100%;">
+          <q-scroll-area style="height: 100%">
             <q-list padding class="text-grey text-weight-bold">
               <q-item
                 active-class="tab-active"
@@ -149,7 +186,9 @@
                   <!-- {{rmqdata}} -->
                 </q-item-section>
                 <div v-for="(d, i) in customers" :key="i" class="q-gutter-xs">
-                  <q-badge v-if="d.verifikasi === 0" rounded color="red">{{ totalnotif }}</q-badge>
+                  <q-badge v-if="d.verifikasi === 0" rounded color="red">{{
+                    totalnotif
+                  }}</q-badge>
                 </div>
               </q-item>
 
@@ -158,33 +197,34 @@
                   <q-item-section avatar>
                     <q-icon name="perm_phone_msg" />
                   </q-item-section>
-                  <q-item-section>
-                    Pemesanan
-                  </q-item-section>
+                  <q-item-section> Pemesanan </q-item-section>
                   <div v-for="(d, i) in data" :key="i" class="q-gutter-md">
-                    <q-badge v-if="d.status_pesanan === 0" rounded color="red">{{ pesanan }}</q-badge>
+                    <q-badge
+                      v-if="d.status_pesanan === 0"
+                      rounded
+                      color="red"
+                      >{{ pesanan }}</q-badge
+                    >
                   </div>
                 </template>
                 <q-item
-                active-class="tab-active"
-                class="q-ma-sm navigation-item"
-                :to="{ name: 'order' }"
-                exact
-                clickable
-                v-ripple
+                  active-class="tab-active"
+                  class="q-ma-sm navigation-item"
+                  :to="{ name: 'order' }"
+                  exact
+                  clickable
+                  v-ripple
                 >
                   <q-item-section avatar>
                     <q-icon name="verified" />
                   </q-item-section>
-                  <q-item-section>
-                    Pesanan Masuk
-                  </q-item-section>
+                  <q-item-section> Pesanan Masuk </q-item-section>
                 </q-item>
 
                 <q-item
                   active-class="tab-active"
                   class="q-ma-sm navigation-item"
-                  :to="{name: 'daftarPesanan'}"
+                  :to="{ name: 'daftarPesanan' }"
                   exact
                   clickable
                   v-ripple
@@ -192,9 +232,7 @@
                   <q-item-section avatar>
                     <q-icon name="playlist_add_check_circle" />
                   </q-item-section>
-                  <q-item-section>
-                    Daftar Pesanan
-                  </q-item-section>
+                  <q-item-section> Daftar Pesanan </q-item-section>
                 </q-item>
               </q-expansion-item>
 
@@ -214,9 +252,7 @@
                   <q-item-section avatar>
                     <q-icon name="verified" />
                   </q-item-section>
-                  <q-item-section>
-                    Terverifikasi
-                  </q-item-section>
+                  <q-item-section> Terverifikasi </q-item-section>
                 </q-item>
                 <q-item
                   active-class="tab-active"
@@ -229,9 +265,7 @@
                   <q-item-section avatar>
                     <q-icon name="do_disturb" />
                   </q-item-section>
-                  <q-item-section>
-                    Tertolak
-                  </q-item-section>
+                  <q-item-section> Tertolak </q-item-section>
                 </q-item>
               </q-expansion-item>
 
@@ -246,9 +280,7 @@
                 <q-item-section avatar>
                   <q-icon name="local_shipping" />
                 </q-item-section>
-                <q-item-section>
-                  Ambulans
-                </q-item-section>
+                <q-item-section> Ambulans </q-item-section>
               </q-item>
 
               <q-item
@@ -262,9 +294,7 @@
                 <q-item-section avatar>
                   <q-icon name="supervised_user_circle" />
                 </q-item-section>
-                <q-item-section>
-                  Pengemudi
-                </q-item-section>
+                <q-item-section> Pengemudi </q-item-section>
               </q-item>
 
               <q-item
@@ -277,9 +307,7 @@
                 <q-item-section avatar>
                   <q-icon name="map" />
                 </q-item-section>
-                <q-item-section>
-                  Peta
-                </q-item-section>
+                <q-item-section> Peta </q-item-section>
               </q-item>
 
               <q-item
@@ -292,11 +320,8 @@
                 <q-item-section avatar>
                   <q-icon name="manage_accounts" />
                 </q-item-section>
-                <q-item-section>
-                  Profil
-                </q-item-section>
+                <q-item-section> Profil </q-item-section>
               </q-item>
-
             </q-list>
           </q-scroll-area>
         </div>
@@ -315,7 +340,7 @@ import Messages from './Messages'
 import mqttjs from 'mqtt'
 let client = null
 // var mqttjs = require('mqtt')
-export default ({
+export default {
   name: 'MainLayout',
   components: {
     Messages
@@ -337,53 +362,54 @@ export default ({
   },
   beforeCreate: async function () {
     const option = {
-      clientId: 'topic',
+      clientId: 'adi',
       username: '/blits_ambulance:blits',
       password: 'blits123abc45',
-      protocolId: 'MQTT',
+      protocolId: '',
       reconnectPeriode: 0,
-      keepAlive: true
+      keepAlive: 60
     }
 
     client = mqttjs.connect('ws://103.167.112.188:15675/ws', option)
     client.on('connect', function () {
-      console.log('connected')
-      client.subscribe('order_notif', function (err) {
+      // console.log('connected')
+      client.subscribe('orderan', function (err, topic) {
         if (err) {
           console.log(err)
-        } else {
-          console.log('tidak error')
         }
+        // console.log(JSON.stringify(topic))
       })
     })
   },
   async created () {
     await this.getPesanan()
     await this.getCustomers()
-  // await this.getMessages()
+    await this.getMessages()
   },
   methods: {
     getPesanan () {
       this.$q.loading.show()
-      this.$axios.get('pesanan/get-pesanan', createToken())
+      this.$axios
+        .get('pesanan/get-pesanan', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           this.data = res.data.data
           const tempRecipes = this.data.filter((item) => {
-            return (item.status_pesanan === 0)
+            return item.status_pesanan === 0
           })
           this.pesanan = tempRecipes.length
         })
     },
     getCustomers () {
       this.$q.loading.show()
-      this.$axios.get('users/get/all', createToken())
+      this.$axios
+        .get('users/get/all', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           if (res.data.status) {
             this.customers = res.data.data
             const totalnotif = this.customers.filter((item) => {
-              return (item.verifikasi === 0)
+              return item.verifikasi === 0
             })
             this.totalnotif = totalnotif.length
           }
@@ -394,18 +420,18 @@ export default ({
       this.$router.push({ name: 'login' })
     },
     getMessages: function () {
-      console.log('get message')
+      // console.log('get message')
       client.on('message', function (topic, message) {
-        console.log(message)
-        const msg = JSON.parse(message.toString())
-        console.log(msg)
+        console.log(message.toString())
+        // const msg = JSON.parse(message.toString())
+        // console.log(msg)
       })
     }
   },
   mounted () {
-    this.getMessages()
+    // this.getMessages()
   }
-})
+}
 </script>
 <style>
 .navigation-item {
