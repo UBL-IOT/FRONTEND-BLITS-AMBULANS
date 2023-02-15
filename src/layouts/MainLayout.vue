@@ -320,7 +320,7 @@
                 <q-item-section avatar>
                   <q-icon name="manage_accounts" />
                 </q-item-section>
-                <q-item-section> Profil </q-item-section>
+                <q-item-section> {{this.notification}} </q-item-section>
               </q-item>
             </q-list>
           </q-scroll-area>
@@ -347,6 +347,7 @@ export default {
   },
   data () {
     return {
+      notification: null,
       leftDrawerOpen: false,
       fullname: null,
       username: null,
@@ -362,29 +363,20 @@ export default {
   },
   beforeCreate: async function () {
     const option = {
-      clientId: 'adi',
+      clientId: 'Contoh',
       username: '/blits_ambulance:blits',
       password: 'blits123abc45',
       protocolId: '',
       reconnectPeriode: 0,
-      keepAlive: 60
+      keepAlive: 0
     }
 
-    client = mqttjs.connect('ws://103.167.112.188:15675/ws', option)
-    client.on('connect', function () {
-      // console.log('connected')
-      client.subscribe('orderan', function (err, topic) {
-        if (err) {
-          console.log(err)
-        }
-        // console.log(JSON.stringify(topic))
-      })
-    })
+    client = await mqttjs.connect('ws://103.167.112.188:15675/ws', option)
   },
   async created () {
     await this.getPesanan()
     await this.getCustomers()
-    await this.getMessages()
+    // await this.getMessages()
   },
   methods: {
     getPesanan () {
@@ -420,16 +412,24 @@ export default {
       this.$router.push({ name: 'login' })
     },
     getMessages: function () {
-      // console.log('get message')
-      client.on('message', function (topic, message) {
-        console.log(message.toString())
-        // const msg = JSON.parse(message.toString())
-        // console.log(msg)
+      const parseData = (data) => {
+        this.notification = data
+      }
+      client.on('connect', function () {
+      // console.log('connected')
+        client.subscribe('orderan', function (err, topic) {
+          if (err) {
+            return err
+          }
+          client.on('message', function (topic, message) {
+            this.notification = message.toString()
+            parseData(message.toString())
+            // const msg = JSON.parse(message.toString())
+            // console.log(this.notification)
+          })
+        })
       })
     }
-  },
-  mounted () {
-    // this.getMessages()
   }
 }
 </script>
