@@ -13,16 +13,9 @@
         <q-space />
         <div class="row q-gutter-md q-mr-md">
           <q-btn round dense flat color="blue-7" icon="notifications">
-            <div v-for="(d, i) in data" :key="i">
-              <q-badge
-                v-if="d.status_pesanan === 0"
-                color="red"
-                text-color="white"
-                floating
-              >
-                {{ pesanan }}
-              </q-badge>
-            </div>
+            <q-badge color="red" text-color="white" floating>
+              {{ pesanan }} {{ notification }}
+            </q-badge>
             <q-menu>
               <q-card class="my-card">
                 <q-card-section>
@@ -183,13 +176,7 @@
                 </q-item-section>
                 <q-item-section>
                   Dashboard
-                  <!-- {{rmqdata}} -->
                 </q-item-section>
-                <div v-for="(d, i) in customers" :key="i" class="q-gutter-xs">
-                  <q-badge v-if="d.verifikasi === 0" rounded color="red">{{
-                    totalnotif
-                  }}</q-badge>
-                </div>
               </q-item>
 
               <q-expansion-item class="q-pl-sm">
@@ -198,13 +185,8 @@
                     <q-icon name="perm_phone_msg" />
                   </q-item-section>
                   <q-item-section> Pemesanan </q-item-section>
-                  <div v-for="(d, i) in data" :key="i" class="q-gutter-md">
-                    <q-badge
-                      v-if="d.status_pesanan === 0"
-                      rounded
-                      color="red"
-                      >{{ pesanan }}</q-badge
-                    >
+                  <div class="q-gutter-md">
+                    <q-badge rounded color="red">{{ pesanan }}</q-badge>
                   </div>
                 </template>
                 <q-item
@@ -320,7 +302,7 @@
                 <q-item-section avatar>
                   <q-icon name="manage_accounts" />
                 </q-item-section>
-                <q-item-section> {{this.notification}} </q-item-section>
+                <q-item-section> Profil </q-item-section>
               </q-item>
             </q-list>
           </q-scroll-area>
@@ -339,7 +321,6 @@ import createToken from 'src/boot/create_token'
 import Messages from './Messages'
 import mqttjs from 'mqtt'
 let client = null
-// var mqttjs = require('mqtt')
 export default {
   name: 'MainLayout',
   components: {
@@ -363,7 +344,7 @@ export default {
   },
   beforeCreate: async function () {
     const option = {
-      clientId: 'Contoh',
+      clientId: 'NotifyOrder',
       username: '/blits_ambulance:blits',
       password: 'blits123abc45',
       protocolId: '',
@@ -376,7 +357,7 @@ export default {
   async created () {
     await this.getPesanan()
     await this.getCustomers()
-    // await this.getMessages()
+    await this.getMessages()
   },
   methods: {
     getPesanan () {
@@ -395,7 +376,8 @@ export default {
     getCustomers () {
       this.$q.loading.show()
       this.$axios
-        .get('users/get/all', createToken())
+        // .get('users/get/all', createToken())
+        .get('users/get/role-user', createToken())
         .finally(() => this.$q.loading.hide())
         .then((res) => {
           if (res.data.status) {
@@ -416,7 +398,6 @@ export default {
         this.notification = data
       }
       client.on('connect', function () {
-      // console.log('connected')
         client.subscribe('orderan', function (err, topic) {
           if (err) {
             return err
@@ -424,8 +405,6 @@ export default {
           client.on('message', function (topic, message) {
             this.notification = message.toString()
             parseData(message.toString())
-            // const msg = JSON.parse(message.toString())
-            // console.log(this.notification)
           })
         })
       })
