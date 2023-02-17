@@ -396,7 +396,12 @@ export default {
     getMessages: function () {
       const parseData = (data) => {
         this.notification = data
+        if (data != null) {
+          const audio = new Audio('pemberitahuan.mp3')
+          audio.play()
+        }
       }
+
       client.on('connect', function () {
         client.subscribe('orderan', function (err, topic) {
           if (err) {
