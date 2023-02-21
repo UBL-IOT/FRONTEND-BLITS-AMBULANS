@@ -379,19 +379,14 @@ export default {
       ktp: null,
       guidVerify: null,
       verifyAct: null,
-      guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432'
+      guid_po: '2bfab8ff-304e-42e9-b200-9fb9140f0432',
+      yourNumber: +6289503251381,
+      yourMessage: 'user telah diverifikasi'
     }
   },
-  // beforeCreate: async function () {
-  //   const option = {
-  //     clientId: 'order_notif',
-  //     username: 'blitspass',
-  //     password: 'blits123abc45'
-  //   }
-  //   const client = mqtt.connect('ws://103.167.112.188:15672/ws', option)
-  //   client.on('connect', function () {
-  //     console.log('connected')
-  //   })
+  // beforeCreate (number, message) {
+  //   this.number = yourNumber,
+  // message = yourMessage.split(' ').join('%20')
   // },
   async created () {
     await this.getKendaraan()

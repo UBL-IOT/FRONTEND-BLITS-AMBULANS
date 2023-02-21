@@ -345,14 +345,14 @@ export default {
   beforeCreate: async function () {
     const option = {
       clientId: 'NotifyOrder',
-      username: '/blits_ambulance:blits',
-      password: 'blits123abc45',
+      username: '/blits:blits',
+      password: 'I3!tzs2t7',
       protocolId: '',
       reconnectPeriode: 0,
       keepAlive: 0
     }
 
-    client = await mqttjs.connect('ws://103.167.112.188:15675/ws', option)
+    client = await mqttjs.connect('ws://rmq2.pptik.id:15675/ws', option)
   },
   async created () {
     await this.getPesanan()
@@ -397,7 +397,7 @@ export default {
       const parseData = (data) => {
         this.notification = data
         if (data != null) {
-          const audio = new Audio('pemberitahuan.mp3')
+          const audio = new Audio('Notifikasi.mp3')
           audio.play()
         }
       }
